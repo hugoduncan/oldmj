@@ -1,0 +1,7 @@
+{:deps {}
+ :target-path "target"
+ :targets {:script  {:tool makejack.uberscript}
+           :compile {:tool makejack.compile
+                     :aliases [:compile]}
+           :uberjar {:tool makejack.depstar}
+           :bin     {:tool makejack.graal-compile}}}

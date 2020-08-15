@@ -1,0 +1,7 @@
+{:version [0 0 1]
+ :name "makejack"
+ ;; :group-id "makejack"
+ ;; :artifact-id "makejack"
+ :main makejack.main
+ :uberscript {:path "bin/mj"
+              :shebang? true}}
