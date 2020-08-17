@@ -1,2 +1,3 @@
 ./makejack
 *.jar
+pom.xml

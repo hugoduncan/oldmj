@@ -32,9 +32,10 @@
       [cmd tool])
     (let [kw     (keyword (name cmd))
           target (get-in config [:targets kw])]
+      (println "target" target)
       (if target
         [kw (:tool target)]
-        (let [ns-segs (str/split cmd #"\.")
+        (let [ns-segs (str/split (name cmd) #"\.")
               ns-segs (if (= 1 (count ns-segs))
                         (into ["makejack"] ns-segs)
                         ns-segs)]
