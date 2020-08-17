@@ -1,5 +1,8 @@
 (ns makejack.api.builtins
-  (:require makejack.compile
+  (:require makejack.babashka
+            makejack.clojure
+            makejack.shell
+            makejack.compile
             makejack.depstar
             makejack.graal-compile))
 

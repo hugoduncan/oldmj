@@ -32,6 +32,7 @@
       (println "Failed to read makejack file mj.edn: " (str e))
       (throw e))))
 
+
 (defn clojure [aliases deps args]
   (let [args (cond-> ["clojure"]
                (not-empty aliases) (conj (str "-A:" (str/join ":" aliases)))

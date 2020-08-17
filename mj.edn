@@ -27,5 +27,7 @@
                      :form (println "hello")}
            :nrepl-server {:tool makejack.babashka
                           :with-project-deps? true
-                          :args ["--nrepl-server"]}}
+                          :args ["--nrepl-server"]}
+           :build {:tool makejack.chain
+                   :targets [:compile :uberjar :bin]}}
  }
