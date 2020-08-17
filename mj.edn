@@ -1,5 +1,4 @@
-{
- :deps {}
+{:deps {}
  :project #include "project.edn"
  :target-path "target"
  :targets {:clean   {:tool makejack.shell
@@ -7,7 +6,22 @@
            :script  {:tool makejack.uberscript}
            :compile {:tool makejack.compile
                      :aliases [:compile]}
-           :uberjar {:tool makejack.depstar}
+           :uberjar {:tool makejack.depstar
+                     :jar-name #join [#ref [:target-path]
+                                      "/"
+                                      #ref [:project :name]
+                                      "-"
+                                      #ref [:project :version]
+                                      "-standalone.jar"]}
+           :jar {:tool makejack.clojure
+                 :deps {seancorfield/depstar {:mvn/version "1.0.97"}}
+                 :main-opts ["-m" "hf.depstar.jar"
+                             #join [#ref [:target-path]
+                                    "/"
+                                    #ref [:project :name]
+                                    "-"
+                                    #ref [:project :version]
+                                    ".jar"]]}
            :bin     {:tool makejack.graal-compile}
            :fred    {:tool makejack.babashka
                      :form (println "hello")}
