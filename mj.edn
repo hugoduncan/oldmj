@@ -4,4 +4,9 @@
            :compile {:tool makejack.compile
                      :aliases [:compile]}
            :uberjar {:tool makejack.depstar}
-           :bin     {:tool makejack.graal-compile}}}
+           :bin     {:tool makejack.graal-compile}
+           :fred    {:tool makejack.babashka
+                     :form (println "hello")}
+           :nrepl-server {:tool makejack.babashka
+                          :with-project-deps? true
+                          :args ["--nrepl-server"]}}}

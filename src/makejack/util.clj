@@ -7,9 +7,9 @@
             LinkOption Path Paths];
            [java.nio.file.attribute PosixFilePermission]))
 
-(extend-protocol io/Coercions
-  Path
-  (as-file [p] (.toFile p)))
+;; (extend-protocol io/Coercions
+;;   Path
+;;   (as-file [p] (.toFile p)))
 
 (defprotocol Coercions
   ;; "Coerce between various 'resource-namish' things."
@@ -56,38 +56,36 @@
   (^String [parent child & more]
    (str (apply path parent child more))))
 
-;; (defn- char-to-int
-;;   [c]
-;;   (- (int c) 48))
+(defn- char-to-int
+  [c]
+  (- (int c) 48))
 
-;; (def POSIX-PERMS
-;;   {:owner  [PosixFilePermission/OWNER_EXECUTE
-;;             PosixFilePermission/OWNER_WRITE
-;;             PosixFilePermission/OWNER_READ]
-;;    :group  [PosixFilePermission/GROUP_EXECUTE
-;;             PosixFilePermission/GROUP_WRITE
-;;             PosixFilePermission/GROUP_READ]
-;;    :others [PosixFilePermission/OTHERS_EXECUTE
-;;             PosixFilePermission/OTHERS_WRITE
-;;             PosixFilePermission/OTHERS_READ]})
+(def POSIX-PERMS
+  {:owner  [PosixFilePermission/OWNER_EXECUTE
+            PosixFilePermission/OWNER_WRITE
+            PosixFilePermission/OWNER_READ]
+   :group  [PosixFilePermission/GROUP_EXECUTE
+            PosixFilePermission/GROUP_WRITE
+            PosixFilePermission/GROUP_READ]
+   :others [PosixFilePermission/OTHERS_EXECUTE
+            PosixFilePermission/OTHERS_WRITE
+            PosixFilePermission/OTHERS_READ]})
 
-;; (defn chmod
-;;   "Change file mode, given octal mode specification as string."
-;;   [path mode]
-;;   (let [[owner group others :as specs] (map char-to-int mode)
-;;         perms #{}]
-;;     (reduce
-;;       (fn [perms [who spec]]
-;;         (cond-> perms
-;;           ((pos? (bit-and spec 1))) (conj (first (POSIX-PERMS who)))
-;;           ((pos? (bit-and spec 2))) (conj (second (POSIX-PERMS who)))
-;;           ((pos? (bit-and spec 4))) (conj (last (POSIX-PERMS who)))))
-;;       #{}
-;;       (map vector [:owner :group :others] specs))
-
-;;     (Files/setPosixFilePermissions
-;;       (Paths/get path)
-;;       perms)))
+(defn chmod
+  "Change file mode, given octal mode specification as string."
+  [path-like mode]
+  (let [[owner group others :as specs] (map char-to-int mode)
+        perms (reduce
+                (fn [perms [who spec]]
+                  (cond-> perms
+                    (pos? (bit-and spec 1)) (conj (first (POSIX-PERMS who)))
+                    (pos? (bit-and spec 2)) (conj (second (POSIX-PERMS who)))
+                    (pos? (bit-and spec 4)) (conj (last (POSIX-PERMS who)))))
+                #{}
+                (map vector [:owner :group :others] specs))]
+    (Files/setPosixFilePermissions
+      (path path-like)
+      perms)))
 
 
 ;; (def visit-options (doto (java.util.HashSet.)

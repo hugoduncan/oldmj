@@ -1,7 +1,5 @@
 (ns makejack.core
   (:require [aero.core :as aero]
-            ;; would like to use this, but not currently possible
-            ;; [borkdude.deps :as deps]
             [clojure.edn :as edn]
             [clojure.java.shell :as shell]
             [clojure.string :as str]
@@ -14,21 +12,21 @@
 
 (defn load-deps []
   (try
-    (aero.core/read-config "deps.edn")
+    (aero/read-config "deps.edn")
     (catch Exception e
       (println "Failed to read deps file deps.edn: " (str e))
       (throw e))))
 
 (defn load-project []
   (try
-    (aero.core/read-config "project.edn")
+    (aero/read-config "project.edn")
     (catch Exception e
       (println "Failed to read project file project.edn: " (str e))
       (throw e))))
 
 (defn load-config []
   (try
-    (merge (aero.core/read-config "mj.edn")
+    (merge (aero/read-config "mj.edn")
            default-config/config)
     (catch Exception e
       (println "Failed to read makejack file mj.edn: " (str e))
@@ -45,7 +43,7 @@
 (defn babashka [args]
   (let [args (cond-> ["bb"]
                args (into args))]
-    (apply println args)
+    (prn args)
     (apply shell/sh args)))
 
 (defn deps [aliases args]

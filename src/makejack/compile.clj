@@ -14,16 +14,15 @@
         compile-config (get-in config [:targets config-kw])
         target       (:target compile-config "target")
         aliases      (:aliases compile-config)
-        ;; jvm-opts     (:jvm-opts compile-config)
         source-files (mapcat util/source-files paths)
         nses         (mapv util/path->namespace source-files)
         form         `(binding [*compile-path* ~target]
-                        ~@(map compile-ns-form nses))
-        ;; extra-deps   (cond-> {}
-        ;;                jvm-opts (assoc :jvm-opts jvm-opts))
-        ]
+                        ~@(map compile-ns-form nses))]
 
-    ;;(prn "config-kw" config-kw "config" config "compile-config" compile-config)
+    (when-not (first (filter #(= target %) paths))
+      (makejack/error
+        ("Target path, " target " must be in the deps.edn :paths")))
+
     (makejack/clojure
       aliases
       nil

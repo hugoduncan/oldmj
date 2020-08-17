@@ -1,6 +1,7 @@
 (ns makejack.main
   (:require [clojure.string :as str]
             [clojure.tools.cli :as cli]
+            [makejack.builtins :as builtins]
             [makejack.core :as makejack])
   (:gen-class))
 
@@ -18,7 +19,8 @@
     (try
       (require tool-ns)
       (catch Exception _))
-    (ns-resolve tool-ns (symbol (last (str/split (name tool-ns) #"\."))))))
+    (or (builtins/builtins tool-ns)
+        (ns-resolve tool-ns (symbol (last (str/split (name tool-ns) #"\.")))))))
 
 (defn resolve-target [kw-str config]
   (let [kw (read-string kw-str)
