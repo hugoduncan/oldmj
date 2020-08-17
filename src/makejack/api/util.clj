@@ -132,3 +132,18 @@
 
 (defn mkdirs [path-like]
   (Files/createDirectories (path path-like) (make-array FileAttribute 0)))
+
+(defn cwd
+  ^Path []
+  (.toAbsolutePath (path ".")))
+
+(def link-options (make-array LinkOption 0))
+
+(defn filename [path-like]
+  (.getFileName (.toRealPath (path path-like) link-options)))
+
+
+(defn file-exists? [path-like]
+  (Files/exists (path path-like) link-options))
+
+;; (filename (cwd))

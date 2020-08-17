@@ -1,3 +1,5 @@
 ./makejack
+./target
 *.jar
 pom.xml
+.envrc

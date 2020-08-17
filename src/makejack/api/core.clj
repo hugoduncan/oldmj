@@ -26,12 +26,11 @@
       (throw e))))
 
 (defn load-config []
-  (try
-    (merge (aero/read-config "mj.edn")
-           default-config/config)
-    (catch Exception e
-      (println "Failed to read makejack file mj.edn: " (str e))
-      (throw e))))
+  (merge
+    (try
+      (aero/read-config "mj.edn")
+      (catch Exception e))
+    default-config/config))
 
 
 (defn clojure [aliases deps args]
