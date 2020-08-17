@@ -1,0 +1,49 @@
+#!/usr/bin/env bb
+;; -*- mode: clojure -*-
+
+;; bootstrap the mj script
+(require '[babashka.classpath :refer [add-classpath]]
+         '[clojure.java.shell :refer [sh]]
+         '[clojure.string :as str])
+
+(def cp-res (sh "clojure" "-Srepro" "-Spath"))
+(when (pos? (:exit cp-res))
+  (println (:out cp-res))
+  (binding [*out* *err*]
+    (println (:err cp-res)))
+  (System/exit 1))
+
+(def cp (str/replace (:out cp-res) "\n" ""))
+
+;; (def deps-dep '{:deps {borkdude/deps.clj {:mvn/version "0.0.9"}}})
+;; (def cp-res (sh "clojure" "-Srepro" "-Spath" "-Sdeps" (str deps-dep)))
+
+;; (when (pos? (:exit cp-res))
+;;   (println (:out cp-res))
+;;   (binding [*out* *err*]
+;;     (println (:err cp-res)))
+;;   (System/exit 1))
+;; (def bootstrap-cp (:out cp-res))
+
+;; ;; (def bootstrap-cp  (sh "clojure" "-Srepro" "-Spath" "-Sdeps" (str deps-dep)))
+;; ;; (println "bootstrap-cp" bootstrap-cp)
+
+;; (def paths (str/split bootstrap-cp #":"))
+;; (def deps-clj (first (filter #(.contains % "deps.clj") paths)))
+;; (add-classpath "resources")  ; for DEPS_CLJ_VERSION
+;; ;;(add-classpath paths)
+;; (println "deps-clj" deps-clj)
+;; (add-classpath deps-clj)
+
+;; (require '[borkdude.deps :as deps])
+;; (def cp (with-out-str (deps/-main "-Spath")))
+
+;; (let [cmd (str
+;;             "bb -cp " cp " "
+;;             "-m makejack.main "
+;;             "uberscript bin/mj")]
+;;   (println "cmd" cmd))
+;; this gives an error, but still produces a script?
+
+(println "cp" cp)
+(sh "bb" "-cp" cp "-m" "makejack.main" "uberscript")
