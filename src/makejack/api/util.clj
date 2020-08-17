@@ -5,7 +5,7 @@
            [java.nio.file
             Files
             LinkOption Path Paths];
-           [java.nio.file.attribute PosixFilePermission]))
+           [java.nio.file.attribute FileAttribute PosixFilePermission]))
 
 ;; (extend-protocol io/Coercions
 ;;   Path
@@ -129,3 +129,6 @@
      (str/replace "_" "-")
      (str/replace "/" ".")
      symbol))
+
+(defn mkdirs [path-like]
+  (Files/createDirectories (path path-like) (make-array FileAttribute 0)))

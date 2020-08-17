@@ -4,7 +4,8 @@
             makejack.shell
             makejack.compile
             makejack.depstar
-            makejack.graal-compile))
+            makejack.graal-compile
+            makejack.pom))
 
 (def builtins
   {'makejack.compile       makejack.compile/compile

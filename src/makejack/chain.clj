@@ -1,6 +1,7 @@
 (ns makejack.chain
   "Makejack tool to invoke mu;tiple targets"
-  (:require [makejack.api.resolve :as resolve]))
+  (:require [makejack.api.resolve :as resolve]
+            [makejack.api.builtins :as builtins]))
 
 (defn chain [args target-kw config options]
   (let [target-config (get-in config [:targets target-kw])
@@ -11,3 +12,5 @@
             f (resolve/resolve-tool tool-sym)]
         (prn "chain run" kw f)
         (f args kw config options)))))
+
+(alter-var-root #'builtins/builtins assoc 'makejack.chain chain)

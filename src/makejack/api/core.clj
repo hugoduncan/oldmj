@@ -1,6 +1,5 @@
 (ns makejack.api.core
   (:require [aero.core :as aero]
-            [clojure.edn :as edn]
             [clojure.java.shell :as shell]
             [clojure.string :as str]
             [makejack.api.default-config :as default-config]))
@@ -10,12 +9,14 @@
     (println s)
     (System/exit 1)))
 
-(defn load-deps []
+(defn load-deps* []
   (try
     (aero/read-config "deps.edn")
     (catch Exception e
       (println "Failed to read deps file deps.edn: " (str e))
       (throw e))))
+
+(def load-deps (memoize load-deps*))
 
 (defn load-project []
   (try
@@ -76,5 +77,5 @@
 
 (defn default-uberjar-name [project]
   (str (:name project)
-       "-" (str/join "." (:version project))
+       "-" (:version project)
        ".jar"))

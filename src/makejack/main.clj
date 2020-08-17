@@ -2,7 +2,8 @@
   (:require [clojure.string :as str]
             [clojure.tools.cli :as cli]
             [makejack.api.core :as makejack]
-            [makejack.api.resolve :as resolve])
+            [makejack.api.resolve :as resolve]
+            makejack.chain)
   (:gen-class))
 
 (def cli-options

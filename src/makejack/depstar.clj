@@ -3,19 +3,19 @@
             [makejack.api.core :as makejack]
             [makejack.api.util :as util]))
 
-(defn depstar [args config-kw config options]
-  (let [project (makejack/load-project)
-        uberjar (:uberjar project)
-        uberjar-config (get config config-kw)
-        aliases (:aliases uberjar-config)
-        deps '{:deps {seancorfield/depstar {:mvn/version "1.0.97"}}}
+(defn depstar [args target-kw config options]
+  (let [project       (makejack/load-project)
+        uberjar       (:uberjar project)
+        target-config (get config target-kw)
+        aliases       (:aliases target-config)
+        deps          '{:deps {seancorfield/depstar {:mvn/version "1.0.97"}}}
         ;; cp (str/replace
         ;;      (makejack/deps aliases  ["-Spath" "-Sdeps" (str depstar-dep)])
         ;;      "\n" "")
-        main (:main project)
-        jar-path (:path uberjar (makejack/default-uberjar-name project))
-        args ["-m" "hf.depstar.uberjar" jar-path]
-        args (into args (if main ["-m" (str main)]))
+        main          (:main project)
+        jar-path      (:path uberjar (makejack/default-uberjar-name project))
+        args          ["-m" "hf.depstar.uberjar" jar-path]
+        args          (into args (if main ["-m" (str main)]))
         ;; cmd (into
         ;;       ["-cp" cp "-m" "hf.depstar.uberjar" jar-path]
         ;;       args)

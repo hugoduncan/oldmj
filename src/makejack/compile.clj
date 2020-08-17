@@ -23,6 +23,7 @@
       (makejack/error
         ("Target path, " target " must be in the deps.edn :paths")))
 
+    (util/mkdirs target)
     (makejack/clojure
       aliases
       nil
