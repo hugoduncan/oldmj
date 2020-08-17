@@ -1,8 +1,8 @@
 (ns makejack.compile
   "AOT compilation"
   (:refer-clojure :exclude [compile])
-  (:require [makejack.core :as makejack]
-            [makejack.util :as util]))
+  (:require [makejack.api.core :as makejack]
+            [makejack.api.util :as util]))
 
 (defn compile-ns-form [ns-sym]
   `(clojure.core/compile '~ns-sym))

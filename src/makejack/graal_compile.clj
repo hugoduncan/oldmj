@@ -1,8 +1,8 @@
 (ns makejack.graal-compile
   (:require [clojure.java.shell :refer [sh]]
             [clojure.string :as str]
-            [makejack.core :as makejack]
-            [makejack.util :as util]))
+            [makejack.api.core :as makejack]
+            [makejack.api.util :as util]))
 
 (def default-args
   ["-H:+TraceClassInitialization"

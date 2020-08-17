@@ -1,6 +1,7 @@
 (ns makejack.babashka
-  (:require [makejack.core :as makejack]
-            [makejack.util :as util]))
+  "Makejack tool to invoke babashka"
+  (:require [makejack.api.core :as makejack]
+            [makejack.api.util :as util]))
 
 (defn babashka [args config-kw config options]
   (let [project      (makejack/load-project)

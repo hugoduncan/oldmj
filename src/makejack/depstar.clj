@@ -1,7 +1,7 @@
 (ns makejack.depstar
   (:require [clojure.string :as str]
-            [makejack.core :as makejack]
-            [makejack.util :as util]))
+            [makejack.api.core :as makejack]
+            [makejack.api.util :as util]))
 
 (defn depstar [args config-kw config options]
   (let [project (makejack/load-project)

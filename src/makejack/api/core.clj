@@ -1,9 +1,9 @@
-(ns makejack.core
+(ns makejack.api.core
   (:require [aero.core :as aero]
             [clojure.edn :as edn]
             [clojure.java.shell :as shell]
             [clojure.string :as str]
-            [makejack.default-config :as default-config]))
+            [makejack.api.default-config :as default-config]))
 
 (defn error [s]
   (binding [*out* *err*]

@@ -1,4 +1,4 @@
-(ns makejack.default-config)
+(ns makejack.api.default-config)
 
 (def config
   '{:compile {:plugin makejack.compile

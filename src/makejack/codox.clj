@@ -1,5 +1,5 @@
 (ns makejack.codox
-  (:require [makejack.core :as makejack]))
+  (:require [makejack.api.core :as makejack]))
 
 (defn -main [& _args]
   (let [project (makejack/load-project)]

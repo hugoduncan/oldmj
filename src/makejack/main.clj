@@ -1,8 +1,8 @@
 (ns makejack.main
   (:require [clojure.string :as str]
             [clojure.tools.cli :as cli]
-            [makejack.builtins :as builtins]
-            [makejack.core :as makejack])
+            [makejack.api.builtins :as builtins]
+            [makejack.api.core :as makejack])
   (:gen-class))
 
 (def cli-options

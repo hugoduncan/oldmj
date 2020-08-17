@@ -1,7 +1,7 @@
 (ns makejack.uberscript
   (:require [clojure.string :as str]
-            [makejack.core :as makejack]
-            [makejack.util :as util]))
+            [makejack.api.core :as makejack]
+            [makejack.api.util :as util]))
 
 (defn uberscript [args kw config options]
   (let [project (makejack/load-project)

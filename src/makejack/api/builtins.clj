@@ -1,4 +1,4 @@
-(ns makejack.builtins
+(ns makejack.api.builtins
   (:require makejack.compile
             makejack.depstar
             makejack.graal-compile))

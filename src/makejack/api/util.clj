@@ -1,4 +1,4 @@
-(ns makejack.util
+(ns makejack.api.util
   (:require [clojure.java.io :as io]
             [clojure.string :as str])
   (:import [java.io File]
