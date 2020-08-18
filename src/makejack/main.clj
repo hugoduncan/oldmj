@@ -1,6 +1,7 @@
 (ns makejack.main
   (:require [clojure.string :as str]
             [clojure.tools.cli :as cli]
+            [makejack.api.builtins :as builtins]
             [makejack.api.core :as makejack]
             [makejack.api.resolve :as resolve]
             makejack.chain)
@@ -16,21 +17,70 @@
         f (resolve/resolve-tool tool-sym)]
     (f args kw config options)))
 
+(defn tool-doc-string [f]
+  (first (str/split-lines (:doc (meta f) ""))))
+
+(defn- target-doc-string [target-map]
+  (first
+    (str/split-lines
+      (:doc target-map
+            (tool-doc-string
+              (get builtins/builtins
+                   (:tool target-map)))))))
+
+(defn target-doc
+  "Construct odc for available tools."
+  []
+  (str/join
+    "\n"
+    (map
+      (fn [[kw m]]
+        (format "%25s   %s" kw (target-doc-string m)))
+      (sort-by
+        key
+        (:targets (makejack/load-config))))))
+
+(defn tool-doc
+  "Construct odc for available tools."
+  []
+  (str/join
+    "\n"
+    (map
+      (fn [[sym f]]
+        (format
+          "%25s   %s"
+          (name sym)
+          (tool-doc-string f)))
+      builtins/builtins)))
+
 (defn usage [summary]
-  (println "makejack [options ...] target")
-  (println)
-  (println summary))
+  (println
+    (str/join
+      "\n"
+      ["makejack [options ...] target"
+       ""
+       summary
+       ""
+       "Project targets:"
+       (target-doc)
+       ""
+       "Available tools:"
+       (tool-doc)])))
 
 (defn error-msg [errors]
   (str "makejack error:\n" (str/join \newline errors)))
 
 (defn -main [& args]
-  (let [{:keys [arguments errors options summary]} (cli/parse-opts args cli-options)]
+  (let [{:keys [arguments errors options summary]}
+        (cli/parse-opts args cli-options :in-order true)]
     (cond
       errors ; errors => exit with description of errors
       (makejack/error (error-msg errors))
 
       (:help options)
+      (usage summary)
+
+      (not (seq args))
       (usage summary)
 
       :else

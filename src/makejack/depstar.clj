@@ -3,7 +3,9 @@
             [makejack.api.core :as makejack]
             [makejack.api.util :as util]))
 
-(defn depstar [args target-kw config options]
+(defn depstar
+  "Uberjar with depstar"
+  [args target-kw config options]
   (let [project       (makejack/load-project)
         uberjar       (:uberjar project)
         target-config (get config target-kw)
@@ -19,10 +21,12 @@
         ;; cmd (into
         ;;       ["-cp" cp "-m" "hf.depstar.uberjar" jar-path]
         ;;       args)
-        ]
-    ;; (println :cmd cmd)
-    ;; (makejack/babashka cmd)
-    (makejack/clojure aliases deps args)
+
+        ;; (println :cmd cmd)
+        ;; (makejack/babashka cmd)
+        res (makejack/clojure aliases deps args)]
+    (when (pos? (:exit res))
+      (makejack/error (:err res)))
     ))
 
 (defn -main [& args]

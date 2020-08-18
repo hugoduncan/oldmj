@@ -16,7 +16,9 @@
      (str "  <name>" name "</name>")
      "</project>"]))
 
-(defn pom [args target-kw config options]
+(defn pom
+  "Pom file creation or update."
+  [args target-kw config options]
   (let [project       (makejack/load-project)
         target-config (get-in config [:targets target-kw])
         aliases       (:aliases target-config)

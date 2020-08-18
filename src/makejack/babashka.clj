@@ -3,7 +3,9 @@
   (:require [makejack.api.core :as makejack]
             [makejack.api.util :as util]))
 
-(defn babashka [args config-kw config options]
+(defn babashka
+  "Invoke babashka"
+  [args config-kw config options]
   (let [project      (makejack/load-project)
         deps         (makejack/load-deps)
         bb-config    (get-in config [:targets config-kw])

@@ -3,7 +3,9 @@
   (:require [makejack.api.resolve :as resolve]
             [makejack.api.builtins :as builtins]))
 
-(defn chain [args target-kw config options]
+(defn chain
+  "Chain execution of multiple targets"
+  [args target-kw config options]
   (let [target-config (get-in config [:targets target-kw])
         targets       (:targets target-config)]
     (prn "chain" targets)
@@ -13,4 +15,6 @@
         (prn "chain run" kw f)
         (f args kw config options)))))
 
-(alter-var-root #'builtins/builtins assoc 'makejack.chain chain)
+(alter-var-root
+  #'builtins/builtins
+  assoc  'makejack.chain #'chain)

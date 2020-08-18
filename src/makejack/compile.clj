@@ -7,24 +7,28 @@
 (defn compile-ns-form [ns-sym]
   `(clojure.core/compile '~ns-sym))
 
-(defn compile [args config-kw config options]
-  (let [project      (makejack/load-project)
-        deps         (makejack/load-deps)
-        paths        (:paths deps)
-        compile-config (get-in config [:targets config-kw])
-        target       (:target compile-config "target")
-        aliases      (:aliases compile-config)
-        source-files (mapcat util/source-files paths)
-        nses         (mapv util/path->namespace source-files)
-        form         `(binding [*compile-path* ~target]
-                        ~@(map compile-ns-form nses))]
+(defn compile
+  "AOT compilation of clojure sources."
+  [args target-kw config options]
+  (let [project       (makejack/load-project)
+        deps          (makejack/load-deps)
+        paths         (:paths deps)
+        target-config (get-in config [:targets target-kw])
+        target        (:target target-config "target")
+        aliases       (:aliases target-config)
+        source-files  (mapcat util/source-files paths)
+        nses          (mapv util/path->namespace source-files)
+        form          `(binding [~'*compile-path* ~target]
+                         ~@(map compile-ns-form nses))]
 
     (when-not (first (filter #(= target %) paths))
       (makejack/error
         ("Target path, " target " must be in the deps.edn :paths")))
 
     (util/mkdirs target)
-    (makejack/clojure
-      aliases
-      nil
-      ["-e" (str form)])))
+    (let [res (makejack/clojure
+                aliases
+                nil
+                ["-e" (str form)])]
+      (when (pos? (:exit res))
+        (makejack/error (:err res))))))
