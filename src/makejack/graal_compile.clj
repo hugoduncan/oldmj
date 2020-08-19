@@ -7,7 +7,7 @@
   Specify options using .properties file in the uberjar.
   See https://www.graalvm.org/reference-manual/native-image/Configuration/."
   [_args _target-kw config _options]
-  (let [bin               (-> config :project :bin)
+  (let [bin               (-> config :project :binary)
         jar-kw            (:jar bin :uberjar)
         uberjar           (-> config :project :jars jar-kw)
         uberjar-name      (or (:name uberjar
