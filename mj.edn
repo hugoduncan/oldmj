@@ -1,35 +1,31 @@
 {:project #include "project.edn"
- :target-path "target"
- :targets {:clean   {:doc #join ["Remove the "
-                                 #ref [:target-path]
-                                 " directory"]
-                     :tool makejack.shell
-                     :args ["rm" "-rf" #ref [:target-path]]}
-           :script  {:tool makejack.uberscript}
-           :compile {:tool makejack.compile
-                     :aliases [:compile]}
-           :uberjar {:tool makejack.depstar
-                     :jar-name #join [#ref [:target-path]
-                                      "/"
-                                      #ref [:project :name]
-                                      "-"
-                                      #ref [:project :version]
-                                      "-standalone.jar"]}
-           :jar {:tool makejack.clojure
-                 :deps {seancorfield/depstar {:mvn/version "1.0.97"}}
-                 :main-opts ["-m" "hf.depstar.jar"
-                             #join [#ref [:target-path]
-                                    "/"
-                                    #ref [:project :name]
-                                    "-"
-                                    #ref [:project :version]
-                                    ".jar"]]}
-           :bin     {:tool makejack.graal-compile}
-           :hello   {:doc "say hello from babashka"
-                     :tool makejack.babashka
-                     :form (println "hello from babashka")}
+ ;; :target-path "target"
+ :targets {;;:script  {:tool makejack.uberscript}
+           ;; :compile {:tool makejack.compile
+           ;;           :aliases [:compile]}
+           ;; :uberjar {:tool makejack.depstar
+           ;;           :jar-name #join [#ref [:target-path]
+           ;;                            "/"
+           ;;                            #ref [:project :name]
+           ;;                            "-"
+           ;;                            #ref [:project :version]
+           ;;                            "-standalone.jar"]}
+           ;; :jar {:tool makejack.clojure
+           ;;       :deps {seancorfield/depstar {:mvn/version "1.0.97"}}
+           ;;       :main-opts ["-m" "hf.depstar.jar"
+           ;;                   #join [#ref [:target-path]
+           ;;                          "/"
+           ;;                          #ref [:project :name]
+           ;;                          "-"
+           ;;                          #ref [:project :version]
+           ;;                          ".jar"]]}
+           ;; :bin     {:tool makejack.graal-compile}
+           ;; :hello   {:doc "say hello from babashka"
+           ;;           :tool makejack.babashka
+           ;;           :form (println "hello from babashka")}
            :nrepl-server {:tool makejack.babashka
                           :with-project-deps? true
+                          :options {:out :inherit}
                           :args ["--nrepl-server"]}
            :build {:doc "pom, compile, uberjar and bin"
                    :tool makejack.chain

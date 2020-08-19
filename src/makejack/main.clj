@@ -1,14 +1,12 @@
 (ns makejack.main
-  (:require [clojure.string :as str]
+  (:require [clojure.pprint :as pprint]
+            [clojure.string :as str]
             [clojure.tools.cli :as cli]
             [makejack.api.builtins :as builtins]
             [makejack.api.core :as makejack]
             [makejack.api.resolve :as resolve]
             makejack.chain)
   (:gen-class))
-
-(def cli-options
-  [["-h" "--help"]])
 
 (defn run-command [cmd args options]
   (let [config (makejack/load-config)
@@ -70,6 +68,12 @@
 (defn error-msg [errors]
   (str "makejack error:\n" (str/join \newline errors)))
 
+(def cli-options
+  [["-h" "--help" "Show this help message."]
+   ["-p" "--pprint" "Pretty print the makejack config."]
+   ["-v" "--verbose" "Show command execution"]])
+
+
 (defn -main [& args]
   (let [{:keys [arguments errors options summary]}
         (cli/parse-opts args cli-options :in-order true)]
@@ -80,10 +84,14 @@
       (:help options)
       (usage summary)
 
+      (:pprint options)
+      (pprint/pprint
+        (makejack/load-config))
+
       (not (seq args))
       (usage summary)
 
       :else
-      (do
+      (binding [makejack/*verbose* (:verbose options)]
         (run-command (first arguments) (rest arguments) options)
         (shutdown-agents)))))

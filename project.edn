@@ -1,7 +1,9 @@
-{:version "0.0.1"
- :name "makejack"
- :main makejack.main
- :uberscript {:path "bin/mj"
+{:version    "0.0.1"
+ :name       "makejack"
+ :main       makejack.main
+ :jars       {:jar     {}
+              :uberjar {:aliases [:compile :uberjar]}}
+ :uberscript {:name "mj1"
               :shebang? true}
- :jars {:jar {}
-        :uberjar {}}}
+ :compile    {:aliases [:compile]}
+ :binary     {:name "mj"}}

@@ -6,6 +6,8 @@
          '[clojure.java.shell :refer [sh]]
          '[clojure.string :as str])
 
+(println "resolving classpath")
+
 (def cp-res (sh "clojure" "-Srepro" "-Spath"))
 (when (pos? (:exit cp-res))
   (println (:out cp-res))
@@ -45,5 +47,10 @@
 ;;   (println "cmd" cmd))
 ;; this gives an error, but still produces a script?
 
-(println "cp" cp)
-(sh "bb" "-cp" cp "-m" "makejack.main" "uberscript")
+;; (println "cp" cp)
+(println "generating uberscript")
+(let [res (sh "bb" "-cp" cp "-m" "makejack.main" "--verbose" "uberscript")]
+  (when (pos? (:exit res))
+    (binding [*out* *err*]
+      (println (:err res)))
+    (System/exit (:exit res))))

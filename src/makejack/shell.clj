@@ -10,7 +10,6 @@
         deps          (makejack/load-deps)
         target-config (get-in config [:targets target-kw])
         args          (:args target-config)
-        res           (apply shell/sh args)]
+        res           (makejack/sh args (:options config))]
     (if (pos? (:exit res))
-      (makejack/error (:err res))
-      (println (:out res)))))
+      (makejack/error "makejack.shell tool failed"))))

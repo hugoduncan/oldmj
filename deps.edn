@@ -1,6 +1,11 @@
-{:deps  {aero                  {:mvn/version "1.1.6"}
-         org.clojure/clojure   {:mvn/version "1.10.2-alpha1"}
-         org.clojure/tools.cli {:mvn/version "1.0.194"}}
- :paths ["src" "target"]
- :aliases {:compile {:jvm-opts ["-Dclojure.compiler.direct-linking=true"
-                                "-Dclojure.spec.skip-macros=true"]}}}
+{:deps
+ {aero                      {:mvn/version "1.1.6"}
+  babashka/babashka.process {:sha     "6c348b5213c0c77ebbdfcf2f5da71da04afee377"
+                             :git/url "https://github.com/babashka/babashka.process"}
+  org.clojure/clojure       {:mvn/version "1.10.2-alpha1"}
+  org.clojure/tools.cli     {:mvn/version "1.0.194"}}
+ :paths   ["src"]
+ :aliases {:compile {:extra-paths ["target/classes"]
+                     :jvm-opts    ["-Dclojure.compiler.direct-linking=true"
+                                   "-Dclojure.spec.skip-macros=true"]}
+           :uberjar {:extra-paths ["resources"]}}}

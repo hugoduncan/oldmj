@@ -8,7 +8,9 @@
     (require tool-ns)
     (catch Exception _))
   (or (builtins/builtins tool-ns)
-      (ns-resolve tool-ns (symbol (last (str/split (name tool-ns) #"\."))))))
+      (ns-resolve
+        tool-ns
+        (symbol (last (str/split (name tool-ns) #"\."))))))
 
 (defn resolve-target [kw config]
   (let [target (get-in config [:targets kw])
@@ -32,7 +34,6 @@
       [cmd tool])
     (let [kw     (keyword (name cmd))
           target (get-in config [:targets kw])]
-      (println "target" target)
       (if target
         [kw (:tool target)]
         (let [ns-segs (str/split (name cmd) #"\.")

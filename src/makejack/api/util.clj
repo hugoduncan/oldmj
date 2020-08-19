@@ -147,3 +147,25 @@
   (Files/exists (path path-like) link-options))
 
 ;; (filename (cwd))
+
+;; (defn- buffer-size [opts]
+;;   (or (:buffer-size opts) 1024))
+
+;; (defn copy-with-flush
+;;   [^InputStream input ^Writer output opts]
+;;   (let [^"[C" buffer (make-array Character/TYPE (buffer-size opts))
+;;         in (InputStreamReader. input (encoding opts))]
+;;     (loop []
+;;       (let [size (.read in buffer 0 (alength buffer))]
+;;         (if (pos? size)
+;;           (do (.write output buffer 0 size)
+;;               (recur)))))))
+
+(defn deep-merge
+  "Merge maps recursively."
+  [& ms]
+  (letfn [(merge* [& xs]
+            (if (some #(and (map? %) (not (record? %))) xs)
+              (apply merge-with merge* xs)
+              (last xs)))]
+    (reduce merge* ms)))
