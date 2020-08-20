@@ -1,26 +1,27 @@
 (ns makejack.uberscript
-  (:require [clojure.string :as str]
-            [makejack.api.core :as makejack]
+  (:require [makejack.api.core :as makejack]
             [makejack.api.util :as util]))
 
 (defn uberscript
   "Output a babashka uberscript."
-  [args kw config options]
-  (let [project    (makejack/load-project)
-        deps       (makejack/load-deps)
-        uberscript (:uberscript project)
-        aliases    (:aliases uberscript)
-        cp         (makejack/classpath aliases nil)
-        main       (:main uberscript (:main project))
-        name       (:name uberscript (:name project))
-        mode       (:mode uberscript "750")
-        path       (util/path (:target-path config) name)
-        res        (makejack/babashka
-                     (-> ["-cp" cp "-m" (str main)]
-                        (into ["--uberscript" (str path)]))
-                     {})]
+  [_args target-kw {:keys [:makejack/project] :as config} options]
+  (let [target-config (get-in config [:targets target-kw])
+        aliases       (-> []
+                         (into (:aliases project))
+                         (into (:aliases target-config))
+                         (into (:aliases options)))
+        cp            (makejack/classpath aliases nil)
+        main          (:main project)
+        script-name   (:scritp-name project (:name project))
+        mode          (:script-mode project "750")
+        path          (util/path (:target-path config) script-name)]
 
-    (when (:shebang? uberscript)
+    (makejack/babashka
+      (-> ["-cp" cp "-m" (str main)]
+         (into ["--uberscript" (str path)]))
+      {})
+
+    (when (:script-shebang? project)
       (let [raw (slurp (str path))]
         (spit (str path)
               (str

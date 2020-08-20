@@ -4,25 +4,28 @@
             [clojure.tools.cli :as cli]
             [makejack.api.core :as makejack]
             [makejack.api.help :as help]
-            [makejack.api.resolve :as resolve]
+            [makejack.api.run :as run]
             makejack.chain)
   (:gen-class))
 
-(defn run-command [cmd args options]
-  (let [config (makejack/load-config)
-        cmd (read-string cmd)
-        [kw tool-sym] (resolve/resolve-tool-sym cmd config)
-        f (resolve/resolve-tool tool-sym)]
-    (f args kw config options)))
-
+(defn apply-command [cmd args options]
+  (let [cmd        (read-string cmd)]
+    (run/run-command cmd args options)))
 
 (defn error-msg [errors]
   (str "makejack error:\n" (str/join \newline errors)))
 
+(defn parse-profiles [profiles-str]
+  (->> (str/split profiles-str #":")
+     (filter (complement str/blank?))
+     (mapv keyword)))
+
 (def cli-options
   [["-h" "--help" "Show this help message."]
    ["-p" "--pprint" "Pretty print the makejack config."]
-   ["-v" "--verbose" "Show command execution"]])
+   ["-v" "--verbose" "Show command execution"]
+   ["-P" "--profiles PROFILES" "Project profiles to apply"
+    :parse-fn parse-profiles]])
 
 
 (defn -main [& args]
@@ -37,7 +40,7 @@
 
       (:pprint options)
       (pprint/pprint
-        (makejack/load-config))
+        (run/apply-options (makejack/load-config) options nil))
 
       (not (seq args))
       (help/usage summary)
@@ -49,5 +52,5 @@
 
       :else
       (binding [makejack/*verbose* (:verbose options)]
-        (run-command (first arguments) (rest arguments) options)
+        (apply-command (first arguments) (rest arguments) options)
         (shutdown-agents)))))

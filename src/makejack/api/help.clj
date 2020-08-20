@@ -20,14 +20,17 @@
 (defn target-doc
   "Construct odc for available tools."
   []
-  (str/join
-    "\n"
-    (map
-      (fn [[kw m]]
-        (format "%25s   %s" kw (target-doc-string m)))
-      (sort-by
-        key
-        (:targets (makejack/load-config))))))
+  (let [config (try
+                 (makejack/load-config)
+                 (catch Exception _))]
+    (str/join
+      "\n"
+      (map
+        (fn [[kw m]]
+          (format "%25s   %s" kw (target-doc-string m)))
+        (sort-by
+          key
+          (:targets config))))))
 
 (defn tool-doc
   "Construct odc for available tools."
@@ -59,7 +62,9 @@
 (defn help-on
   "Return help on the specified command."
   [cmd]
-  (let [config (makejack/load-config)
+  (let [config (try
+                 (makejack/load-config)
+                 (catch Exception _))
         cmd (read-string cmd)
         [kw tool-sym] (resolve/resolve-tool-sym cmd config)
         f (resolve/resolve-tool tool-sym)

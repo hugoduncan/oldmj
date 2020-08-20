@@ -9,19 +9,30 @@
 
 (defn compile
   "AOT compilation of clojure sources."
-  [args target-kw config options]
-  (let [deps           (makejack/load-deps)
-        paths          (:paths deps)
-        compile-config (-> config :project :compile)
-        target-config  (get-in config [:targets target-kw])
+  [_args target-kw {:keys [:makejack/project] :as config} options]
+  (let [target-config  (get-in config [:targets target-kw])
+        aliases        (-> []
+                          (into (:aliases project))
+                          (into (:aliases target-config))
+                          (into (:aliases options)))
+        deps           (makejack/load-deps)
+        paths          (distinct
+                         (reduce
+                           (fn [paths alias]
+                             (into paths (some-> deps :aliases alias :extra-paths)))
+                           (:paths deps)
+                           aliases))
+        _ (prn :aliases aliases
+               (:aliases project)
+               (:aliases target-config)
+               (:aliases options))
         classes-path   (:classes-path target-config "target/classes")
-        aliases        (:aliases compile-config)
         source-files   (mapcat
                          (partial util/source-files util/clj-source-file?)
                          paths)
         nses           (mapv util/path->namespace source-files)
         form           `(binding [~'*compile-path* ~classes-path]
-                         ~@(map compile-ns-form nses))]
+                          ~@(map compile-ns-form nses))]
 
     (when-not (->> paths
                  (into (makejack/deps-paths deps aliases))

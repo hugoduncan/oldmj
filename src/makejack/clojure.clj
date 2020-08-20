@@ -1,7 +1,6 @@
 (ns makejack.clojure
   "Makejack tool to invoke clojure"
-  (:require [makejack.api.core :as makejack]
-            [makejack.api.util :as util]))
+  (:require [makejack.api.core :as makejack]))
 
 (def option-str->keyword
   {"-Sdeps" :sdeps
@@ -14,29 +13,24 @@
       (if-let [kw (option-str->keyword arg)]
         (recur
           (fnext args)
-          (assoc-in res [:options kw] (ffirst args)))
-        (assoc res :args args)))))
+          (assoc-in res [:tool-options kw] (ffirst args)))
+        (assoc res :tool-args args)))))
 
 (defn clojure
   "Execute clojure"
-  [args target-kw config _options]
-  (let [{:keys [options]} (parse-args args)
-        ;; project           (makejack/load-project)
-        ;; deps              (util/deep-merge
-        ;;                     (makejack/load-deps)
-        ;;                     (:sdeps options))
-        target-config     (get-in config [:targets target-kw])
-        aliases           (-> []
-                             (into (:aliases target-config))
-                             (into (:aliases options)))
-        deps-edn          (select-keys target-config [:deps])
-        res               (makejack/clojure
-                            aliases
-                            (merge deps-edn
-                                   (:Sdeps options))
-                            (:main-opts target-config)
-                            (:options target-config))]
-    ;; (if (pos? (:exit res))
-    ;;   (makejack/error (:err res))
-    ;;   (println (:out res)))
+  [args target-kw {:keys [:makejack/project] :as config} options]
+  (let [{:keys [tool-options]} (parse-args args)
+        aliases                (-> []
+                                  (into (:aliases project))
+                                  (into (:aliases options))
+                                  (into (:aliases tool-options)))
+        _                      (prn :aliases aliases)
+        target-config          (some-> config :targets target-kw)
+        deps-edn               (select-keys target-config [:deps])]
+    (makejack/clojure
+      aliases
+      (merge deps-edn
+             (:Sdeps tool-options))
+      (:main-opts target-config)
+      (:options target-config))
     nil))

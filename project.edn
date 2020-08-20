@@ -1,9 +1,9 @@
-{:version    "0.0.1"
- :name       "makejack"
- :main       makejack.main
- :jars       {:jar     {}
-              :uberjar {:aliases [:compile :uberjar]}}
- :uberscript {:name "mj1"
-              :shebang? true}
- :compile    {:aliases [:compile]}
- :binary     {:name "mj"}}
+{:version         "0.0.1"
+ :name            "makejack"
+ :main            makejack.main
+ :profiles        {:compile {:aliases [:compile]}
+                   :uberjar {:jar-type :uberjar
+                             :aliases  [:uberjar :compile]}}
+ :script-name     "mj1"
+ :script-shebang? true
+ :binary-name     "mj"}

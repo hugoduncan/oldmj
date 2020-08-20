@@ -1,14 +1,18 @@
 {:version    "0.0.1"
  :name       "makejack"
  :main       makejack.main
- :jars       {:jar     {}
-              :uberjar {:aliases [:compile :uberjar]}}
- :uberscript {:name "mj1"
-              :shebang? true}
+ :jar-name   #join ["makejack-" #ref [:version] ".jar"]
+ :jar-type   :jar
+ :uberscript-name "mj1"
+ :shebang? true
  :compile    {:aliases [:compile]}
  :binary     {:name "mj"}
- :java-compile {:default
-                {:paths []
-                 :javac-options ["-target" "1.7"
-                                 "-source" "1.7"
-                                 "-Xlint:-options"]}}}
+ :java-paths []
+ :javac-options ["-target" "1.7"
+                 "-source" "1.7"
+                 "-Xlint:-options"]
+ ;; dep.edn aliases, usually specified in profiles
+ :aliases []
+ ;; map of named profiles, that override the base project configuration
+ :profiles {:compile {:aliases [:compile]}}
+ }

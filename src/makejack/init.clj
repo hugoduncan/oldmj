@@ -1,14 +1,11 @@
 (ns makejack.init
   "Initialise project"
-  (:require [clojure.string :as str]
-            [makejack.api.core :as makejack]
-            [makejack.api.util :as util]))
+  (:require [makejack.api.util :as util]))
 
-
-(defn init
+(defn ^:no-config-required init
   "Initialise a project for use with makejack.
   Creates project.edn and mj.edn files if they do not exist."
-  [args target-kw config options]
+  [_args _target-kw _config _options]
   (when-not (util/file-exists? "project,edn")
     (let [dir-name (util/filename (util/cwd))
           default-project {:name (str dir-name)

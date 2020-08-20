@@ -1,6 +1,5 @@
 (ns makejack.api.core
   (:require [aero.core :as aero]
-            [clojure.java.io :as io]
             [clojure.string :as str]
             [babashka.process :as process]
             makejack.api.aero           ; for defmethod
@@ -43,28 +42,6 @@
     (if (util/file-exists? "mj.edn")
       (aero/read-config "mj.edn"))))
 
-;; (defn handle-process-output
-;;   [{:keys [out err exit] :as res}]
-;;   ;; (let [res (cond-> res
-;;   ;;             (instance? java.io.InputStream out)
-;;   ;;             (assoc :out-future
-;;   ;;                    (future
-;;   ;;                      (with-open [out out]
-;;   ;;                        (when (or *verbose*)
-;;   ;;                          (io/copy out *out*)))))
-;;   ;;             ;; (instance? java.io.InputStream err)
-;;   ;;             ;; (assoc :err-future
-;;   ;;             ;;        (future
-;;   ;;             ;;          (with-open [err err]
-;;   ;;             ;;            (io/copy err *out*))))
-;;   ;;             )])
-
-;;   (cond-> res
-;;     (instance? clojure.lang.IDeref exit) (update :exit deref)
-;;     ;; (:out-future res)                    (update :out-future deref)
-;;     ;; (:err-future res)                    (update :err-future deref)
-;;     ))
-
 (defn clojure
   "Execute clojure"
   [aliases deps args options]
@@ -89,22 +66,17 @@
       args
       (merge
         {:err :inherit}
-        (select-keys options [:throw :out :err]))
-      ;; {:throw false
-      ;;  :wait  false
-      ;;  :out   (:out options :inherit)
-      ;;  :err   :inherit}
-      )))
+        (select-keys options [:throw :out :err])))))
 
-(defn deps [aliases args]
-  (let [args (cond-> []
-               aliases (conj (str "-A:" (str/join ":" aliases)))
-               args (into args))]
-    (apply println "deps" args)
-    ;; deps.clj would be better here
-    (-> (clojure aliases nil args)
-       :out
-       (str/replace "\n" ""))))
+;; (defn deps [aliases args]
+;;   (let [args (cond-> []
+;;                aliases (conj (str "-A:" (str/join ":" aliases)))
+;;                args (into args))]
+;;     (apply println "deps" args)
+;;     ;; deps.clj would be better here
+;;     (-> (clojure aliases nil args)
+;;        :out
+;;        (str/replace "\n" ""))))
 
 (defn sh [args options]
   (when *verbose*
@@ -113,15 +85,7 @@
     args
     (merge
       {:err :inherit}
-      (select-keys options [:throw :out :err])))
-  ;; (let [{:keys [exit out err]} (apply shell/sh args)]
-  ;;   (when (pos? exit)
-  ;;     (throw (ex-info "Failed"
-  ;;                     {:args args
-  ;;                      :err err
-  ;;                      :out out})))
-  ;;   out)
-  )
+      (select-keys options [:throw :out :err]))))
 
 (defn classpath [aliases deps]
   (let [args (cond-> ["clojure"]

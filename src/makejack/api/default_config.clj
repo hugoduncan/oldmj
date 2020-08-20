@@ -5,6 +5,7 @@
     :target-path \"target\"
     :targets {
      :compile {:tool makejack.compile
+               :profiles [:compile]
                :classes-path \"target/classes\"}
      :clean   {:doc #join [\"Remove the \"
                            #ref [:target-path]
@@ -13,7 +14,7 @@
                :args [\"rm\" \"-rf\" #ref [:target-path]]}
      :jar     {:tool makejack.clojure
                :deps {seancorfield/depstar {:mvn/version \"1.0.97\"}}
-               :aliases #opt-ref [:project :jars :jar :aliases]
+               :profiles [:jar]
                :main-opts [\"-m\" \"hf.depstar.jar\"
                            #join [#ref [:target-path]
                                   \"/\"
@@ -23,7 +24,7 @@
                                   \".jar\"]]}
      :uberjar {:tool makejack.clojure
                :deps {seancorfield/depstar {:mvn/version \"1.0.97\"}}
-               :aliases #opt-ref [:project :jars :uberjar :aliases]
+               :profiles [:uberjar]
                :main-opts [\"-m\" \"hf.depstar.uberjar\"
                            #join [#ref [:target-path]
                                   \"/\"
@@ -31,6 +32,6 @@
                                   \"-\"
                                   #ref [:project :version]
                                   \"-standalone.jar\"]
-                                  \"--main\" #ref [:project :main]
-]}
-     :bin     {:tool makejack.graal-compile}}}")
+                           \"--main\" #opt-ref [:project :main]]}
+     :bin     {:tool makejack.graal-compile
+               :profiles [:binary]}}}")

@@ -18,10 +18,12 @@
 
 (defn pom
   "Pom file creation or update."
-  [args target-kw config options]
-  (let [project       (makejack/load-project)
-        target-config (get-in config [:targets target-kw])
-        aliases       (:aliases target-config)
+  [_args target-kw {:keys [:makejack/project] :as config} options]
+  (let [target-config (get-in config [:targets target-kw])
+        aliases        (-> []
+                          (into (:aliases project))
+                          (into (:aliases target-config))
+                          (into (:aliases options)))
         version       (:version project)
         name          (:name project)
         group-id      (:group-id project name)

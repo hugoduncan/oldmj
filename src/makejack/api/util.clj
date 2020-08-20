@@ -172,3 +172,13 @@
               (apply merge-with merge* xs)
               (last xs)))]
     (reduce merge* ms)))
+
+(defn deep-merge-with
+  "Merge maps recursively, using f to merge non-map keys"
+  [f & ms]
+  (apply
+    (fn m [& ms]
+      (if (every? map? ms)
+        (apply merge-with m ms)
+        (apply f ms)))
+    ms))

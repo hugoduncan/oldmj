@@ -1,15 +1,15 @@
 (ns makejack.babashka
   "Makejack tool to invoke babashka"
-  (:require [makejack.api.core :as makejack]
-            [makejack.api.util :as util]))
+  (:require [makejack.api.core :as makejack]))
 
 (defn babashka
   "Invoke babashka"
-  [args target-kw config options]
-  (let [project       (makejack/load-project)
-        deps          (makejack/load-deps)
-        target-config (get-in config [:targets target-kw])
-        aliases       (:aliases target-config)
+  [_args target-kw {:keys [:makejack/project] :as config} options]
+  (let [target-config (get-in config [:targets target-kw])
+        aliases       (-> []
+                         (into (:aliases project))
+                         (into (:aliases target-config))
+                         (into (:aliases options)))
         form          (:form target-config)
         cp            (cond-> ""
                         (:with-project-deps? target-config)
