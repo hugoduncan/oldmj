@@ -54,3 +54,11 @@
     (binding [*out* *err*]
       (println (:err res)))
     (System/exit (:exit res))))
+
+(when (System/getenv "GRAALVM_HOME")
+  (println "generating binary (may take a couple of minutes)")
+  (let [res (sh "bb" "-cp" cp "-m" "makejack.main" "--verbose" "build")]
+    (when (pos? (:exit res))
+      (binding [*out* *err*]
+        (println (:err res)))
+      (System/exit (:exit res)))))
