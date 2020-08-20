@@ -8,7 +8,6 @@
   (let [profiles (cond-> []
                    target-kw (into (some-> config :targets target-kw :profiles))
                    true (into (:profiles options)))]
-    (prn :target-kw target-kw)
     (assoc config :makejack/project (project/with-profiles project profiles))))
 
 (defn run-command [cmd args options]

@@ -20,12 +20,12 @@
   "Execute clojure"
   [args target-kw {:keys [:makejack/project] :as config} options]
   (let [{:keys [tool-options]} (parse-args args)
+        target-config          (some-> config :targets target-kw)
         aliases                (-> []
+                                  (into (:aliases target-config))
                                   (into (:aliases project))
                                   (into (:aliases options))
                                   (into (:aliases tool-options)))
-        _                      (prn :aliases aliases)
-        target-config          (some-> config :targets target-kw)
         deps-edn               (select-keys target-config [:deps])]
     (makejack/clojure
       aliases
