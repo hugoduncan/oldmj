@@ -1,0 +1,14 @@
+{:version    "0.0.1"
+ :name       "makejack"
+ :main       makejack.main
+ :jars       {:jar     {}
+              :uberjar {:aliases [:compile :uberjar]}}
+ :uberscript {:name "mj1"
+              :shebang? true}
+ :compile    {:aliases [:compile]}
+ :binary     {:name "mj"}
+ :java-compile {:default
+                {:paths []
+                 :javac-options ["-target" "1.7"
+                                 "-source" "1.7"
+                                 "-Xlint:-options"]}}}

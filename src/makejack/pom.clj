@@ -27,4 +27,4 @@
         group-id      (:group-id project name)
         artifact-id   (:artifact-id project name)]
     (spit "pom.xml" (basic-pom group-id artifact-id name version))
-    (makejack/deps aliases ["-Spom"])))
+    (makejack/clojure aliases nil ["-Spom"] {})))

@@ -16,7 +16,9 @@
         target-config  (get-in config [:targets target-kw])
         classes-path   (:classes-path target-config "target/classes")
         aliases        (:aliases compile-config)
-        source-files   (mapcat util/source-files paths)
+        source-files   (mapcat
+                         (partial util/source-files util/clj-source-file?)
+                         paths)
         nses           (mapv util/path->namespace source-files)
         form           `(binding [~'*compile-path* ~classes-path]
                          ~@(map compile-ns-form nses))]

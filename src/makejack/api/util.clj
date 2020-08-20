@@ -111,6 +111,9 @@
 (defn clj-source-file? [p]
   (str/ends-with? (str-path p) ".clj"))
 
+(defn java-source-file? [p]
+  (str/ends-with? (str-path p) ".java"))
+
 (defn relative-to ^Path [root]
   (let [root (path root)]
     (fn [p] (.relativize root (path p)))))
@@ -118,9 +121,9 @@
 (defn source-files
   "Return all source files under root.
   Return a sequence of File objects."
-  [path-like]
+  [filter-fn path-like]
   (->> (file-seq (io/file path-like))
-     (filter clj-source-file?)
+     (filter filter-fn)
      (mapv (relative-to path-like))))
 
 (defn path->namespace [path-like]
