@@ -1,20 +1,31 @@
 (ns makejack.pom
   "Create a pom file"
-  (:require [clojure.string :as str]
-            [makejack.api.core :as makejack]))
+  (:require [clojure.java.io :as io]
+            [clojure.string :as str]
+            [makejack.api.core :as makejack]
+            [makejack.api.util :as util])
+  (:import [org.apache.maven.model
+            Model]
+           [org.apache.maven.model.io.xpp3
+            MavenXpp3Reader
+            MavenXpp3Writer]))
 
-(defn basic-pom [group-id artifact-id name version]
-  (str/join
-    "\n"
-    ["<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-     "<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">
-"
-     "  <modelVersion>4.0.0</modelVersion>"
-     (str"  <groupId>" group-id "</groupId>")
-     (str"  <artifactId>" artifact-id "</artifactId>")
-     (str "  <version>" version "</version>")
-     (str "  <name>" name "</name>")
-     "</project>"]))
+(defn set-details [^Model pom group-id artifact-id name version]
+  (doto pom
+    (.setGroupId group-id)
+    (.setArtifactId artifact-id)
+    (.setName name)
+    (.setVersion version)))
+
+(defn update-or-create-pom [group-id artifact-id name version]
+  (let [model (if (util/file-exists? "pom.xml")
+                (with-open [in (io/input-stream "pom.xml")]
+                  (.read (MavenXpp3Reader.) in false))
+                (Model.))]
+    (set-details model group-id artifact-id name version)
+    (with-open [out (io/output-stream "pom.xml")]
+      (.write (MavenXpp3Writer.) out model))))
+
 
 (defn pom
   "Pom file creation or update."
@@ -28,5 +39,5 @@
         name          (:name project)
         group-id      (:group-id project name)
         artifact-id   (:artifact-id project name)]
-    (spit "pom.xml" (basic-pom group-id artifact-id name version))
+    (update-or-create-pom group-id artifact-id name version)
     (makejack/clojure aliases nil ["-Spom"] {})))
