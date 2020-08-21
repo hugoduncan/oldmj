@@ -68,16 +68,6 @@
         {:err :inherit}
         (select-keys options [:throw :out :err :in :wait])))))
 
-;; (defn deps [aliases args]
-;;   (let [args (cond-> []
-;;                aliases (conj (str "-A:" (str/join ":" aliases)))
-;;                args (into args))]
-;;     (apply println "deps" args)
-;;     ;; deps.clj would be better here
-;;     (-> (clojure aliases nil args)
-;;        :out
-;;        (str/replace "\n" ""))))
-
 (defn sh [args options]
   (when *verbose*
     (apply println args))

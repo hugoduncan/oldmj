@@ -19,9 +19,9 @@ PATH.
 In your clojure project, run `mj init` to create a `project.edn` file
 and a `mj.edn` file.
 
-See [sample.project.edn](./sample.project.edn) for project description
+See [sample.project.edn](sample.project.edn) for project description
 options.
 
-See [sample.mk.edn](./sample.mj.edn) for makejack options.
+See [sample.mk.edn](sample.mj.edn) for makejack options.
 
 See [DEVELOPMENT.md](docs/DEVELOPMENT.md)
