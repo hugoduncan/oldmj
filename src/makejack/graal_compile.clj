@@ -12,7 +12,7 @@
                                  "GraalVM compilation requires an uberjar"
                                  {})))
   (let [uberjar-name (or (:jar-name project
-                                     (makejack/default-uberjar-name project)))
+                                    (makejack/default-jar-name project)))
         target-path  (:target-path config)
         bin-name     (:binary-name project)
         bin-path     (str (util/path target-path bin-name))

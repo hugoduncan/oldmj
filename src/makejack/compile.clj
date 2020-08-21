@@ -22,10 +22,6 @@
                              (into paths (some-> deps :aliases alias :extra-paths)))
                            (:paths deps)
                            aliases))
-        _ (prn :aliases aliases
-               (:aliases project)
-               (:aliases target-config)
-               (:aliases options))
         classes-path   (:classes-path target-config "target/classes")
         source-files   (mapcat
                          (partial util/source-files util/clj-source-file?)

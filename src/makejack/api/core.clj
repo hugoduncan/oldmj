@@ -55,7 +55,7 @@
       args
       (merge
         {:err :inherit}
-        (select-keys options [:throw :out :err])))))
+        (select-keys options [:throw :out :err :in :wait])))))
 
 (defn babashka [args options]
   (let [args (cond-> ["bb"]
@@ -66,7 +66,7 @@
       args
       (merge
         {:err :inherit}
-        (select-keys options [:throw :out :err])))))
+        (select-keys options [:throw :out :err :in :wait])))))
 
 ;; (defn deps [aliases args]
 ;;   (let [args (cond-> []
@@ -85,7 +85,7 @@
     args
     (merge
       {:err :inherit}
-      (select-keys options [:throw :out :err]))))
+      (select-keys options [:throw :out :err :in :wait]))))
 
 (defn classpath [aliases deps]
   (let [args (cond-> ["clojure"]
@@ -98,11 +98,12 @@
     (-> (:out res)
        (str/replace "\n" ""))))
 
-(defn default-uberjar-name
-  [project]
+(defn default-jar-name
+  [{:keys [jar-type] :as project}]
   (str (:name project)
        "-" (:version project)
-       "-standalone.jar"))
+       (if (= :uberjar jar-type) "-standalone" "")
+       ".jar"))
 
 
 (defn deps-paths [deps aliases]

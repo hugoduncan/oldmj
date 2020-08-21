@@ -25,8 +25,13 @@
         args          (cond-> []
                         (not= "" cp)          (into ["-cp" cp])
                         form                  (into ["-e" (str form)])
-                        (:args target-config) (into (:args target-config)))
-        res           (makejack/babashka args (:options target-config))]
-    (if (pos? (:exit res))
-      (makejack/error (:err res))
-      (println (:out res)))))
+                        (:args target-config) (into (:args target-config)))]
+    (makejack/babashka
+      args
+      (merge
+        (if (seq args)
+          {}
+          {:out :inherit                ; run a bb repl
+           :err :inherit
+           :in  :inherit})
+        (:options target-config)))))

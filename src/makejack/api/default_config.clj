@@ -12,26 +12,9 @@
                            \" directory\"]
                :tool makejack.shell
                :args [\"rm\" \"-rf\" #ref [:target-path]]}
-     :jar     {:tool makejack.clojure
-               :deps {seancorfield/depstar {:mvn/version \"1.0.97\"}}
-               :profiles [:jar]
-               :main-opts [\"-m\" \"hf.depstar.jar\"
-                           #join [#ref [:target-path]
-                                  \"/\"
-                                  #ref [:project :name]
-                                  \"-\"
-                                  #ref [:project :version]
-                                  \".jar\"]]}
-     :uberjar {:tool makejack.clojure
-               :deps {seancorfield/depstar {:mvn/version \"1.0.97\"}}
-               :profiles [:uberjar]
-               :main-opts [\"-m\" \"hf.depstar.uberjar\"
-                           #join [#ref [:target-path]
-                                  \"/\"
-                                  #ref [:project :name]
-                                  \"-\"
-                                  #ref [:project :version]
-                                  \"-standalone.jar\"]
-                           \"--main\" #opt-ref [:project :main]]}
+     :jar     {:tool makejack.depstar
+               :profiles [:jar]}
+     :uberjar {:tool makejack.depstar
+               :profiles [:uberjar]}
      :bin     {:tool makejack.graal-compile
-               :profiles [:binary]}}}")
+               :profiles [:binary :uberjar]}}}")
