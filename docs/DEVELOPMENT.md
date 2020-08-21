@@ -1,10 +1,25 @@
 # Prerequisites
 
-You will need to install [babashka](https://github.com/borkdude/babashka
-"babaska, A Clojure babushka for the grey areas of Bash").
+## Install GraalVM
 
-It is much easier to work with the project using
-[borkdude/deps.clj](https://github.com/borkdude/deps.clj)
+Download the binaries for your platform at
+https://github.com/graalvm/graalvm-ce-builds/releases.
 
+Unpack and add it to the path:
 
-Add the projects's bin directory to your path, or always invoke it directly.
+``` bash
+$ export GRAALVM_HOME=/path/to/graalvm/Contents/Home
+$ export PATH=$GRAALVM_HOME/bin:$PATH
+```
+
+Install the `native-image` component:
+
+``` bash
+$ gu install native-image
+```
+
+For Mac OSX, remove quarantine on the GraalVM directory.
+
+``` bash
+sudo xattr -r -d com.apple.quarantine ${GRAALVM_HOME}/../..
+```
