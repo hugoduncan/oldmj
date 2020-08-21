@@ -1,38 +1,65 @@
 # A workflow run is made up of one or more jobs that can run
 # sequentially or in parallel
-on: push
-  # push:
-  #   tags:
-  #     - 'v*'
+on:
+  push:
+    tags:
+      - 'v*'
 
 name: Create Release
 
 jobs:
-  # # This workflow contains a single job called "build"
-  # build-linux:
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
-  #   container: oracle/graalvm-ce:20.0.0-java11
-  #   env:
-  #     GRAALVM_HOME: /opt/graalvm-ce-java11-20.0.0
+  # This workflow contains a single job called "build"
+  build-linux:
+    name: Build linux
+    runs-on: ubuntu-latest
+    container: oracle/graalvm-ce:20.0.0-java11
+    env:
+      GRAALVM_HOME: /opt/graalvm-ce-java11-20.0.0
 
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
 
-  #   - name: install native-image
-  #     run: gu install native-image
+    - name: install native-image
+      run: gu install native-image
 
-  #   - name: install clojure
-  #     run: /bin/bash -c "$(curl -fsSL https://download.clojure.org/install/linux-install-1.10.1.561.sh)"
+    - name: install zip
+      run: |
+        yum install zip unzip -y
 
-  #   # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #   - uses: actions/checkout@v2
+    - name: Install jet
+      run: |
+        bash -c "$(curl -s https://raw.githubusercontent.com/borkdude/jet/master/install)"
 
-  #   # Runs a single command using the runners shell
-  #   - name: Build mj executable
-  #     run: clojure -m makejack.main build
+        # bash <(curl -s https://raw.githubusercontent.com/borkdude/jet/master/install)
 
-  build-mac:
+    - name: install clojure
+      run: /bin/bash -c "$(curl -fsSL https://download.clojure.org/install/linux-install-1.10.1.561.sh)"
+
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    # Runs a single command using the runners shell
+    - name: Build mj executable
+      run: clojure -m makejack.main build
+
+    - name: Set version
+      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --pprint | jet --query ':project :version symbol')"
+
+    - name: Create linux artifacts
+      run: |
+        mkdir -p artifacts
+        cd artifacts
+        cp ../target/mj mj
+        zip --junk-paths makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip ../target/mj
+    - name: Upload linux artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip
+        path: artifacts/makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip
+        if-no-files-found: error
+
+  build-macos:
+    name: Build Mac
     # The type of runner that the job will run on
     runs-on: macos-latest
     env:
@@ -54,6 +81,10 @@ jobs:
 
     - name: install native-image
       run: ${GRAALVM_HOME}/bin/gu install native-image
+
+    - name: Install jet
+      run: |
+        bash <(curl -s https://raw.githubusercontent.com/borkdude/jet/master/install)
 
     - name: install clojure
       run: |
@@ -79,11 +110,132 @@ jobs:
         rm -rf clojure-tools
         echo "Installed clojure to $install_dir/bin"
 
-
-
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
     # Runs a single command using the runners shell
     - name: Build mj executable
       run: clojure -m makejack.main build
+
+    - name: Build mj jar
+      run: target/mj jar
+
+    - name: Set version
+      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --pprint | jet --query ':project :version symbol')"
+
+    - name: Create mac artifacts
+      run: |
+        mkdir -p artifacts
+        cd artifacts
+        cp ../target/mj mj
+        zip --junk-paths makejack-${{ env.MAKEJACK_VERSION }}-macos-amd64.zip ../target/mj
+    - name: Upload macos artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: makejack-${{ env.MAKEJACK_VERSION }}-macos-amd64.zip
+        path: artifacts/makejack-${{ env.MAKEJACK_VERSION }}-macos-amd64.zip
+        if-no-files-found: error
+    - name: Upload jar artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: makejack-${{ env.MAKEJACK_VERSION }}.jar
+        path: target/makejack-${{ env.MAKEJACK_VERSION }}.jar
+        if-no-files-found: error
+    - name: Upload mj artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: mj
+        path: target/mj
+        if-no-files-found: error
+
+  release:
+    name: Create Release
+    runs-on: macos-latest
+    needs: [build-linux, build-macos]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install jet
+      run: |
+        bash <(curl -s https://raw.githubusercontent.com/borkdude/jet/master/install)
+
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - name: Download mh artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: mj
+
+    - name: Set version
+      run: |
+        ls -l
+        chmod +x ./mj
+        echo "::set-env name=MAKEJACK_VERSION::$(./mj --pprint | jet --query ':project :version symbol')"
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        # This token is provided by Actions, you do not need to create your own token
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Changes in this Release
+          - First Change
+          - Second Change
+        draft: true
+        prerelease: true
+
+    - name: Download jar artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: makejack-${{ env.MAKEJACK_VERSION }}.jar
+
+    - name: Download linux artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip
+
+    - name: Download macos artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: makejack-${{ env.MAKEJACK_VERSION }}-macos-amd64.zip
+
+      # This pulls from the CREATE RELEASE step above, referencing
+      # it's ID to get its outputs object, which include a
+      # `upload_url`. See this blog post for more info:
+      # https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+    - name: Upload Jar
+      id: upload-release-asset-jar
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: makejack-${{ env.MAKEJACK_VERSION }}.jar
+        asset_name: makejack-${{ env.MAKEJACK_VERSION }}.jar
+        asset_content_type: application/java-archive
+    - name: Upload linux
+      id: upload-release-asset-linux
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip
+        asset_name: makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip
+        asset_content_type: application/zip
+    - name: Upload macos
+      id: upload-release-asset-macos
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: makejack-${{ env.MAKEJACK_VERSION }}-macos-amd64.zip
+        asset_name: makejack-${{ env.MAKEJACK_VERSION }}-macos-amd64.zip
+        asset_content_type: application/zip
