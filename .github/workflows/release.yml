@@ -13,6 +13,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
+    - name: install native-image
+      run: gu install native-image
+
     - name: install clojure
       run: /bin/bash -c "$(curl -fsSL https://download.clojure.org/install/linux-install-1.10.1.561.sh)"
 
