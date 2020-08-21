@@ -1,23 +1,85 @@
 # A workflow run is made up of one or more jobs that can run
 # sequentially or in parallel
 on: push
-env:
-  GRAALVM_HOME: /opt/graalvm-ce-java11-20.0.0
+  # push:
+  #   tags:
+  #     - 'v*'
+
+name: Create Release
+
 jobs:
-  # This workflow contains a single job called "build"
-  build-linux:
+  # # This workflow contains a single job called "build"
+  # build-linux:
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
+  #   container: oracle/graalvm-ce:20.0.0-java11
+  #   env:
+  #     GRAALVM_HOME: /opt/graalvm-ce-java11-20.0.0
+
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+
+  #   - name: install native-image
+  #     run: gu install native-image
+
+  #   - name: install clojure
+  #     run: /bin/bash -c "$(curl -fsSL https://download.clojure.org/install/linux-install-1.10.1.561.sh)"
+
+  #   # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #   - uses: actions/checkout@v2
+
+  #   # Runs a single command using the runners shell
+  #   - name: Build mj executable
+  #     run: clojure -m makejack.main build
+
+  build-mac:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    container: oracle/graalvm-ce:20.0.0-java11
+    runs-on: macos-latest
+    env:
+      GRAALVM_HOME: /Users/runner/graalvm-ce-java11-20.1.0/Contents/Home
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
+    - name: install GraalVM
+      run: |
+        cd ~
+        pwd
+        curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java11-darwin-amd64-20.1.0.tar.gz
+        tar xzf graalvm-ce-java11-darwin-amd64-20.1.0.tar.gz
+        ls -la
+        ls -la graalvm-ce-java11-20.1.0
+        ls -la graalvm-ce-java11-20.1.0/Contents
+        ls -la graalvm-ce-java11-20.1.0/Contents/Home
+
     - name: install native-image
-      run: gu install native-image
+      run: ${GRAALVM_HOME}/bin/gu install native-image
 
     - name: install clojure
-      run: /bin/bash -c "$(curl -fsSL https://download.clojure.org/install/linux-install-1.10.1.561.sh)"
+      run: |
+        install_dir=${1:-/usr/local}
+        mkdir -p "$install_dir"
+        cd /tmp
+        curl -O -sL https://download.clojure.org/install/clojure-tools-1.10.1.447.tar.gz
+        tar xzf clojure-tools-1.10.1.447.tar.gz
+        cd clojure-tools
+        clojure_lib_dir="$install_dir/lib/clojure"
+        mkdir -p "$clojure_lib_dir/libexec"
+        cp ./*.jar "$clojure_lib_dir/libexec"
+        cp deps.edn "$clojure_lib_dir"
+        cp example-deps.edn "$clojure_lib_dir"
+
+        sed -i -e 's@PREFIX@'"$clojure_lib_dir"'@g' clojure
+        mkdir -p "$install_dir/bin"
+        cp clojure "$install_dir/bin"
+        cp clj "$install_dir/bin"
+
+        cd /tmp
+        rm -rf clojure-tools-1.10.1.447.tar.gz
+        rm -rf clojure-tools
+        echo "Installed clojure to $install_dir/bin"
+
+
 
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
