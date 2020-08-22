@@ -1,4 +1,4 @@
-(ns makejack.api.default-config)
+(ns ^:no-doc makejack.api.default-config)
 
 (def config
   "{:project #include \"project.edn\"

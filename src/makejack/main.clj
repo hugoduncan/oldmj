@@ -3,8 +3,8 @@
             [clojure.string :as str]
             [clojure.tools.cli :as cli]
             [makejack.api.core :as makejack]
-            [makejack.api.help :as help]
-            [makejack.api.run :as run]
+            [makejack.impl.help :as help]
+            [makejack.impl.run :as run]
             makejack.chain)
   (:gen-class))
 

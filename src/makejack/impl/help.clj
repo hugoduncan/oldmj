@@ -1,9 +1,9 @@
-(ns makejack.api.help
+(ns makejack.impl.help
   "Help messages"
   (:require [clojure.string :as str]
-            [makejack.api.builtins :as builtins]
             [makejack.api.core :as makejack]
-            [makejack.api.resolve :as resolve]))
+            [makejack.impl.builtins :as builtins]
+            [makejack.impl.resolve :as resolve]))
 
 
 (defn tool-doc-string [f]

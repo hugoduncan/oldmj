@@ -1,7 +1,7 @@
-(ns makejack.api.resolve
+(ns makejack.impl.resolve
   (:require [clojure.string :as str]
-            [makejack.api.builtins :as builtins]
-            [makejack.api.core :as makejack]))
+            [makejack.api.core :as makejack]
+            [makejack.impl.builtins :as builtins]))
 
 (defn resolve-tool [tool-ns]
   (try

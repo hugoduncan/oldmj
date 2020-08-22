@@ -1,4 +1,5 @@
 (ns makejack.api.util
+  "Helper functions to implement tools for makejack."
   (:require [clojure.java.io :as io]
             [clojure.string :as str])
   (:import [java.io File]
@@ -7,14 +8,14 @@
             LinkOption Path Paths];
            [java.nio.file.attribute FileAttribute PosixFilePermission]))
 
-;; (extend-protocol io/Coercions
-;;   Path
-;;   (as-file [p] (.toFile p)))
+(extend-protocol io/Coercions
+  Path
+  (as-file [p] (.toFile p)))
 
 (defprotocol Coercions
   ;; "Coerce between various 'resource-namish' things."
-  (^{:tag java.nio.file.Path} as-path [x] "Coerce argument to a path."))
-
+  (^{:tag java.nio.file.Path} as-path [x]
+   "Coerce argument to a Path."))
 
 (def ^:private empty-strings (make-array String 0))
 
@@ -31,7 +32,6 @@
   File
   (as-path [f] (.toPath f)))
 
-
 (defn ^Path path
   "Return a java.nio.file.Path, passing each argument to as-path.
 
@@ -44,23 +44,11 @@
   (^Path [parent child & more]
    (reduce path (path parent child) more)))
 
-(defn ^String str-path
-  "Return a path string, passing each argument to as-path.
-
-  Multiple-arg versions treat the first argument as parent and subsequent args as
-  children relative to the parent."
-  (^String [path-like]
-   (str (path path-like)))
-  (^String [parent child]
-   (str (path parent child)))
-  (^String [parent child & more]
-   (str (apply path parent child more))))
-
 (defn- char-to-int
   [c]
   (- (int c) 48))
 
-(def POSIX-PERMS
+(def ^:private POSIX-PERMS
   {:owner  [PosixFilePermission/OWNER_EXECUTE
             PosixFilePermission/OWNER_WRITE
             PosixFilePermission/OWNER_READ]
@@ -74,7 +62,7 @@
 (defn chmod
   "Change file mode, given octal mode specification as string."
   [path-like mode]
-  (let [[owner group others :as specs] (map char-to-int mode)
+  (let [specs (map char-to-int mode)
         perms (reduce
                 (fn [perms [who spec]]
                   (cond-> perms
@@ -87,36 +75,21 @@
       (path path-like)
       perms)))
 
+(defn clj-source-file?
+  "Predicate for the given path being a clojure source file."
+  [p]
+  (str/ends-with? (str (path p)) ".clj"))
 
-;; (def visit-options (doto (java.util.HashSet.)
-;;                      (.add (FileVisitOption/FOLLOW_LINKS))))
+(defn java-source-file?
+  "Predicate for the given path being a java source file."
+  [p]
+  (str/ends-with? (str (path p)) ".java"))
 
-;; (defn visit-root [^Path root visit-file-fn]
-;;   (let [visitor (reify FileVisitor
-;;                   (visitFile [_ path attrs]
-;;                     (let [f (.relativize root path)]
-;;                       (visit-file-fn root f))
-;;                     FileVisitResult/CONTINUE)
-;;                   (visitFileFailed [_ path e]
-;;                     (throw (ex-info "Problem visting File" {:path path} e))))]
-;;     (Files/walkFileTree root visit-options Integer/MAX_VALUE visitor)))
-
-;; (defn source-file-filter []
-;;   (let [paths (volatile! [])]
-;;     [(fn [_ ^Path p]
-;;        (when (str/ends-with? (str p) ".clj")
-;;          (vswap! paths conj p)))
-;;      paths]))
-
-(defn clj-source-file? [p]
-  (str/ends-with? (str-path p) ".clj"))
-
-(defn java-source-file? [p]
-  (str/ends-with? (str-path p) ".java"))
-
-(defn relative-to ^Path [root]
+(defn relative-to
+  "Return a function that will return its argument path relative to the given root."
+  [root]
   (let [root (path root)]
-    (fn [p] (.relativize root (path p)))))
+    (fn ^Path [p] (.relativize root (path p)))))
 
 (defn source-files
   "Return all source files under root.
@@ -126,43 +99,38 @@
      (filter filter-fn)
      (mapv (relative-to path-like))))
 
-(defn path->namespace [path-like]
-  (-> (str-path path-like)
+(defn path->namespace
+  "Return namespaces found under the given root path."
+  [path-like]
+  (-> (path path-like)
+     str
      (str/replace ".clj" "")
      (str/replace "_" "-")
      (str/replace "/" ".")
      symbol))
 
-(defn mkdirs [path-like]
+(defn mkdirs
+  "Ensure the given path exists."
+  [path-like]
   (Files/createDirectories (path path-like) (make-array FileAttribute 0)))
 
 (defn cwd
+  "Rturn the current working directory as a Path."
   ^Path []
   (.toAbsolutePath (path ".")))
 
-(def link-options (make-array LinkOption 0))
+(def ^:private link-options (make-array LinkOption 0))
 
-(defn filename [path-like]
+(defn filename
+  "Return the filename segment of the given path as a Path."
+  ^Path [path-like]
   (.getFileName (.toRealPath (path path-like) link-options)))
 
 
-(defn file-exists? [path-like]
+(defn file-exists?
+  "Predicate for the given path existing."
+  [path-like]
   (Files/exists (path path-like) link-options))
-
-;; (filename (cwd))
-
-;; (defn- buffer-size [opts]
-;;   (or (:buffer-size opts) 1024))
-
-;; (defn copy-with-flush
-;;   [^InputStream input ^Writer output opts]
-;;   (let [^"[C" buffer (make-array Character/TYPE (buffer-size opts))
-;;         in (InputStreamReader. input (encoding opts))]
-;;     (loop []
-;;       (let [size (.read in buffer 0 (alength buffer))]
-;;         (if (pos? size)
-;;           (do (.write output buffer 0 size)
-;;               (recur)))))))
 
 (defn deep-merge
   "Merge maps recursively."

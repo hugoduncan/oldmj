@@ -1,7 +1,7 @@
 (ns makejack.chain
   "Makejack tool to invoke mu;tiple targets"
-  (:require [makejack.api.run :as run]
-            [makejack.api.builtins :as builtins]))
+  (:require [makejack.impl.run :as run]
+            [makejack.impl.builtins :as builtins]))
 
 (defn chain
   "Chain execution of multiple targets"

@@ -1,4 +1,4 @@
-(ns makejack.api.builtins
+(ns makejack.impl.builtins
   (:require makejack.babashka
             makejack.clojure
             makejack.compile

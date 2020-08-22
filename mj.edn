@@ -1,28 +1,15 @@
 {:project #include "project.edn"
- ;; :target-path "target"
- :targets {;;:script  {:tool makejack.uberscript}
-           ;; :compile {:tool makejack.compile
-           ;;           :aliases [:compile]}
-           ;; :uberjar {:tool makejack.depstar
-           ;;           :jar-name #join [#ref [:target-path]
-           ;;                            "/"
-           ;;                            #ref [:project :name]
-           ;;                            "-"
-           ;;                            #ref [:project :version]
-           ;;                            "-standalone.jar"]}
-           ;; :jar {:tool makejack.clojure
-           ;;       :deps {seancorfield/depstar {:mvn/version "1.0.97"}}
-           ;;       :main-opts ["-m" "hf.depstar.jar"
-           ;;                   #join [#ref [:target-path]
-           ;;                          "/"
-           ;;                          #ref [:project :name]
-           ;;                          "-"
-           ;;                          #ref [:project :version]
-           ;;                          ".jar"]]}
-           ;; :bin     {:tool makejack.graal-compile}
-           ;; :hello   {:doc "say hello from babashka"
-           ;;           :tool makejack.babashka
-           ;;           :form (println "hello from babashka")}
+ :target-path "target"
+ :targets {:api-doc
+           {:tool makejack.clojure
+            :deps {codox {:mvn/version "0.10.6"}}
+            :main-opts
+            ["-e" (do (require '[codox.main :as codox])
+                      (codox/generate-docs
+                        {:output-path #join [#ref [:target-path] "/doc"]
+                         :source-uri "https://github.com/hugoduncan/makejack/blob/{version}/{filepath}#L{line}"
+                         :version #ref [:project :version]
+                         :namespaces [#regex "^makejack\\.api\\."]}))]}
            :nrepl-server {:tool makejack.babashka
                           :with-project-deps? true
                           :options {:out :inherit}

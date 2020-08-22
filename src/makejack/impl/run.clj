@@ -1,7 +1,7 @@
-(ns makejack.api.run
+(ns makejack.impl.run
   (:require [makejack.api.core :as makejack]
             [makejack.api.project :as project]
-            [makejack.api.resolve :as resolve]))
+            [makejack.impl.resolve :as resolve]))
 
 
 (defn apply-options [{:keys [project] :as config} options target-kw]
