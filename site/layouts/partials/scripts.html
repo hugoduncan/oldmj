@@ -1,0 +1,5 @@
+{{ if eq .Page.Layout "docs" -}}
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+{{- $ui := resources.Get "js/ui.js" }}
+<script src="{{ $ui.Permalink | relURL }}"></script>
+{{- end }}

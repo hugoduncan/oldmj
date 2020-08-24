@@ -2,19 +2,26 @@
  :target-path "target"
  :targets {:api-doc
            {:tool makejack.clojure
+            :aliases [:api-docs]
             :deps {codox {:mvn/version "0.10.6"}}
             :main-opts
-            ["-e" (do (require '[codox.main :as codox])
+            ["-e" (do (require '[codox.main :as codox]
+                               'makejack.hugo-writer)
                       (codox/generate-docs
-                        {:output-path #join [#ref [:target-path] "/doc"]
-                         :source-uri "https://github.com/hugoduncan/makejack/blob/{version}/{filepath}#L{line}"
+                        {:output-path "site"
+                         :source-uri "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
                          :version #ref [:project :version]
-                         :namespaces [#regex "^makejack\\.api\\."]}))]}
+                         :namespaces [#regex "^makejack\\.api\\."]
+                         :writer 'makejack.hugo-writer/write-docs
+                         }))]}
            :nrepl-server {:tool makejack.babashka
                           :with-project-deps? true
                           :options {:out :inherit}
                           :args ["--nrepl-server"]}
            :build {:doc "pom, compile, uberjar and bin"
                    :tool makejack.chain
-                   :targets [pom :compile :uberjar :bin]}}
+                   :targets [pom :compile :uberjar :bin]}
+           :site {:tool makejack.shell
+                  :args ["hugo" "build"]
+                  :options {:out :inherit}}}
  }

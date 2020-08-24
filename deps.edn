@@ -9,4 +9,6 @@
  :aliases {:compile {:extra-paths ["target/classes"]
                      :jvm-opts    ["-Dclojure.compiler.direct-linking=true"
                                    "-Dclojure.spec.skip-macros=true"]}
-           :uberjar {:extra-paths ["resources"]}}}
+           :uberjar {:extra-paths ["resources"]}
+           :api-docs {:extra-paths ["src-dev"]
+                      :extra-deps {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}}}

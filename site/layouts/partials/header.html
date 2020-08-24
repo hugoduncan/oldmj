@@ -1,0 +1,28 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{{ .Page.Params.description | default .Site.Params.description | markdownify }}">
+<meta name="author" content="{{ .Site.Params.authors }}">
+<meta name="generator" content="Hugo {{ hugo.Version }}">
+
+<meta name="docsearch:language" content="en">
+<meta name="docsearch:version" content="{{ .Site.Params.docs_version }}">
+
+<title>{{ if .IsHome }}{{ .Site.Title | markdownify }} · {{ .Site.Params.description | markdownify }}{{ else }}{{ .Title | markdownify }} · {{ .Site.Title | markdownify }} v{{ .Site.Params.docs_version }}{{ end }}</title>
+
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{ with .Params.robots -}}
+<meta name="robots" content="{{ . }}">
+{{- end }}
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css">
+
+{{- $postcssOptions := dict "use" "autoprefixer" "noMap" true -}}
+{{- $style := resources.Get "css/docs.css" | postCSS $postcssOptions }}
+
+<link rel="stylesheet" href="{{ $style.Permalink | relURL }}">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">

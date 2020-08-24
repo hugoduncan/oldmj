@@ -1,0 +1,44 @@
+---
+title: makejack.api.core
+layout: api-docs
+group: api-docs
+toc: true
+---
+<div class="namespace-docs" id="content"><h1 class="anchor" id="top">makejack.api.core</h1><div class="doc"><pre class="plaintext">Main API namespace for tools designed to work with project.edn and mj.edn
+</pre></div><div class="public anchor" id="var-*verbose*"><h3>*verbose*</h3><h4 class="dynamic">dynamic</h4><div class="usage"></div><div class="doc"><pre class="plaintext">Bound to true when --verbose is specified.
+</pre></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1/src/makejack/api/core.clj#L10">view source</a></div></div><div class="public anchor" id="var-babashka"><h3>babashka</h3><div class="usage"><code>(babashka args options)</code></div><div class="doc"><pre class="plaintext">Execute babashka process.
+
+args is a vector of arguments to pass.
+
+options is a map of options, as specifed in babashka.process/process.
+Defaults to {:err :inherit}.</pre></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1/src/makejack/api/core.clj#L76">view source</a></div></div><div class="public anchor" id="var-classpath"><h3>classpath</h3><div class="usage"><code>(classpath aliases deps)</code></div><div class="doc"><pre class="plaintext">Returns the project classpath, with the given extra deps map.
+
+aliases is a vector of keywords with deps.edn aliases to use.
+
+deps ia s map with external dependencies, as specifed on the :deps key
+of deps.edn.</pre></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1/src/makejack/api/core.clj#L110">view source</a></div></div><div class="public anchor" id="var-clojure"><h3>clojure</h3><div class="usage"><code>(clojure aliases deps args options)</code></div><div class="doc"><pre class="plaintext">Execute clojure process.
+
+aliases is a vector of keywords with deps.edn aliases to use.
+
+deps ia s map with external dependencies, as specifed on the :deps key
+of deps.edn.
+
+args is a vector of arguments to pass.
+
+options is a map of options, as specifed in babashka.process/process.
+Defaults to {:err :inherit}.</pre></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1/src/makejack/api/core.clj#L50">view source</a></div></div><div class="public anchor" id="var-default-jar-name"><h3>default-jar-name</h3><div class="usage"><code>(default-jar-name {:keys [jar-type], :as project})</code></div><div class="doc"><pre class="plaintext">Helper to return the default jar file name.
+
+When the :jar-type key of the project map specifies :uberjar, then the
+name will be for an uberjar.</pre></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1/src/makejack/api/core.clj#L128">view source</a></div></div><div class="public anchor" id="var-deps-paths"><h3>deps-paths</h3><div class="usage"><code>(deps-paths deps aliases)</code></div><div class="doc"><pre class="plaintext">Helper to return the paths for deps with the given aliases applied.
+
+aliases is a vector of keywords with deps.edn aliases to use.
+
+Returns the :paths value, with :extra-paths from the specified aliases.</pre></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1/src/makejack/api/core.clj#L139">view source</a></div></div><div class="public anchor" id="var-error"><h3>error</h3><div class="usage"><code>(error s)</code></div><div class="doc"><pre class="plaintext">Exit with the given error message.
+Exits with error code 1,</pre></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1/src/makejack/api/core.clj#L14">view source</a></div></div><div class="public anchor" id="var-load-config"><h3>load-config</h3><div class="usage"><code>(load-config)</code></div><div class="doc"><pre class="plaintext">Load the mj.edn config file.
+The profect.edn file is made available on the :project key.</pre></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1/src/makejack/api/core.clj#L41">view source</a></div></div><div class="public anchor" id="var-load-deps"><h3>load-deps</h3><div class="usage"></div><div class="doc"><pre class="plaintext">Load the deps.edn file.
+</pre></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1/src/makejack/api/core.clj#L29">view source</a></div></div><div class="public anchor" id="var-sh"><h3>sh</h3><div class="usage"><code>(sh args options)</code></div><div class="doc"><pre class="plaintext">Execute a shell process.
+
+args is a vector of shell arguments.
+
+options is a map of options, as specifed in babashka.process/process.
+Defaults to {:err :inherit}.</pre></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1/src/makejack/api/core.clj#L94">view source</a></div></div></div>

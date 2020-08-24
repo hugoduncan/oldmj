@@ -1,3 +1,5 @@
+`makejack` is actively looking for contributors.
+
 # Prerequisites
 
 ## Install GraalVM

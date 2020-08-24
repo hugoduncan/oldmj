@@ -1,0 +1,9 @@
+- title: Getting started
+  pages:
+    - title: Install
+- title: Introduction
+- title: API Docs
+  pages:
+    - title: makejack.api.core
+    - title: makejack.api.project
+    - title: makejack.api.util
