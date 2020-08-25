@@ -1,0 +1,2 @@
+{{ $file := .Get 0 }}
+{{ (delimit (slice "```clj\n" ($file | readFile) "\n```\n") "" )  }}

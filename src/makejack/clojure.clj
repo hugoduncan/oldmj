@@ -2,11 +2,11 @@
   "Makejack tool to invoke clojure"
   (:require [makejack.api.core :as makejack]))
 
-(def option-str->keyword
+(def ^:private option-str->keyword
   {"-Sdeps" :sdeps
    "-A"     :aliases})
 
-(defn parse-args [args]
+(defn- parse-args [args]
   (loop [args args
          res {}]
     (let [arg (first args)]

@@ -4,7 +4,7 @@
   (:require [makejack.api.core :as makejack]
             [makejack.api.util :as util]))
 
-(defn compile-ns-form [ns-sym]
+(defn- compile-ns-form [ns-sym]
   `(clojure.core/compile '~ns-sym))
 
 (defn compile

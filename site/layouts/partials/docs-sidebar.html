@@ -44,5 +44,59 @@
             {{- end }}
         </li>
         {{- end }}
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Built-in Tools
+            </a>
+            {{- $group_slug := "tool-docs" -}}
+            {{- $is_active_group := eq $.Page.Params.group $group_slug }}
+
+            <div class="">
+                <ul class="pure-menu-list">
+                    {{- range $tool_ns := $.Site.Data.tools -}}
+                    {{- range $public := $tool_ns.publics -}}
+                    {{- $doc_slug := $tool_ns.name | urlize -}}
+                    {{- $is_active := and $is_active_group (eq $page_slug $doc_slug) -}}
+                    {{- $href := printf "/makejack/docs/%s/%s/%s/" $.Site.Params.docs_version $group_slug $doc_slug }}
+
+                    <li class="pure-menu-item{{ if $is_active }} pure-menu-selected{{ end }}">
+                        <a href="{{ $href }}"
+                           class="pure-menu-link">
+                            {{ $public.name }}
+                        </a>
+                    </li>
+                    {{- end }}
+                    {{- end }}
+                </ul>
+            </div>
+        </li>
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                API Docs
+            </a>
+            {{- $group_slug := "api-docs" -}}
+            {{- $is_active_group := eq $.Page.Params.group $group_slug }}
+
+            <div class="">
+                <ul class="pure-menu-list">
+                    {{- range $ns := $.Site.Data.namespaces -}}
+                    {{- $doc_slug := $ns.name | urlize -}}
+                    {{- $is_active := and $is_active_group (eq $page_slug $doc_slug) -}}
+                    {{- $href := printf "/makejack/docs/%s/%s/%s/" $.Site.Params.docs_version $group_slug $doc_slug }}
+
+                    <li class="pure-menu-item{{ if $is_active }} pure-menu-selected{{ end }}">
+                        <a href="{{ $href }}"
+                           class="pure-menu-link">
+                            {{ $ns.name }}
+                        </a>
+                    </li>
+                    {{- end }}
+                </ul>
+            </div>
+        </li>
     </ul>
 </nav>

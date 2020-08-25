@@ -1,0 +1,30 @@
+- name: makejack.babashka
+  publics:
+  - {name: babashka}
+- name: makejack.chain
+  publics:
+  - {name: chain}
+- name: makejack.clojure
+  publics:
+  - {name: clojure}
+- name: makejack.compile
+  publics:
+  - {name: compile}
+- name: makejack.depstar
+  publics:
+  - {name: depstar}
+- name: makejack.init
+  publics:
+  - {name: init}
+- name: makejack.javac
+  publics:
+  - {name: javac}
+- name: makejack.pom
+  publics:
+  - {name: pom}
+- name: makejack.shell
+  publics:
+  - {name: shell}
+- name: makejack.uberscript
+  publics:
+  - {name: uberscript}

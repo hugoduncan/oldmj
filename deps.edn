@@ -11,4 +11,5 @@
                                    "-Dclojure.spec.skip-macros=true"]}
            :uberjar {:extra-paths ["resources"]}
            :api-docs {:extra-paths ["src-dev"]
-                      :extra-deps {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}}}
+                      :extra-deps {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
+           :dev {:extra-deps {codox {:mvn/version "0.10.6"}}}}}

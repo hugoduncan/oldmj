@@ -1,4 +1,4 @@
-(ns makejack.hugo-writer
+(ns makejack.doc.api-writer
   "A codox writer for output to hugo."
   (:use [hiccup core page element])
   (:require [clj-yaml.core :as yaml]

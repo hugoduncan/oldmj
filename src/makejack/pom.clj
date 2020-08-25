@@ -10,14 +10,14 @@
             MavenXpp3Reader
             MavenXpp3Writer]))
 
-(defn set-details [^Model pom group-id artifact-id name version]
+(defn- set-details [^Model pom group-id artifact-id name version]
   (doto pom
     (.setGroupId group-id)
     (.setArtifactId artifact-id)
     (.setName name)
     (.setVersion version)))
 
-(defn update-or-create-pom [group-id artifact-id name version]
+(defn- update-or-create-pom [group-id artifact-id name version]
   (let [model (if (util/file-exists? "pom.xml")
                 (with-open [in (io/input-stream "pom.xml")]
                   (.read (MavenXpp3Reader.) in false))
