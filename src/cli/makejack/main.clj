@@ -5,7 +5,7 @@
             [makejack.api.core :as makejack]
             [makejack.impl.help :as help]
             [makejack.impl.run :as run]
-            makejack.chain)
+            makejack.invoke.chain)
   (:gen-class))
 
 (defn apply-command [cmd args options]

@@ -12,12 +12,12 @@ definition of the `clean` target, which is a default target in makejack.
 {…
  :targets
   {:clean {:doc #join ["Remove the " #ref [:target-path] " directory"]
-           :type :shell
+           :invoke :shell
            :args ["rm" "-rf" #ref [:target-path]]
  …}}
 ```
 
-The `:type` key is mandatory, and defines the way makejack invokes the
+The `:invoke` key is mandatory, and defines the way makejack invokes the
 build tool.  Here we will be invoking the `:shell` tool, which executes
 the shell command specified in the `:args` key.
 

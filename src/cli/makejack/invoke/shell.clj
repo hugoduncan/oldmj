@@ -1,4 +1,4 @@
-(ns makejack.shell
+(ns makejack.invoke.shell
   "Makejack tool to invoke shell"
   (:require [makejack.api.core :as makejack]))
 

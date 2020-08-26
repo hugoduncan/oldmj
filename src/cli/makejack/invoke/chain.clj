@@ -1,7 +1,7 @@
-(ns makejack.chain
+(ns makejack.invoke.chain
   "Makejack tool to invoke mu;tiple targets"
   (:require [makejack.impl.run :as run]
-            [makejack.impl.builtins :as builtins]))
+            [makejack.impl.invokers :as invokers]))
 
 (defn chain
   "Chain execution of multiple targets"
@@ -16,5 +16,5 @@
       )))
 
 (alter-var-root
-  #'builtins/builtins
-  assoc  'makejack.chain #'chain)
+  #'invokers/invokers
+  assoc :chain #'chain)

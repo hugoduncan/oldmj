@@ -1,4 +1,4 @@
-(ns makejack.babashka
+(ns makejack.invoke.babashka
   "Makejack tool to invoke babashka"
   (:require [makejack.api.core :as makejack]))
 

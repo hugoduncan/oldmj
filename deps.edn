@@ -5,7 +5,7 @@
   org.clojure/clojure          {:mvn/version "1.10.2-alpha1"}
   org.clojure/tools.cli        {:mvn/version "1.0.194"}
   org.apache.maven/maven-model {:mvn/version "3.6.3"}}
- :paths   ["src"]
+ :paths   ["src/api" "src/cli"]
  :aliases {:compile {:extra-paths ["target/classes"]
                      :jvm-opts    ["-Dclojure.compiler.direct-linking=true"
                                    "-Dclojure.spec.skip-macros=true"]}

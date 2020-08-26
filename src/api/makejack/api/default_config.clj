@@ -10,7 +10,7 @@
      :clean   {:doc #join [\"Remove the \"
                            #ref [:target-path]
                            \" directory\"]
-               :tool makejack.shell
+               :invoker :shell
                :args [\"rm\" \"-rf\" #ref [:target-path]]}
      :jar     {:tool makejack.depstar
                :profiles [:jar]}

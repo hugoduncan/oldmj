@@ -15,9 +15,14 @@
                        [(makejack/load-config) nil]
                        (catch Exception e
                          [nil e]))
-        [kw tool-sym] (resolve/resolve-tool-sym cmd config)
-        config        (apply-options config options kw)
-        f             (resolve/resolve-tool tool-sym)]
+        target-kw     (keyword cmd)
+        target        (resolve/resolve-target target-kw config)
+        f             (resolve/resolve-target-invoker target)
+        config        (apply-options config options target-kw)]
     (when (and e (not (:no-config-required (meta f))))
       (makejack/error (str "Bad configuration: " e)))
-    (f args kw config options)))
+    (when-not target
+      (makejack/error (str "Unknown target: " cmd)))
+    (when-not f
+      (makejack/error (str "Invalid invoker for target: " cmd)))
+    (f args target-kw config options)))

@@ -1,4 +1,4 @@
-(ns makejack.clojure
+(ns makejack.invoke.clojure
   "Makejack tool to invoke clojure"
   (:require [makejack.api.core :as makejack]))
 
