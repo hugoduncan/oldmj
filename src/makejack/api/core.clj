@@ -8,7 +8,7 @@
             [makejack.api.util :as util]))
 
 (def ^:dynamic *verbose*
-  "Bound to true when --verbose is specified."
+  "Bound to true when `--verbose` is specified."
   nil)
 
 (defn error

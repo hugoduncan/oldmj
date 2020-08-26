@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         {{ partial "header" . }}
+        {{ partial "api-docs-header" . }}
     </head>
     <body>
 
@@ -20,7 +21,8 @@
             <main>
                 <div id="main">
                     <div class="content">
-                         {{ .Content }}
+                        {{ partial "alpha" . }}
+                        {{ .Content }}
                     </div>
                 </div>
             </main>
@@ -28,6 +30,6 @@
             {{ partial "footer" . }}
             {{ partial "scripts" . }}
 
-                </div>
+        </div>
     </body>
 </html>

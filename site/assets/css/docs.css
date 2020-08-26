@@ -170,33 +170,12 @@ footer a {
     padding: 0.6em 0 0.6em 0.6em;
 }
 
-.namespace-docs .doc pre {
-    font-family: 'Fira Sans', sans-serif;
-}
-
-.public h3 {
-    margin: 0;
-    float: left;
-}
-
-.usage {
-    clear: both;
-}
-
-h4.type,
-h4.dynamic,
-h4.added,
-h4.deprecated {
-    float: left;
-    margin: 3px 10px 0px 0.6em;
-    hfont-size: 15px;
+.alpha {
+    background: #f6f0f0;
     font-weight: bold;
-    font-variant: small-caps;
+    padding: 0.6em 1.6em;
 }
 
-.src-link {
-    margin-bottom: 15px;
-}
 /* -- Dynamic Button For Responsive Menu -------------------------------------*/
 
 /*

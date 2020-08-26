@@ -1,0 +1,4 @@
+{{- $postcssOptions := dict "use" "autoprefixer" "noMap" true -}}
+{{- $style := resources.Get "css/tool-docs.css" | postCSS $postcssOptions }}
+
+<link rel="stylesheet" href="{{ $style.Permalink | relURL }}">

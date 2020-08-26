@@ -1,0 +1,27 @@
+.namespace-docs .doc pre {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.public h3 {
+    margin: 3em  0px 10px 0;
+    float: left;
+}
+
+.usage {
+    clear: both;
+}
+
+h4.type,
+h4.dynamic,
+h4.added,
+h4.deprecated {
+    float: left;
+    margin: 3px 10px 0px 0.6em;
+    hfont-size: 15px;
+    font-weight: bold;
+    font-variant: small-caps;
+}
+
+.src-link {
+    margin-bottom: 15px;
+}

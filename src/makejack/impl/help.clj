@@ -27,7 +27,7 @@
       "\n"
       (map
         (fn [[kw m]]
-          (format "%25s   %s" kw (target-doc-string m)))
+          (format "%25s   %s" (name kw) (target-doc-string m)))
         (sort-by
           key
           (:targets config))))))

@@ -4,7 +4,7 @@
 
 (defn depstar
   "Build a jar with depstar.
-  If :jar-type is :uberjar, then build an uberjar, else a thin jar."
+  If `:jar-type` is `:uberjar`, then build an uberjar, else a thin jar."
   [_args target-kw {:keys [:makejack/project] :as config} options]
   (let [target-config (get config target-kw)
         aliases       (-> []

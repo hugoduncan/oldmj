@@ -55,7 +55,7 @@
     "---\n"
     (yaml/generate-string
       {:title (str (:name namespace))
-       :layout "api-docs"
+       :layout "tool-docs"
        :group "tool-docs"
        :toc true}
       :dumper-options {:flow-style :block})
@@ -64,7 +64,7 @@
       [:div#content.namespace-docs
        ;; [:h1#top.anchor (h (:name namespace))]
        (#'html/added-and-deprecated-docs namespace)
-       [:div.doc (#'html/format-docstring project namespace namespace)]
+       ;; [:div.doc (#'html/format-docstring project namespace namespace)]
        (for [var (#'html/sorted-public-vars namespace)]
          (var-docs project namespace var))])))
 

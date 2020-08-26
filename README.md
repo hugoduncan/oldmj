@@ -1,23 +1,39 @@
-makejack, a clojure build tool invoker
-
-**ALPHA - Not yet released**
+**makejack, a clojure build tool invoker**
 
 makejack is a build tool that aims to be simpler and faster than boot
 and leiningen.  Also more flexible than leiningen, and more focused than
 boot.
 
+Think of it as a `make` for clojure.  The tooling specific
+configuration, such as build targets, get added to a `mj.edn` file,
+which is a little like a `Makefile`.
+
 It embraces `deps.edn` to describe dependencies.  It extends this with a
-`project.edn` file for a declarative, tooling agnostic, description of the
-project.  The tooling specific configuration, such as build targets,
-then get added to a `mj.edn` file.
+`project.edn` file for a declarative, tooling agnostic, description of
+the project.
 
-To get started, [install the graalvm native-image
-builder](docs/DEVELOPMENT.md), clone the repo, and run `bin/bootstrap`.
-This will create the `target/mj` binary, which you should put on your
-PATH.
+**ALPHA - Not yet released**
 
-In your clojure project, run `mj init` to create a `project.edn` file
-and a `mj.edn` file.
+**Note: currently only supports `.clj` files**
+
+## Install
+
+Install the `mj` binary using homebrew:
+
+```shell
+brew install hugoduncan/brew/makejack
+```
+
+## Project Initialisation
+
+In your clojure project, run `mj init` to create `project.edn`
+and `mj.edn` filesx.
+
+## Default targets
+
+makejack has some default targets built in.  Run `mj help` to see the
+targets.
+
 
 See [sample.project.edn](sample.project.edn) for project description
 options.

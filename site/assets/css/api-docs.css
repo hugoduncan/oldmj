@@ -1,0 +1,48 @@
+.namespace-docs .doc pre {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.public h3 {
+    margin: 0;
+    float: left;
+}
+
+.usage {
+    clear: both;
+}
+
+h4.type,
+h4.dynamic,
+h4.added,
+h4.deprecated {
+    float: left;
+    margin: 3px 10px 0px 0.6em;
+    hfont-size: 15px;
+    font-weight: bold;
+    font-variant: small-caps;
+}
+
+.src-link {
+    margin-bottom: 15px;
+}
+
+.markdown pre > code, .src-link a {
+    border: 1px solid #e4e4e4;
+    border-radius: 2px;
+}
+
+.markdown code:not(.hljs), .src-link a {
+    background: #f6f6f6;
+}
+
+src-link {
+    margin-bottom: 20px;
+    line-height: 1.0;
+}
+
+.src-link a {
+    font-size: 70%;
+    padding: 1px 4px;
+    text-decoration: none;
+    color: #5555bb;
+}

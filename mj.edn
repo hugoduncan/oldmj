@@ -8,7 +8,8 @@
             ["-e" (do (require '[codox.main :as codox]
                                'makejack.doc.api-writer)
                       (codox/generate-docs
-                        {:output-path "site"
+                        {:metadata {:doc/format :markdown}
+                         :output-path "site"
                          :source-uri "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
                          :version #ref [:project :version]
                          :namespaces [#regex "^makejack\\.api\\."]
@@ -22,7 +23,8 @@
             ["-e" (do (require '[codox.main :as codox]
                                'makejack.doc.tool-writer)
                       (codox/generate-docs
-                        {:output-path "site"
+                        {:metadata {:doc/format :markdown}
+                         :output-path "site"
                          :source-uri "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
                          :version #ref [:project :version]
                          :namespaces [#regex "^makejack\\.[^m][a-z_]+$"]
