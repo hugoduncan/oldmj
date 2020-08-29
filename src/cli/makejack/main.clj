@@ -3,6 +3,7 @@
             [clojure.string :as str]
             [clojure.tools.cli :as cli]
             [makejack.api.core :as makejack]
+            [makejack.api.tool-options :as tool-options]
             [makejack.impl.help :as help]
             [makejack.impl.run :as run]
             makejack.invoke.chain)
@@ -15,17 +16,12 @@
 (defn error-msg [errors]
   (str "makejack error:\n" (str/join \newline errors)))
 
-(defn parse-profiles [profiles-str]
-  (->> (str/split profiles-str #":")
-     (filter (complement str/blank?))
-     (mapv keyword)))
-
 (def cli-options
   [["-h" "--help" "Show this help message."]
    ["-p" "--pprint" "Pretty print the makejack config."]
-   ["-v" "--verbose" "Show command execution"]
    ["-P" "--profiles PROFILES" "Project profiles to apply"
-    :parse-fn parse-profiles]])
+    :parse-fn tool-options/parse-kw-stringlist]
+   ["-v" "--verbose" "Show command execution"]])
 
 
 (defn -main [& args]
@@ -40,7 +36,7 @@
 
       (:pprint options)
       (pprint/pprint
-        (run/apply-options (makejack/load-config) options nil))
+        (makejack/apply-options (makejack/load-config) options nil))
 
       (not (seq args))
       (help/usage summary)

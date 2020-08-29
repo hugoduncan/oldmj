@@ -1,0 +1,2 @@
+{:deps {makejack {:mvn/version "0.0.1-alpha1"}}
+ :aliases {:dev {:override-deps {makejack {:local/root ".."}}}}}

@@ -31,9 +31,25 @@
                          :writer 'makejack.doc.tool-writer/write-docs
                          }))]}
            :build {:doc "pom, compile, uberjar and bin"
-                   :tool makejack.chain
+                   :invoker :chain
                    :targets [pom :compile :uberjar :bin]}
-           :site {:tool makejack.shell
+           :site {:invoker :shell
                   :args ["hugo" "build"]
-                  :options {:out :inherit}}}
- }
+                  :options {:out :inherit}}
+           :install {:invoker :shell
+                     :args ["mvn"
+                            "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
+                            #join ["-Dfile="
+                                   #ref [:target-path]
+                                   "/"
+                                   #ref [:project :name]
+                                   "-"
+                                   #ref [:project :version]
+                                   ".jar"]
+                            #join ["-DgroupId="
+                                   #ref [:project :name]]
+                            #join ["-DartifactId="
+                                   #ref [:project :name]]
+                            #join ["-Dversion="
+                                   #ref [:project :version]]
+                            "-Dpackaging=jar"]}}}

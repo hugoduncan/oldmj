@@ -31,6 +31,6 @@
       aliases
       (merge deps-edn
              (:Sdeps tool-options))
-      (:main-opts target-config)
+      (into (:main-opts target-config) ["-o" options])
       (:options target-config))
     nil))

@@ -1,12 +1,13 @@
-(ns makejack.graal-compile
+(ns makejack.tools.graal-compile
   (:require [makejack.api.core :as makejack]
+            [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util]))
 
 (defn graal-compile
   "GraalVM native-image compilation of jar file.
   Specify options using .properties file in the uberjar.
   See https://www.graalvm.org/reference-manual/native-image/Configuration/."
-  [_args _target-kw {:keys [:makejack/project] :as config} _options]
+  [_args {:keys [:makejack/project] :as config} _options]
   (when (= :jar (:jar-type project))
                         (throw (ex-info
                                  "GraalVM compilation requires an uberjar"
@@ -27,3 +28,15 @@
       args
       (when makejack/*verbose*
         {:out :inherit}))))
+
+
+(def extra-options
+  [])
+
+(defn -main [& args]
+  (let [{:keys [arguments config options]}
+        (tool-options/parse-options-and-apply-to-config
+          args extra-options "graal-compile options")]
+    (binding [makejack/*verbose* (:verbose options)]
+      (graal-compile arguments config options))
+    (shutdown-agents)))

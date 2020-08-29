@@ -1,11 +1,14 @@
 (ns makejack.api.core
   "Main API namespace for tools designed to work with project.edn and mj.edn"
   (:require [aero.core :as aero]
+            [clojure.edn :as edn]
             [clojure.string :as str]
             [babashka.process :as process]
             makejack.api.aero           ; for defmethod
             [makejack.api.default-config :as default-config]
-            [makejack.api.util :as util]))
+            [makejack.api.project :as project]
+            [makejack.api.util :as util]
+            [clojure.tools.cli :as cli]))
 
 (def ^:dynamic *verbose*
   "Bound to true when `--verbose` is specified."
@@ -47,6 +50,12 @@
     (if (util/file-exists? "mj.edn")
       (aero/read-config "mj.edn"))))
 
+(defn apply-options [{:keys [project] :as config} options target-kw]
+  (let [profiles (cond-> []
+                   target-kw (into (some-> config :targets target-kw :profiles))
+                   true (into (:profiles options)))]
+    (assoc config :makejack/project (project/with-profiles project profiles))))
+
 (defn clojure
   "Execute clojure process.
 
@@ -70,6 +79,7 @@
     (process/process
       args
       (merge
+        (if *verbose* {:out :inherit})
         {:err :inherit}
         (select-keys options [:throw :out :err :in :wait])))))
 
