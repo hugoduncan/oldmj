@@ -1,20 +1,12 @@
-#mj {:project #project {:profile :jar}
+#mj {:project #project {:profile :jar}  ; helper for install target
+     :doc "Use `mj uberscript` to build an babashka uberscript.
+          TODO - make this appear in `mj --help` output"
      :targets
      #merge
      [#default-targets [:pom :clean :jar :uberjar :compile :binary :uberscript]
-      {;; :pom-jar {:doc       "Pom file for api jar."
-       ;;           :invoker   :clojure
-       ;;           :deps      {makejack/makejack.tools {:mvn/version "0.0.1-alpha1"}}
-       ;;           :main-opts ["-m" "makejack.tools.pom"
-       ;;                       "--profile" ":jar"]}
-       ;; :pom-uberjar {:doc       "Pom file for api jar."
-       ;;               :invoker   :clojure
-       ;;               :deps      {makejack/makejack.tools {:mvn/version "0.0.1-alpha1"}}
-       ;;               :main-opts ["-m" "makejack.tools.pom"
-       ;;                           "--profile" ":uberjer"]}
-
-       :api-doc
-       {:tool    makejack.clojure
+      {:api-doc
+       {:doc     "Generate API documentation from sources."
+        :tool    makejack.clojure
         :aliases [:api-docs]
         :deps    {codox {:mvn/version "0.10.6"}}
         :main-opts
@@ -29,7 +21,8 @@
                      :writer      'makejack.doc.api-writer/write-docs
                      }))]}
        :tool-doc
-       {:tool    makejack.clojure
+       {:doc     "Generate tool documentation from sources."
+        :tool    makejack.clojure
         :aliases [:api-docs]
         :deps    {codox {:mvn/version "0.10.6"}}
         :main-opts
@@ -43,16 +36,19 @@
                      :namespaces  [#regex "^makejack\\.[^m][a-z_]+$"]
                      :writer      'makejack.doc.tool-writer/write-docs
                      }))]}
-       :build   {:doc     "pom-uberjar, compile, uberjar and bin"
+       :build   {:doc     "pom, compile, uberjar and binary"
                  :invoker :chain
                  :targets [:pom :compile :uberjar :binary]}
-       :build-api {:doc     "pom-jar, jar and install"
+       :build-api {:doc     "pom, jar and install"
                    :invoker :chain
                    :targets [:pom :jar :install]}
-       :site    {:invoker :shell
+       :site    {:doc     "Build the static site for github pages"
+                 :invoker :shell
                  :args    ["hugo" "build"]
                  :options {:out :inherit}}
-       :install {:invoker :shell
+       :install {:doc     "Install the API jar into the local repository.
+                          Requires maven to be installed."
+                 :invoker :shell
                  :args    ["mvn"
                            "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
                            #join ["-Dfile="
