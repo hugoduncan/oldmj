@@ -8,11 +8,24 @@
   - {name: deps-paths}
   - {name: error}
   - {name: load-config}
+  - {name: load-config*}
   - {name: load-deps}
+  - {name: load-mj}
+  - {name: load-mj*}
+  - {name: load-project*}
+  - {name: process-option-keys}
+  - {name: resolve-source}
   - {name: sh}
 - name: makejack.api.project
   publics:
   - {name: with-profiles}
+- name: makejack.api.tool-options
+  publics:
+  - {name: cli-options}
+  - {name: parse-kw-stringlist}
+  - {name: parse-options}
+  - {name: parse-options-and-apply-to-config}
+  - {name: usage}
 - name: makejack.api.util
   publics:
   - {name: chmod}

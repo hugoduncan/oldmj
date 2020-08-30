@@ -6,9 +6,10 @@
      [#default-targets [:pom :clean :jar :uberjar :compile :binary :uberscript]
       {:api-doc
        {:doc     "Generate API documentation from sources."
-        :tool    makejack.clojure
+        :invoker :clojure
         :aliases [:api-docs]
         :deps    {codox {:mvn/version "0.10.6"}}
+        :options {:forward-options false}
         :main-opts
         ["-e" (do (require '[codox.main :as codox]
                            'makejack.doc.api-writer)
@@ -20,20 +21,39 @@
                      :namespaces  [#regex "^makejack\\.api\\."]
                      :writer      'makejack.doc.api-writer/write-docs
                      }))]}
-       :tool-doc
-       {:doc     "Generate tool documentation from sources."
-        :tool    makejack.clojure
+       :invoker-doc
+       {:doc     "Generate invoker documentation from sources."
+        :invoker :clojure
         :aliases [:api-docs]
         :deps    {codox {:mvn/version "0.10.6"}}
+        :options {:forward-options false}
         :main-opts
         ["-e" (do (require '[codox.main :as codox]
-                           'makejack.doc.tool-writer)
+                           'makejack.doc.invoker-writer)
                   (codox/generate-docs
                     {:metadata    {:doc/format :markdown}
                      :output-path "site"
                      :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
                      :version     #ref [:project :version]
-                     :namespaces  [#regex "^makejack\\.[^m][a-z_]+$"]
+                     :namespaces  [#regex "^makejack\\.invoker\\.[a-z_]+$"]
+                     :writer      'makejack.doc.invoker-writer/write-docs
+                     }))]}
+       :tool-doc
+       {:doc     "Generate tool documentation from sources."
+        :invoker :clojure
+        :aliases [:api-docs]
+        :deps    {codox {:mvn/version "0.10.6"}}
+        :options {:forward-options false
+                  :dir             "tools"}
+        :main-opts
+        ["-e" (do (require '[codox.main :as codox]
+                           'makejack.doc.tool-writer)
+                  (codox/generate-docs
+                    {:metadata    {:doc/format :markdown}
+                     :output-path "../site"
+                     :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                     :version     #ref [:project :version]
+                     :namespaces  [#regex "^makejack\\.tools\\.[a-z_]+$"]
                      :writer      'makejack.doc.tool-writer/write-docs
                      }))]}
        :build   {:doc     "pom, compile, uberjar and binary"

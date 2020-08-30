@@ -26,11 +26,15 @@
                                   (into (:aliases project))
                                   (into (:aliases options))
                                   (into (:aliases tool-options)))
-        deps-edn               (select-keys target-config [:deps])]
+        deps-edn               (select-keys target-config [:deps])
+        options                (merge options (:options target-config))
+        forward-options?       (:forward-options options true)
+        args                   (cond-> (:main-opts target-config)
+                                 forward-options? (into ["-o" options]))]
     (makejack/clojure
       aliases
       (merge deps-edn
              (:Sdeps tool-options))
-      (into (:main-opts target-config) ["-o" options])
-      (:options target-config))
+      args
+      options)
     nil))

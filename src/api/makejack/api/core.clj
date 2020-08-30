@@ -69,6 +69,9 @@
   "Load a map containing the project and the mj config."
   (memoize load-config*))
 
+(def process-option-keys
+  [:dir :err :in :throw :out :wait])
+
 (defn clojure
   "Execute clojure process.
 
@@ -94,7 +97,7 @@
       (merge
         (if *verbose* {:out :inherit})
         {:err :inherit}
-        (select-keys options [:throw :out :err :in :wait])))))
+        (select-keys options process-option-keys)))))
 
 (defn babashka
   "Execute babashka process.
@@ -113,7 +116,7 @@
       (merge
         (if *verbose* {:out :inherit})
         {:err :inherit}
-        (select-keys options [:throw :out :err :in :wait])))))
+        (select-keys options process-option-keys)))))
 
 (defn sh
   "Execute a shell process.
@@ -130,7 +133,7 @@
     (merge
       (if *verbose* {:out :inherit})
       {:err :inherit}
-      (select-keys options [:throw :out :err :in :wait]))))
+      (select-keys options process-option-keys))))
 
 (defn classpath
   "Returns the project classpath, with the given extra deps map.

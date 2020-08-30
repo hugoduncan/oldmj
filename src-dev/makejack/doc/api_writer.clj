@@ -19,7 +19,7 @@
 
 (defn- write-namespaces-data [output-dir project]
   (util/mkdirs (util/path output-dir "data"))
-  (spit (io/file (util/path output-dir "data" "namespaces.yml"))
+  (spit (io/file (str (util/path output-dir "data" "namespaces.yml")))
         (yaml/generate-string
           (mapv namespace-data (:namespaces project)))))
 
@@ -46,7 +46,7 @@
     (doseq [namespace (:namespaces project)]
       (let [p (util/path output-dir "content" "docs" version "api-docs")]
         (spit
-          (io/file (util/path p (str (:name namespace) ".html")))
+          (io/file (str (util/path p (str (:name namespace) ".html"))))
           (namespace-content project namespace))))))
 
 (defn write-docs
