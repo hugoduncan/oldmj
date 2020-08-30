@@ -20,7 +20,6 @@
     (.setUrl url)))
 
 (defn- set-details [^Model pom group-id artifact-id name version scm target-path]
-  (prn :set-details group-id artifact-id name version scm target-path)
   (doto pom
     (.setModelVersion "4.0.0")
     (.setGroupId group-id)
@@ -66,7 +65,6 @@
   (let [{:keys [arguments config options]}
         (tool-options/parse-options-and-apply-to-config
           args extra-options "pom [options]")]
-    (prn :options options :config config)
     (binding [makejack/*verbose* (:verbose options)]
       (pom arguments config options))
     (shutdown-agents)))

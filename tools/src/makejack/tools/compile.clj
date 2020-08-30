@@ -28,8 +28,6 @@
         nses           (mapv util/path->namespace source-files)
         form           `(binding [~'*compile-path* ~classes-path]
                           ~@(map compile-ns-form nses))]
-
-    ;; (prn :aliases aliases :deps-paths (makejack/deps-paths deps aliases))
     (when-not (->> paths
                  (into (makejack/deps-paths deps aliases))
                  (filter #(= classes-path %))
@@ -55,8 +53,6 @@
   (let [{:keys [arguments config options]}
         (tool-options/parse-options-and-apply-to-config
           args extra-options "compile options")]
-    ;; (prn :config config)
-    ;; (prn :options options)
     (binding [makejack/*verbose* (:verbose options)]
       (compile arguments config options))
     (shutdown-agents)))
