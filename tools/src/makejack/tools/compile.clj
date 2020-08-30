@@ -10,7 +10,7 @@
 
 (defn compile
   "AOT compilation of clojure sources."
-  [_args {:keys [:makejack/project] :as config} options]
+  [_args {:keys [mj project] :as config} options]
   (let [aliases        (-> []
                           (into (:aliases project))
                           (into (:aliases options)))
@@ -21,7 +21,7 @@
                              (into paths (some-> deps :aliases alias :extra-paths)))
                            (:paths deps)
                            aliases))
-        classes-path   (:classes-path config "target/classes")
+        classes-path   (:classes-path mj "target/classes")
         source-files   (mapcat
                          (partial util/source-files util/clj-source-file?)
                          paths)
@@ -29,7 +29,7 @@
         form           `(binding [~'*compile-path* ~classes-path]
                           ~@(map compile-ns-form nses))]
 
-    (prn :aliases aliases :deps-paths (makejack/deps-paths deps aliases))
+    ;; (prn :aliases aliases :deps-paths (makejack/deps-paths deps aliases))
     (when-not (->> paths
                  (into (makejack/deps-paths deps aliases))
                  (filter #(= classes-path %))
@@ -55,8 +55,8 @@
   (let [{:keys [arguments config options]}
         (tool-options/parse-options-and-apply-to-config
           args extra-options "compile options")]
-    (prn :config config)
-    (prn :options options)
+    ;; (prn :config config)
+    ;; (prn :options options)
     (binding [makejack/*verbose* (:verbose options)]
       (compile arguments config options))
     (shutdown-agents)))

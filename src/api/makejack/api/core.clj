@@ -1,14 +1,12 @@
 (ns makejack.api.core
   "Main API namespace for tools designed to work with project.edn and mj.edn"
   (:require [aero.core :as aero]
-            [clojure.edn :as edn]
             [clojure.string :as str]
             [babashka.process :as process]
             makejack.api.aero           ; for defmethod
             [makejack.api.default-config :as default-config]
             [makejack.api.project :as project]
-            [makejack.api.util :as util]
-            [clojure.tools.cli :as cli]))
+            [makejack.api.util :as util]))
 
 (def ^:dynamic *verbose*
   "Bound to true when `--verbose` is specified."
@@ -33,28 +31,95 @@
   "Load the deps.edn file."
   (memoize load-deps*))
 
-(defn- load-default-config* []
-  (aero/read-config
-    (java.io.StringReader. default-config/config)
-    {:resolver aero/root-resolver}))
+(defn load-project* [& [options]]
+  ;; (prn :loading-project)
+  ;;(prn :load-project :options options)
+  (:project
+   (aero/read-config
+     (java.io.StringReader. (pr-str default-config/project-with-defaults))
+     (merge
+       {:resolver aero/root-resolver}
+       ;; {:resolver {"project.edn" "./project.edn"
+       ;;             "mj.edn" "./mj.edn"}}
+       ;; {:resolver #(do
+       ;;               (prn :resolver %1 %2)
+       ;;               (clojure.java.io/file %2))}
+       options))))
 
-(def ^:private load-default-config
-  (memoize load-default-config*))
+(defn resolve-source [{:keys [resolver] :as _options} value]
+  (cond
+    (map? resolver) (get resolver value)
+    resolver        (resolver nil value)
+    :else           value))
 
-(defn load-config
-  "Load the mj.edn config file.
-   The profect.edn file is made available on the :project key."
-  []
-  (util/deep-merge
-    (load-default-config)
-    (if (util/file-exists? "mj.edn")
-      (aero/read-config "mj.edn"))))
+(defn load-mj* [& [options]]
+  ;; (prn :loading-mj :options options)
+  (let [res (aero/read-config
+              (if (util/file-exists? "mj.edn")
+                (resolve-source options "mj.edn")
+                (java.io.StringReader. (pr-str default-config/default-mj)))
+              (merge
+                {:resolver aero/root-resolver}
+                options)
+              ;; (merge
+              ;;   ;; {:resolver aero/root-resolver}
+              ;;   ;; {:resolver {"project.edn" "./project.edn"
+              ;;   ;;             "mj.edn" "./mj.edn"}}
+              ;;   ;; {:resolver #(do
+              ;;   ;;               (prn :resolver %1 %2)
+              ;;   ;;               (clojure.java.io/file %2))}
+              ;;   options)
+              )]
+    ;; (prn :mj-res res)
+    res)
+  )
 
-(defn apply-options [{:keys [project] :as config} options target-kw]
-  (let [profiles (cond-> []
-                   target-kw (into (some-> config :targets target-kw :profiles))
-                   true (into (:profiles options)))]
-    (assoc config :makejack/project (project/with-profiles project profiles))))
+(def load-mj
+  "Load the mj.edn file."
+  (memoize load-mj*))
+
+(defn load-config* [& [options]]
+  (let [mj      (load-mj* options)
+        ;; _       (prn :load-config* :loaded-mj)
+        project (if (util/file-exists? "project.edn")
+                  (load-project* options)
+                  {})
+        ;; _       (prn :load-config* :loaded-project)
+        ]
+    ;; (prn :load-config* :done)
+    {:mj      mj
+     :project project})
+  ;; (aero/read-config
+  ;;   (java.io.StringReader. (pr-str (default-config/config options)))
+  ;;   options
+  ;;   ;; (merge
+  ;;   ;;   ;; {:resolver aero/root-resolver}
+  ;;   ;;   ;; {:resolver {"project.edn" "./project.edn"
+  ;;   ;;   ;;             "mj.edn" "./mj.edn"}}
+  ;;   ;;   {:resolver #(do
+  ;;   ;;                 (prn :resolver %1 %2)
+  ;;   ;;                 (clojure.java.io/file %2))}
+  ;;   ;;   options)
+  ;;   )
+  )
+
+(def load-config
+  (memoize load-config*))
+
+;; (defn load-config
+;;   "Load the mj.edn config file.
+;;    The profect.edn file is made available on the :project key."
+;;   []
+;;   (util/deep-merge
+;;     (load-default-config)
+;;     (if (util/file-exists? "mj.edn")
+;;       (aero/read-config "mj.edn"))))
+
+;; (defn apply-options [{:keys [project] :as config} options target-kw]
+;;   (let [profiles (cond-> []
+;;                    target-kw (into (some-> config :targets target-kw :profiles))
+;;                    true (into (:profiles options)))]
+;;     (assoc config :makejack/project (project/with-profiles project profiles))))
 
 (defn clojure
   "Execute clojure process.
@@ -98,6 +163,7 @@
     (process/process
       args
       (merge
+        (if *verbose* {:out :inherit})
         {:err :inherit}
         (select-keys options [:throw :out :err :in :wait])))))
 
@@ -114,6 +180,7 @@
   (process/process
     args
     (merge
+      (if *verbose* {:out :inherit})
       {:err :inherit}
       (select-keys options [:throw :out :err :in :wait]))))
 

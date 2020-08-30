@@ -4,8 +4,7 @@
                                 :git/url "https://github.com/babashka/babashka.process"}
   ;; clojure always gets put into the deps, so we include it anyway
   org.clojure/clojure          {:mvn/version "1.10.2-alpha1"}
-  org.clojure/tools.cli        {:mvn/version "1.0.194"}
-  org.apache.maven/maven-model {:mvn/version "3.6.3"}}
+  org.clojure/tools.cli        {:mvn/version "1.0.194"}}
  :paths   ["src/api" "src/cli"]
  :aliases {:compile  {:extra-paths ["target/classes"]
                       :jvm-opts    ["-Dclojure.compiler.direct-linking=true"
@@ -14,4 +13,5 @@
            :uberjar  {:extra-paths ["resources"]}
            :api-docs {:extra-paths ["src-dev"]
                       :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
-           :dev      {:extra-deps {codox {:mvn/version "0.10.6"}}}}}
+           :dev      {:extra-deps {codox {:mvn/version "0.10.6"}}
+                      :extra-paths ["test-resources"]}}}

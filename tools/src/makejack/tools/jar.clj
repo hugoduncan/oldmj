@@ -7,24 +7,27 @@
 (defn depstar
   "Build a jar with depstar.
   If `:jar-type` is `:uberjar`, then build an uberjar, else a thin jar."
-  [_args {:keys [:makejack/project] :as config} options]
-  (let [aliases       (-> []
-                          (into (:aliases project))
-                          (into (:aliases options)))
-        deps          '{:deps {seancorfield/depstar {:mvn/version "1.0.97"}}}
-        main          (:main project)
-        target-path   (:target-path config)
-        jar-name      (or (:jar-name project)
+  [_args {:keys [mj project] :as _config} options]
+  (let [aliases     (-> []
+                         (into (:aliases project))
+                         (into (:aliases options)))
+        deps        '{:deps {seancorfield/depstar {:mvn/version "1.0.97"}}}
+        main        (:main project)
+        target-path (:target-path mj)
+        jar-name    (or (:jar-name project)
                           (makejack/default-jar-name project))
-        jar-path      (str (util/path target-path jar-name ))
-        args          ["-m"
-                       (if (= :uberjar (:jar-type project))
+        jar-path    (str (util/path target-path jar-name ))
+        uberjar?    (= :uberjar (:jar-type project))
+        args        ["-m"
+                       (if uberjar?
                          "hf.depstar.uberjar"
                          "hf.depstar.jar")
                        jar-path]
-        args          (cond-> args
-                        main               (into ["-m" (str main)])
-                        (:verbose options) (conj "--verbose"))]
+        args        (cond-> args
+                      (and
+                        uberjar?
+                        (:main project)) (into ["-m" (str (:main project))])
+                      (:verbose options) (conj "--verbose"))]
     (makejack/clojure aliases deps args (if (:verbose options)
                                           {:out :inherit}))))
 

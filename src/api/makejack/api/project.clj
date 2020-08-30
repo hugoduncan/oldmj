@@ -2,6 +2,33 @@
   "Helpers for working with project.edn project maps."
   (:require [makejack.api.util :as util]))
 
+;; (defn- default-jar-name
+;;   "Helper to return the default jar file name."
+;;   [project jar-type]
+;;   (str (:artifact-id project)
+;;        "-" (:version project)
+;;        (if (= :uberjar jar-type) "-standalone" "")
+;;        ".jar"))
+
+;; (defn project-with-defaults
+;;   "Return project with defaults for derived project keys."
+;;   [project]
+;;   (let [project (merge
+;;                   {:group-id    (:name project)
+;;                    :artifact-id (:name project)}
+;;                   project)
+;;         project (update-in project [:profiles :jar]
+;;                            #(merge {:jar-name (default-jar-name project :jar)}
+;;                                    %))
+;;         project (update-in project [:profiles :uberjar]
+;;                            #(merge {:jar-name (default-jar-name project :uberjar)
+;;                                     :jar-type :uberjar}
+;;                                    %))]
+;;     project))
+
+;; (project-with-defaults {:name "x" :version "0.1"})
+
+
 (defn- project-merge
   [vals]
   (cond

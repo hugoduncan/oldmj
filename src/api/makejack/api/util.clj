@@ -8,9 +8,10 @@
             LinkOption Path Paths];
            [java.nio.file.attribute FileAttribute PosixFilePermission]))
 
-(extend-protocol io/Coercions
-  Path
-  (as-file [p] (.toFile p)))
+;; bb doesn't like this
+;; (extend-protocol io/Coercions
+;;   Path
+;;   (as-file [p] (.toFile p)))
 
 (defprotocol Coercions
   ;; "Coerce between various 'resource-namish' things."
@@ -95,7 +96,7 @@
   "Return all source files under root.
   Return a sequence of File objects."
   [filter-fn path-like]
-  (->> (file-seq (io/file path-like))
+  (->> (file-seq (io/file (str path-like)))
      (filter filter-fn)
      (mapv (relative-to path-like))))
 

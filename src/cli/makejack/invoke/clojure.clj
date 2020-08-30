@@ -18,9 +18,9 @@
 
 (defn clojure
   "Execute clojure"
-  [args target-kw {:keys [:makejack/project] :as config} options]
+  [args target-kw {:keys [mj project] :as _config} options]
   (let [{:keys [tool-options]} (parse-args args)
-        target-config          (some-> config :targets target-kw)
+        target-config          (some-> mj :targets target-kw)
         aliases                (-> []
                                   (into (:aliases target-config))
                                   (into (:aliases project))

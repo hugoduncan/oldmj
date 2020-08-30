@@ -18,11 +18,9 @@
                    (:invoker target-map)))))))
 
 (defn target-doc
-  "Construct odc for available tools."
+  "Construct doc for available tools."
   []
-  (let [config (try
-                 (makejack/load-config)
-                 (catch Exception _))]
+  (let [mj-config (makejack/load-mj)]
     (str/join
       "\n"
       (map
@@ -30,7 +28,7 @@
           (format "%25s   %s" (name kw) (target-doc-string m)))
         (sort-by
           key
-          (:targets config))))))
+          (:targets mj-config))))))
 
 (defn invoker-doc
   "Construct doc for available invokers."

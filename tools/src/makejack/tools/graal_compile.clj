@@ -7,14 +7,14 @@
   "GraalVM native-image compilation of jar file.
   Specify options using .properties file in the uberjar.
   See https://www.graalvm.org/reference-manual/native-image/Configuration/."
-  [_args {:keys [:makejack/project] :as config} _options]
+  [_args {:keys [mj project] :as config} _options]
   (when (= :jar (:jar-type project))
                         (throw (ex-info
                                  "GraalVM compilation requires an uberjar"
                                  {})))
   (let [uberjar-name (or (:jar-name project
                                     (makejack/default-jar-name project)))
-        target-path  (:target-path config)
+        target-path  (:target-path mj)
         bin-name     (:binary-name project)
         bin-path     (str (util/path target-path bin-name))
         jar-path     (str (util/path target-path uberjar-name))

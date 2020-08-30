@@ -20,6 +20,7 @@
     (.setUrl url)))
 
 (defn- set-details [^Model pom group-id artifact-id name version scm target-path]
+  (prn :set-details group-id artifact-id name version scm target-path)
   (doto pom
     (.setModelVersion "4.0.0")
     (.setGroupId group-id)
@@ -41,7 +42,7 @@
 
 (defn pom
   "Pom file creation or update."
-  [_args {:keys [:makejack/project] :as config} options]
+  [_args {:keys [mj project] :as _config} options]
   (let [aliases        (-> []
                           (into (:aliases project))
                           (into (:aliases options)))
@@ -50,7 +51,7 @@
         group-id      (:group-id project name)
         artifact-id   (:artifact-id project name)
         scm           (:scm project)
-        target-path   (:target-path config)]
+        target-path   (:target-path mj)]
     (makejack/clojure aliases nil ["-Spom"] {})
     (update-or-create-pom group-id artifact-id name version scm target-path)))
 
@@ -65,6 +66,7 @@
   (let [{:keys [arguments config options]}
         (tool-options/parse-options-and-apply-to-config
           args extra-options "pom [options]")]
+    (prn :options options :config config)
     (binding [makejack/*verbose* (:verbose options)]
       (pom arguments config options))
     (shutdown-agents)))

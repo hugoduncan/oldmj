@@ -4,10 +4,8 @@
             [clojure.tools.cli :as cli]
             [makejack.api.core :as makejack]))
 
-
-
-(defn parse-kw-stringlist [profiles-str]
-  (->> (str/split profiles-str #":")
+(defn parse-kw-stringlist [kwlist-str]
+  (->> (str/split kwlist-str #":")
      (filter (complement str/blank?))
      (mapv keyword)))
 
@@ -19,9 +17,10 @@
     "Options as an EDN map.
     This will contain the options parsed by makejack."
     :parse-fn edn/read-string]
-   ["-P" "--profiles PROFILES"
-    "Project profiles to apply when executing the command."
-    :parse-fn parse-kw-stringlist]
+   ["-P" "--profile "
+    "Project profile to apply when executing the command."
+    :parse-fn read-string
+    :default :default]
    ["-v" "--verbose" "Show command execution"]
    ])
 
@@ -47,8 +46,7 @@
   (let [{:keys [arguments errors options summary]}
         (parse-options args extra-options)
         options (merge (:options options) (dissoc options :options))
-        config  (makejack/load-config)
-        config  (makejack/apply-options config options nil)]
+        config  (makejack/load-config {:profile (:profile options)})]
     (cond
       errors
       (makejack/error

@@ -1,11 +1,13 @@
 {:version         "0.0.1-alpha1"
  :name            "makejack"
  :main            makejack.main
- :profiles        {:compile {:aliases [:compile]}
-                   :uberjar {:jar-type :uberjar
-                             :aliases  [:uberjar :compile]}
-                   :jar {:jar-type :jar
-                         :aliases  [:jar]}}
  :script-name     "mj1"
  :script-shebang? true
- :binary-name     "mj"}
+ :binary-name     "mj"
+ :aliases #profile {:default []
+                    :compile [:compile]
+                    :uberjar [:uberjar :compile]
+                    :jar     [:jar]}
+ :jar-type #profile {:default :jar
+                     :uberjar :uberjar
+                     :binary  :uberjar}}

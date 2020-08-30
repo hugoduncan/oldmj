@@ -4,8 +4,8 @@
 
 (defn babashka
   "Invoke babashka"
-  [_args target-kw {:keys [:makejack/project] :as config} options]
-  (let [target-config (get-in config [:targets target-kw])
+  [_args target-kw {:keys [mj project] :as _config} options]
+  (let [target-config (get-in mj [:targets target-kw])
         aliases       (-> []
                          (into (:aliases project))
                          (into (:aliases target-config))
@@ -21,7 +21,7 @@
                         (str ":"
                              (makejack/classpath
                                aliases
-                               (:deps config))))
+                               (:deps target-config))))
         args          (cond-> []
                         (not= "" cp)          (into ["-cp" cp])
                         form                  (into ["-e" (str form)])

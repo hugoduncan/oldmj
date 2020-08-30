@@ -19,8 +19,8 @@
 (def cli-options
   [["-h" "--help" "Show this help message."]
    ["-p" "--pprint" "Pretty print the makejack config."]
-   ["-P" "--profiles PROFILES" "Project profiles to apply"
-    :parse-fn tool-options/parse-kw-stringlist]
+   ["-P" "--profile PROFILE" "Project profile to apply"
+    :parse-fn read-string]
    ["-v" "--verbose" "Show command execution"]])
 
 
@@ -36,13 +36,13 @@
 
       (:pprint options)
       (pprint/pprint
-        (makejack/apply-options (makejack/load-config) options nil))
+        (makejack/load-config {:profile (:profile options)}))
 
-      (not (seq args))
+      (not (seq arguments))
       (help/usage summary)
 
-      (= "help" (first args))
-      (if-let [cmd (fnext args)]
+      (= "help" (first arguments))
+      (if-let [cmd (fnext arguments)]
         (help/help-on cmd)
         (help/usage summary))
 

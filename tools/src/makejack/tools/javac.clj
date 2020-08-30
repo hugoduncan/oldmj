@@ -4,8 +4,8 @@
             [makejack.api.util :as util]))
 
 (defn javac
-  "Compile java sources"
-  [_args {:keys [:makejack/project]} _options]
+  "Compile java sources."
+  [_args {:keys [mj project]} _options]
   (let [java-paths      (:java-paths project)
         javac-options   (:javac-options project)
         source-files    (mapcat

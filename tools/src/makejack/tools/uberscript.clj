@@ -5,15 +5,15 @@
 
 (defn uberscript
   "Output a babashka uberscript."
-  [_args {:keys [:makejack/project] :as config} options]
+  [_args {:keys [mj project] :as _config} options]
   (let [aliases       (-> []
                          (into (:aliases project))
                          (into (:aliases options)))
         cp            (makejack/classpath aliases nil)
         main          (:main project)
-        script-name   (:scritp-name project (:name project))
+        script-name   (:script-name project (:name project))
         mode          (:script-mode project "750")
-        path          (util/path (:target-path config) script-name)]
+        path          (util/path (:target-path mj) script-name)]
 
     (makejack/babashka
       (-> ["-cp" cp "-m" (str main)]

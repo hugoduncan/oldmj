@@ -1,55 +1,68 @@
-{:project #include "project.edn"
- :target-path "target"
- :targets {:api-doc
-           {:tool makejack.clojure
-            :aliases [:api-docs]
-            :deps {codox {:mvn/version "0.10.6"}}
-            :main-opts
-            ["-e" (do (require '[codox.main :as codox]
-                               'makejack.doc.api-writer)
-                      (codox/generate-docs
-                        {:metadata {:doc/format :markdown}
-                         :output-path "site"
-                         :source-uri "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
-                         :version #ref [:project :version]
-                         :namespaces [#regex "^makejack\\.api\\."]
-                         :writer 'makejack.doc.api-writer/write-docs
-                         }))]}
-           :tool-doc
-           {:tool makejack.clojure
-            :aliases [:api-docs]
-            :deps {codox {:mvn/version "0.10.6"}}
-            :main-opts
-            ["-e" (do (require '[codox.main :as codox]
-                               'makejack.doc.tool-writer)
-                      (codox/generate-docs
-                        {:metadata {:doc/format :markdown}
-                         :output-path "site"
-                         :source-uri "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
-                         :version #ref [:project :version]
-                         :namespaces [#regex "^makejack\\.[^m][a-z_]+$"]
-                         :writer 'makejack.doc.tool-writer/write-docs
-                         }))]}
-           :build {:doc "pom, compile, uberjar and bin"
+#mj {:project #project {:profile :jar}
+     :targets
+     #merge
+     [#default-targets [:pom :clean :jar :uberjar :compile :binary :uberscript]
+      {;; :pom-jar {:doc       "Pom file for api jar."
+       ;;           :invoker   :clojure
+       ;;           :deps      {makejack/makejack.tools {:mvn/version "0.0.1-alpha1"}}
+       ;;           :main-opts ["-m" "makejack.tools.pom"
+       ;;                       "--profile" ":jar"]}
+       ;; :pom-uberjar {:doc       "Pom file for api jar."
+       ;;               :invoker   :clojure
+       ;;               :deps      {makejack/makejack.tools {:mvn/version "0.0.1-alpha1"}}
+       ;;               :main-opts ["-m" "makejack.tools.pom"
+       ;;                           "--profile" ":uberjer"]}
+
+       :api-doc
+       {:tool    makejack.clojure
+        :aliases [:api-docs]
+        :deps    {codox {:mvn/version "0.10.6"}}
+        :main-opts
+        ["-e" (do (require '[codox.main :as codox]
+                           'makejack.doc.api-writer)
+                  (codox/generate-docs
+                    {:metadata    {:doc/format :markdown}
+                     :output-path "site"
+                     :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                     :version     #ref [:project :version]
+                     :namespaces  [#regex "^makejack\\.api\\."]
+                     :writer      'makejack.doc.api-writer/write-docs
+                     }))]}
+       :tool-doc
+       {:tool    makejack.clojure
+        :aliases [:api-docs]
+        :deps    {codox {:mvn/version "0.10.6"}}
+        :main-opts
+        ["-e" (do (require '[codox.main :as codox]
+                           'makejack.doc.tool-writer)
+                  (codox/generate-docs
+                    {:metadata    {:doc/format :markdown}
+                     :output-path "site"
+                     :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                     :version     #ref [:project :version]
+                     :namespaces  [#regex "^makejack\\.[^m][a-z_]+$"]
+                     :writer      'makejack.doc.tool-writer/write-docs
+                     }))]}
+       :build   {:doc     "pom-uberjar, compile, uberjar and bin"
+                 :invoker :chain
+                 :targets [:pom :compile :uberjar :binary]}
+       :build-api {:doc     "pom-jar, jar and install"
                    :invoker :chain
-                   :targets [pom :compile :uberjar :bin]}
-           :site {:invoker :shell
-                  :args ["hugo" "build"]
-                  :options {:out :inherit}}
-           :install {:invoker :shell
-                     :args ["mvn"
-                            "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
-                            #join ["-Dfile="
-                                   #ref [:target-path]
-                                   "/"
-                                   #ref [:project :name]
-                                   "-"
-                                   #ref [:project :version]
-                                   ".jar"]
-                            #join ["-DgroupId="
-                                   #ref [:project :name]]
-                            #join ["-DartifactId="
-                                   #ref [:project :name]]
-                            #join ["-Dversion="
-                                   #ref [:project :version]]
-                            "-Dpackaging=jar"]}}}
+                   :targets [:pom :jar :install]}
+       :site    {:invoker :shell
+                 :args    ["hugo" "build"]
+                 :options {:out :inherit}}
+       :install {:invoker :shell
+                 :args    ["mvn"
+                           "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
+                           #join ["-Dfile="
+                                  #ref [:target-path]
+                                  "/"
+                                  #ref [:project :jar-name]]
+                           #join ["-DgroupId="
+                                  #ref [:project :group-id]]
+                           #join ["-DartifactId="
+                                  #ref [:project :artifact-id]]
+                           #join ["-Dversion="
+                                  #ref [:project :version]]
+                           "-Dpackaging=jar"]}}]}

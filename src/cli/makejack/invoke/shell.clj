@@ -5,7 +5,7 @@
 (defn shell
   "Invoke shell command."
   [_args target-kw config _options]
-  (let [target-config (get-in config [:targets target-kw])
+  (let [target-config (get-in config [:mj :targets target-kw])
         args          (:args target-config)
         res           (makejack/sh args (:options target-config))]
     (if (pos? (:exit res))

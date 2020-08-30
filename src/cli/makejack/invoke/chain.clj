@@ -6,7 +6,7 @@
 (defn chain
   "Chain execution of multiple targets"
   [args target-kw config options]
-  (let [target-config (get-in config [:targets target-kw])
+  (let [target-config (get-in config [:mj :targets target-kw])
         targets       (:targets target-config)]
     (doseq [target targets]
       (run/run-command target args options)

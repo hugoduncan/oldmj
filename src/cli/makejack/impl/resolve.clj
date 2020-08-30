@@ -23,7 +23,7 @@
 ;;     invoker))
 
 (defn resolve-target [target-kw config]
-  (get-in config [:targets target-kw]))
+  (get-in config [:mj :targets target-kw]))
 
 (defn resolve-target-invoker [target]
   (let [invoker (:invoker target)]
