@@ -35,7 +35,7 @@
                      :output-path "site"
                      :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
                      :version     #ref [:project :version]
-                     :namespaces  [#regex "^makejack\\.invoker\\.[a-z_]+$"]
+                     :namespaces  [#regex "^makejack\\.invoke\\.[a-z_]+$"]
                      :writer      'makejack.doc.invoker-writer/write-docs
                      }))]}
        :tool-doc
