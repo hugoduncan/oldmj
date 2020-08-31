@@ -81,4 +81,10 @@
                                   #ref [:project :artifact-id]]
                            #join ["-Dversion="
                                   #ref [:project :version]]
-                           "-Dpackaging=jar"]}}]}
+                           "-Dpackaging=jar"]}
+       :test {:doc "Run tests"
+              :invoker :clojure
+              :main-opts ["-m" "kaocha.runner"]
+              :aliases [:dev :test]
+              :options {:out :inherit
+                        :forward-options false}}}]}

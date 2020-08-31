@@ -14,4 +14,7 @@
            :api-docs {:extra-paths ["src-dev"]
                       :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
            :dev      {:extra-deps {codox {:mvn/version "0.10.6"}}
-                      :extra-paths ["test-resources"]}}}
+                      :extra-paths ["test-resources"]}
+           :test     {:extra-deps
+                      {lambdaisland/kaocha {:mvn/version "1.0.672"}
+                       lambdaisland/kaocha-cloverage {:mvn/version "1.0.63"}}}}}
