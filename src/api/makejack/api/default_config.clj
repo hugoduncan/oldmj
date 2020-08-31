@@ -6,50 +6,6 @@
 
 (def mj-tools {'makejack/makejack.tools {:mvn/version "0.0.1-alpha1"}})
 
-#_(def config
-  ;; project-project is the project's project.edn, as is
-  (array-map
-    :project-project (tagged-literal 'include "project.edn")
-    ;; project is the project's project.edn, with some defaults
-    :project-p1      (tagged-literal
-                       'merge
-                       [(tagged-literal 'ref [:project-project])
-                        {:group-id
-                         (tagged-literal
-                           'or
-                           [(tagged-literal 'opt-ref [:project-project :group-id])
-                            (tagged-literal 'ref [:project-project :name])])
-                         :artifact-id
-                         (tagged-literal
-                           'or
-                           [(tagged-literal 'opt-ref [:project-project :artifact-id])
-                            (tagged-literal 'ref [:project-project :name])])
-                         :jar-type
-                         (tagged-literal
-                           'or
-                           [(tagged-literal 'opt-ref [:project-project :jar-type])
-                            :jar])}])
-    :project         (tagged-literal
-                       'merge
-                       [(tagged-literal 'ref [:project-p1])
-                        {:jar-name
-                         (tagged-literal
-                           'or
-                           [(tagged-literal 'opt-ref [:project-p1 :jar-name])
-                            (tagged-literal
-                              'default-jar-name
-                              [(tagged-literal 'ref [:project-p1 :artifact-id])
-                               (tagged-literal 'ref [:project-p1 :version])
-                               (tagged-literal 'ref [:project-p1 :jar-type])])])}])
-    :mj (tagged-literal 'include "mj.edn")))
-
-;; (defn config
-;;   "This uses the resolver to resolve mj.edn and project.edn"
-;;   [options]
-;;   {:mj (tagged-literal 'include "mj.edn")
-;;    :project (tagged-literal 'project options)})
-
-
 (def project-with-defaults
   ;; project-project is the project's project.edn, as is
   (array-map

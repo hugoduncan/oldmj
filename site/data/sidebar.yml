@@ -1,6 +1,14 @@
 - title: Getting started
   pages:
     - title: Install
+    - title: Project Initilisation
+- title: Guide
+  pages:
+    - title: Config Files
+    - title: Targets
+    - title: Invokers
+    - title: Tools
+    - title: Writing Tools
 - title: Reference
   pages:
     - title: project edn
