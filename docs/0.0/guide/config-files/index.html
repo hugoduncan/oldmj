@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A clojure build tool invoker.">
+<meta name="author" content="Hugo Duncan contributors">
+<meta name="generator" content="Hugo 0.74.3">
+
+<meta name="docsearch:language" content="en">
+<meta name="docsearch:version" content="0.0">
+
+<title>Config Files · Makejack v0.0</title>
+
+<link rel="canonical" href="https://hugoduncan.github.io/makejack/docs/0.0/guide/config-files/">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css">
+
+<link rel="stylesheet" href="/makejack/css/docs.css">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    </head>
+    <body>
+
+        <div id="layout">
+            
+            <a href="#menu" id="menuLink" class="menu-link">
+                
+                <span></span>
+            </a>
+
+
+            <div id="menu">
+                <nav class="pure-menu"  aria-label="Docs navigation"><a class="pure-menu-heading" href="#">Docs</a>
+
+    <ul class="pure-menu-list">
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Getting started
+            </a>
+            <div class="" id="getting-started-collapse">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/getting-started/install/"
+                           class="pure-menu-link">
+                            Install
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/getting-started/project-initilisation/"
+                           class="pure-menu-link">
+                            Project Initilisation
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Guide
+            </a>
+            <div class="" id="guide-collapse">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item pure-menu-selected">
+                        <a href="/makejack/docs/0.0/guide/config-files/"
+                           class="pure-menu-link">
+                            Config Files
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/guide/targets/"
+                           class="pure-menu-link">
+                            Targets
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/guide/invokers/"
+                           class="pure-menu-link">
+                            Invokers
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/guide/tools/"
+                           class="pure-menu-link">
+                            Tools
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/guide/writing-tools/"
+                           class="pure-menu-link">
+                            Writing Tools
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Reference
+            </a>
+            <div class="" id="reference-collapse">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/reference/project-edn/"
+                           class="pure-menu-link">
+                            project edn
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/reference/mj-edn/"
+                           class="pure-menu-link">
+                            mj edn
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Built in Tool Docs
+            </a>
+
+            <div class="">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/tool-docs/makejack.tools.compile/"
+                           class="pure-menu-link">
+                            makejack.tools.compile
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/tool-docs/makejack.tools.init/"
+                           class="pure-menu-link">
+                            makejack.tools.init
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/tool-docs/makejack.tools.jar/"
+                           class="pure-menu-link">
+                            makejack.tools.jar
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/tool-docs/makejack.tools.javac/"
+                           class="pure-menu-link">
+                            makejack.tools.javac
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/tool-docs/makejack.tools.pom/"
+                           class="pure-menu-link">
+                            makejack.tools.pom
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/tool-docs/makejack.tools.uberscript/"
+                           class="pure-menu-link">
+                            makejack.tools.uberscript
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Built-in Invokers
+            </a>
+
+            <div class="">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/invoker-docs/makejack.invoke.babashka/"
+                           class="pure-menu-link">
+                            makejack.invoke.babashka
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/invoker-docs/makejack.invoke.chain/"
+                           class="pure-menu-link">
+                            makejack.invoke.chain
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/invoker-docs/makejack.invoke.clojure/"
+                           class="pure-menu-link">
+                            makejack.invoke.clojure
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/invoker-docs/makejack.invoke.shell/"
+                           class="pure-menu-link">
+                            makejack.invoke.shell
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                API Docs
+            </a>
+
+            <div class="">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/api-docs/makejack.api.core/"
+                           class="pure-menu-link">
+                            makejack.api.core
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/api-docs/makejack.api.tool-options/"
+                           class="pure-menu-link">
+                            makejack.api.tool-options
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/makejack/docs/0.0/api-docs/makejack.api.util/"
+                           class="pure-menu-link">
+                            makejack.api.util
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+
+    </ul>
+</nav>
+
+            </div>
+
+            <main>
+                <div id="main">
+                    <div class="content">
+                        <div class="alpha">
+    <p>ALPHA - Not yet released</p>
+    <p>Note: currently only supports <code>.clj</code> files.</p>
+    <p>Note: no explicit windowa support.</p>
+</div>
+
+                        <p>makejack uses two configuration files, <code>project.edn</code> and <code>mj.edn</code>.</p>
+<p>All the makejack specific configuration takes place in <code>mj.edn</code>, while
+<code>project.edn</code> describes your project in a tool agnostic fashion.</p>
+<p>The <code>project.edn</code> file <em>could</em> be used by other build tools, should they
+decide to support it.</p>
+<p>Both files are loaded using <a href="https://github.com/juxt/aero" title="Aero, a small library for explicit, intentful configuration.">aero</a>, and can use all <a href="https://github.com/juxt/aero" title="Aero, a small library for explicit, intentful configuration.">aero</a>&rsquo;s
+default tags.</p>
+<h2 id="projectedn"><code>project.edn</code></h2>
+<p>The <code>project.edn</code> file contains keys that describe your project.  The
+keys are shown in <a href="/makejack/docs/0.0/reference/project-edn/">sample.project.edn</a>.</p>
+<p>These keys can use <a href="https://github.com/juxt/aero#profile">aero profiles</a>
+to provide variants for these values.  The targets can specify which
+profile to use.  makejack&rsquo;s default targets specify target specific
+profiles, named after the target itself.</p>
+<p>The <code>:aliases</code> key is used to specify the <code>deps.edn</code> aliases to use.</p>
+<h2 id="mjedn"><code>mj.edn</code></h2>
+<p>The <code>mj.edn</code> file is used to specify build targets on the <code>:targets</code> key
+, and to configure makejack.  It does not use profiles.  See
+<a href="/makejack/docs/0.0/reference/mj-edn/">sample.mj.edn</a></p>
+<h2 id="aero-tags-defined-by-makejack">Aero Tags Defined by Makejack</h2>
+<p>makejack defines several new <a href="https://github.com/juxt/aero" title="Aero, a small library for explicit, intentful configuration.">aero</a> tags, mainly for use in <code>mj.edn</code>.</p>
+<h3 id="mj"><code>#mj</code></h3>
+<p>This is used as the top level tag in <code>mj.edn</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-clojure" data-lang="clojure"><span style="color:#f92672">#</span>mj {}
+</code></pre></div><p>It is used inject default values into the makejack configuration.  At
+present it injects the <code>:target-path</code> and the <code>:classes-path</code> keys.
+The provided map is merged into these default values.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-clojure" data-lang="clojure">{<span style="color:#e6db74">:target-path</span> <span style="color:#e6db74">&#34;target&#34;</span>
+<span style="color:#e6db74">:classes-path</span> <span style="color:#e6db74">&#34;target/classes&#34;</span>}
+</code></pre></div><h3 id="project"><code>#project</code></h3>
+<p>The <code>#project</code> tage is used to inject the <code>project.edn</code> file into
+<code>mj.edn</code>.  It is passed a map with a <code>:profile</code> key, specifying which
+profile to load.</p>
+<h3 id="default-targets"><code>#default-targets</code></h3>
+<p>The <code>#default-targets</code> tag is used to inject makejack&rsquo;s default
+targets. See [Targets]({{ relref &ldquo;targets.md&rdquo; }}).</p>
+<h3 id="regex"><code>#regex</code></h3>
+<p>The <code>#regex</code> key can be used to define a regex from a string pattern.</p>
+<h3 id="opt-ref"><code>#opt-ref</code></h3>
+<p>Like <a href="https://github.com/juxt/aero#ref"><code>#ref</code></a>, but evaluates to
+nil if the specified path is not found.</p>
+
+                    </div>
+                </div>
+            </main>
+
+            <footer class="">
+    <div class="">
+        <ul class="pure-menu">
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="https://github.com/hugoduncan/makejack">GitHub</a>
+            </li>
+        </ul>
+        <p class="mb-0">Currently v0.0.1-alpha1. </p>
+    </div>
+</footer>
+
+            <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script src="/makejack/js/ui.js"></script>
+
+
+        </div>
+    </body>
+</html>
