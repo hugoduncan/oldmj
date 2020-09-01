@@ -11,7 +11,7 @@
   (let [aliases     (-> []
                          (into (:aliases project))
                          (into (:aliases options)))
-        deps        '{:deps {seancorfield/depstar {:mvn/version "1.0.97"}}}
+        deps        '{:deps {seancorfield/depstar {:mvn/version "1.1.104"}}}
         main        (:main project)
         target-path (:target-path mj)
         jar-name    (or (:jar-name project)
@@ -28,8 +28,7 @@
                         uberjar?
                         (:main project)) (into ["-m" (str (:main project))])
                       (:verbose options) (conj "--verbose"))]
-    (makejack/clojure aliases deps args (if (:verbose options)
-                                          {:out :inherit}))))
+    (makejack/clojure aliases deps args options)))
 
 
 (def extra-options
@@ -41,6 +40,7 @@
   (let [{:keys [arguments config options]}
         (tool-options/parse-options-and-apply-to-config
           args extra-options "jar [options]")]
+    (prn :options options)
     (binding [makejack/*verbose* (:verbose options)]
       (depstar arguments config options))
     (shutdown-agents)))

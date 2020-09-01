@@ -1,5 +1,6 @@
 {:deps    {makejack                     {:mvn/version "0.0.1-alpha1"}
            org.apache.maven/maven-model {:mvn/version "3.6.3"}}
+ :paths   ["src"]
  :aliases {:dev      {:override-deps {makejack {:local/root ".."}}}
            :api-docs {:extra-paths ["src-dev"]
                       :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}}}

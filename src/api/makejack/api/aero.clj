@@ -1,6 +1,7 @@
 (ns ^:no-doc makejack.api.aero
   (:require [aero.alpha.core :as aero-alpha]
             [aero.core :as aero]
+            [clojure.pprint]
             [makejack.api.default-config :as default-config]))
 
 ;; private in alpha, so redefine here
@@ -81,3 +82,8 @@
                  (merge opts (:form tl))))]
     {:aero.core/value value
      :aero.core/env (assoc env ks value)}))
+
+
+(defmethod clojure.pprint/simple-dispatch java.util.regex.Pattern
+  [re]
+  (.write *out* (str "#regex " (pr-str (str re)))))

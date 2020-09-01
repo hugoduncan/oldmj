@@ -86,7 +86,7 @@
   Defaults to {:err :inherit}."
   [aliases deps args options]
   (let [args (cond-> ["clojure"]
-               (not-empty aliases) (conj (str "-A:" (str/join ":" aliases)))
+               (not-empty aliases) (conj (str "-A" (str/join ":" aliases)))
                deps                (into ["-Sdeps" (str deps)])
                args                (into args))
         args (mapv str args)]
