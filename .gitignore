@@ -5,3 +5,4 @@
 .envrc
 pom.xml
 /resources/_gen
+/public
