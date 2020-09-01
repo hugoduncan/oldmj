@@ -1,21 +1,12 @@
 (ns makejack.impl.run
   (:require [makejack.api.core :as makejack]
-            [makejack.api.project :as project]
             [makejack.impl.resolve :as resolve]))
 
 (defn run-command [cmd args options]
   (let [config       (makejack/load-config {:profile (:profile options)})
-        ;; (try
-        ;;                [(makejack/load-config) nil]
-        ;;                (catch Exception e
-        ;;                  [nil e]))
         target-kw     (keyword cmd)
         target        (resolve/resolve-target target-kw config)
-        f             (resolve/resolve-target-invoker target)
-        ;; config        (makejack/apply-options config options target-kw)
-        ]
-    ;; (when (and e (not (:no-config-required (meta f))))
-    ;;   (makejack/error (str "Bad configuration: " e)))
+        f             (resolve/resolve-target-invoker target)]
     (when-not target
       (makejack/error (str "Unknown target: " cmd)))
     (when-not f

@@ -16,9 +16,6 @@
   - {name: process-option-keys}
   - {name: resolve-source}
   - {name: sh}
-- name: makejack.api.project
-  publics:
-  - {name: with-profiles}
 - name: makejack.api.tool-options
   publics:
   - {name: cli-options}
