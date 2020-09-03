@@ -19,6 +19,9 @@
     <loc>http://makejack.hugoduncan.org/docs/0.0/</loc>
   </url>
   <url>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/guide/invokers/</loc>
+  </url>
+  <url>
     <loc>http://makejack.hugoduncan.org/docs/0.0/api-docs/makejack.api.core/</loc>
   </url>
   <url>
@@ -64,6 +67,12 @@
     <loc>http://makejack.hugoduncan.org/docs/0.0/guide/targets/</loc>
   </url>
   <url>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/guide/tools/</loc>
+  </url>
+  <url>
     <loc>http://makejack.hugoduncan.org/docs/versions/</loc>
+  </url>
+  <url>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/guide/wrtiing-tools/</loc>
   </url>
 </urlset>
