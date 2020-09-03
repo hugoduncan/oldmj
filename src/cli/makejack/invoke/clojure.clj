@@ -29,7 +29,12 @@
         deps-edn               (select-keys target-config [:deps])
         options                (merge options (:options target-config))
         forward-options?       (:forward-options options true)
-        args                   (cond-> (:main-opts target-config)
+        repro?                 (:repro options true)
+        report                 (:report options "stderr")
+        args                   (cond-> []
+                                 repro? (conj "-Srepro")
+                                 report (into ["--report" report])
+                                 true (into (:main-opts target-config))
                                  forward-options? (into ["-o" options]))]
     (makejack/clojure
       aliases

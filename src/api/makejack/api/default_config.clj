@@ -70,8 +70,10 @@
                      "--profile" ":pom"]}
 
    :jar {:doc       "Build a jar, "
-         :invoker   :clojure
+         :invoker   :babashka
          :deps      mj-tools
+         :with-mj-deps? true
+         :with-project-deps? true
          :main-opts ["-m" "makejack.tools.jar"
                      "--profile" ":jar"]}
 

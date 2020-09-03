@@ -144,9 +144,9 @@
   of deps.edn."
   [aliases deps]
   (let [args (cond-> ["clojure"]
-               aliases (conj (str "-A:" (str/join ":" aliases)))
-               deps    (into ["-Sdeps" (str deps)])
-               true    (conj "-Spath"))
+               (not-empty aliases) (conj (str "-A:" (str/join ":" aliases)))
+               deps                (into ["-Sdeps" (str {:deps deps})])
+               true                (conj "-Spath"))
         _    (when *verbose* (apply println args))
         res  (process/process args {:err :inherit})]
 
