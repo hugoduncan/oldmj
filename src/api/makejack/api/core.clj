@@ -99,6 +99,24 @@
         {:err :inherit}
         (select-keys options process-option-keys)))))
 
+(defn classpath
+  "Returns the project classpath, with the given extra deps map.
+
+  aliases is a vector of keywords with deps.edn aliases to use.
+
+  deps ia s map with external dependencies, as specifed on the :deps key
+  of deps.edn."
+  [aliases deps]
+  (let [args (cond-> ["clojure"]
+               (not-empty aliases) (conj (str "-A:" (str/join ":" aliases)))
+               deps                (into ["-Sdeps" (str {:deps deps})])
+               true                (conj "-Spath"))
+        _    (when *verbose* (apply println args))
+        res  (process/process args {:err :inherit})]
+
+    (-> (:out res)
+       (str/replace "\n" ""))))
+
 (defn babashka
   "Execute babashka process.
 
@@ -106,9 +124,15 @@
 
   options is a map of options, as specifed in babashka.process/process.
   Defaults to {:err :inherit}."
-  [args options]
-  (let [args (cond-> ["bb"]
-               args (into args))]
+  [aliases deps args options]
+  (let [cp   (cond-> ""
+               (or (:with-project-deps? options)
+                   deps
+                   aliases)
+               (str ":" (classpath aliases deps)))
+        args (cond-> ["bb"]
+               (not (str/blank? cp)) (into ["-cp" cp])
+               args                  (into args))]
     (when *verbose*
       (apply println args))
     (process/process
@@ -134,24 +158,6 @@
       (if *verbose* {:out :inherit})
       {:err :inherit}
       (select-keys options process-option-keys))))
-
-(defn classpath
-  "Returns the project classpath, with the given extra deps map.
-
-  aliases is a vector of keywords with deps.edn aliases to use.
-
-  deps ia s map with external dependencies, as specifed on the :deps key
-  of deps.edn."
-  [aliases deps]
-  (let [args (cond-> ["clojure"]
-               (not-empty aliases) (conj (str "-A:" (str/join ":" aliases)))
-               deps                (into ["-Sdeps" (str {:deps deps})])
-               true                (conj "-Spath"))
-        _    (when *verbose* (apply println args))
-        res  (process/process args {:err :inherit})]
-
-    (-> (:out res)
-       (str/replace "\n" ""))))
 
 (defn default-jar-name
   "Helper to return the default jar file name.
