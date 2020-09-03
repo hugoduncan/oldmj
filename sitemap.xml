@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/api-docs/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/api-docs/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/guide/config-files/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/guide/config-files/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/getting-started/install/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/getting-started/install/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/reference/mj-edn/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/reference/mj-edn/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/reference/project-edn/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/reference/project-edn/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/api-docs/makejack.api.core/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/api-docs/makejack.api.core/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/api-docs/makejack.api.tool-options/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/api-docs/makejack.api.tool-options/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/api-docs/makejack.api.util/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/api-docs/makejack.api.util/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/invoker-docs/makejack.invoke.babashka/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/invoker-docs/makejack.invoke.babashka/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/invoker-docs/makejack.invoke.chain/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/invoker-docs/makejack.invoke.chain/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/invoker-docs/makejack.invoke.clojure/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/invoker-docs/makejack.invoke.clojure/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/invoker-docs/makejack.invoke.shell/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/invoker-docs/makejack.invoke.shell/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/tool-docs/makejack.tools.compile/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.compile/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/tool-docs/makejack.tools.init/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.init/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/tool-docs/makejack.tools.jar/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.jar/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/tool-docs/makejack.tools.javac/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.javac/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/tool-docs/makejack.tools.pom/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.pom/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/tool-docs/makejack.tools.uberscript/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.uberscript/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/getting-started/project-initilisation/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/getting-started/project-initilisation/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/0.0/guide/targets/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/guide/targets/</loc>
   </url>
   <url>
-    <loc>https://hugoduncan.github.io/makejack/docs/versions/</loc>
+    <loc>http://makejack.hugoduncan.org/docs/versions/</loc>
   </url>
 </urlset>
