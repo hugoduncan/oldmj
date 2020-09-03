@@ -1,6 +1,6 @@
 languageCode:           "en"
 title:                  "Makejack"
-baseURL:                "https://hugoduncan.github.io/makejack"
+baseURL:                "http://makejack.hugoduncan.org"
 enableInlineShortcodes: true
 
 buildDrafts:            true

@@ -18,7 +18,11 @@ the project.
 
 ## Install
 
-Install the `mj` binary using homebrew:
+See [DEVELOPMENT.md](docs/DEVELOPMENT.md)
+
+**Not implemented yet**
+
+~~Install the `mj` binary using homebrew:~~
 
 ```shell
 brew install hugoduncan/brew/makejack
@@ -34,6 +38,7 @@ and `mj.edn` filesx.
 makejack has some default targets built in.  Run `mj help` to see the
 targets.
 
+See nascent [docs](http://makejack.hugoduncan.org/) WIP documentation.
 
 See [sample.project.edn](sample.project.edn) for project description
 options.

@@ -64,7 +64,7 @@
                    :targets [:pom :jar :install]}
        :site    {:doc     "Build the static site for github pages"
                  :invoker :shell
-                 :args    ["hugo" "build"]
+                 :args    ["hugo"]
                  :options {:out :inherit}}
        :install {:doc     "Install the API jar into the local repository.
                           Requires maven to be installed."
