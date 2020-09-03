@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+hash bb || ( printf "Please install babashka\n"; exit 1 )
+
+bb -cp $(clojure -Spath) bin/bootstrap-script.bb

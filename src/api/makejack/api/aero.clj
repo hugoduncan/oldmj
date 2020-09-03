@@ -1,7 +1,8 @@
 (ns ^:no-doc makejack.api.aero
   (:require [aero.alpha.core :as aero-alpha]
             [aero.core :as aero]
-            [clojure.pprint]
+            ;; [clojure.pprint]
+            ;; [fipp.ednize]
             [makejack.api.default-config :as default-config]))
 
 ;; private in alpha, so redefine here
@@ -83,7 +84,6 @@
     {:aero.core/value value
      :aero.core/env (assoc env ks value)}))
 
-
-(defmethod clojure.pprint/simple-dispatch java.util.regex.Pattern
-  [re]
-  (.write *out* (str "#regex " (pr-str (str re)))))
+(defmethod print-method java.util.regex.Pattern
+  [v ^java.io.Writer w]
+  (.write w (pr-str (tagged-literal 'regex (.pattern v)))))

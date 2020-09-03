@@ -1,10 +1,10 @@
 {:deps
- {aero                         {:mvn/version "1.1.6"}
-  babashka/babashka.process    {:sha     "4e5984ab8584c22f0a7b5df50620e20c3ded89bc"
-                                :git/url "https://github.com/babashka/babashka.process"}
+ {aero                      {:mvn/version "1.1.6"}
+  babashka/babashka.process {:sha     "4e5984ab8584c22f0a7b5df50620e20c3ded89bc"
+                             :git/url "https://github.com/babashka/babashka.process"}
   ;; clojure always gets put into the deps, so we include it anyway
-  org.clojure/clojure          {:mvn/version "1.10.2-alpha1"}
-  org.clojure/tools.cli        {:mvn/version "1.0.194"}}
+  org.clojure/clojure       {:mvn/version "1.10.2-alpha1"}
+  org.clojure/tools.cli     {:mvn/version "1.0.194"}}
  :paths   ["src/api" "src/cli"]
  :aliases {:compile  {:extra-paths ["target/classes"]
                       :jvm-opts    ["-Dclojure.compiler.direct-linking=true"
