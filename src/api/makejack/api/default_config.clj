@@ -59,7 +59,7 @@
 
    :init {:doc       "Initialise a   project for   use with makejack.
                 Creates    project.edn  and mj.edn  files if  they do not exist."
-          :invoker   :clojure
+          :invoker   :babashka
           :deps      mj-tools
           :main-opts ["-m" "makejack.tools.init"]}
 
@@ -72,13 +72,11 @@
    :jar {:doc       "Build a jar, "
          :invoker   :babashka
          :deps      mj-tools
-         :with-mj-deps? true
-         :with-project-deps? true
          :main-opts ["-m" "makejack.tools.jar"
                      "--profile" ":jar"]}
 
    :uberjar {:doc       "Build an uberjar, "
-             :invoker   :clojure
+             :invoker   :babashka
              :deps      mj-tools
              :main-opts ["-m" "makejack.tools.jar"
                          "--profile" ":uberjar"]}
@@ -90,7 +88,7 @@
                        "--profile" ":javac"]}
 
    :uberscript {:doc       "Output a babashka uberscript."
-                :invoker   :clojure
+                :invoker   :babashka
                 :deps      mj-tools
                 :main-opts ["-m" "makejack.tools.uberscript"
                             "--profile" ":uberscript"]}
