@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{ partial "header" . }}
+    </head>
+    <body>
+
+        <div id="layout">
+            <!-- Menu toggle -->
+            <a href="#menu" id="menuLink" class="menu-link">
+                <!-- Hamburger icon -->
+                <span></span>
+            </a>
+
+
+            <div id="menu">
+                {{ partial "docs-sidebar" . }}
+            </div>
+
+            <main>
+                <div id="main">
+                    <div class="content">
+                        {{ partial "alpha" . }}
+                        {{ .Content }}
+                    </div>
+                </div>
+            </main>
+
+            {{ partial "footer" . }}
+            {{ partial "scripts" . }}
+
+        </div>
+    </body>
+</html>

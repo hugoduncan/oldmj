@@ -1,0 +1,2 @@
+#mj {:targets #default-targets :all
+     :tp #ref [:target-path]}

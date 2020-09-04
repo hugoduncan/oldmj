@@ -1,0 +1,38 @@
+languageCode:           "en"
+title:                  "Makejack"
+baseURL:                "http://makejack.hugoduncan.org"
+enableInlineShortcodes: true
+
+buildDrafts:            true
+buildFuture:            true
+
+enableRobotsTXT:        true
+metaDataFormat:         "yaml"
+disableKinds:           ["404", "taxonomy", "taxonomyTerm", "RSS"]
+
+publishDir:             "public"
+
+module:
+  mounts:
+    - source:           site/assets
+      target:           assets
+    - source:           site/content
+      target:           content
+    - source:           site/data
+      target:           data
+    - source:           site/layouts
+      target:           layouts
+    - source:           site/static
+      target:           static
+
+params:
+  description:          "A clojure build tool invoker."
+  authors:              "Hugo Duncan contributors"
+
+  current_version:      "0.0.1-alpha1"
+  docs_version:         "0.0"
+  github_org:           "https://github.com/hugoduncan"
+  repo:                 "https://github.com/hugoduncan/makejack"
+
+  download:
+    source:             "https://github.com/hugoduncan/makejack/archive/v0.0.1-alpha1.zip"

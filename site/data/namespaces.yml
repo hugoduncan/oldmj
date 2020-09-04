@@ -1,0 +1,41 @@
+- name: makejack.api.core
+  publics:
+  - {name: '*verbose*'}
+  - {name: babashka}
+  - {name: classpath}
+  - {name: clojure}
+  - {name: default-jar-name}
+  - {name: deps-paths}
+  - {name: error}
+  - {name: load-config}
+  - {name: load-config*}
+  - {name: load-deps}
+  - {name: load-mj}
+  - {name: load-mj*}
+  - {name: load-project*}
+  - {name: process-option-keys}
+  - {name: resolve-source}
+  - {name: sh}
+- name: makejack.api.tool-options
+  publics:
+  - {name: cli-options}
+  - {name: parse-kw-stringlist}
+  - {name: parse-options}
+  - {name: parse-options-and-apply-to-config}
+  - {name: usage}
+- name: makejack.api.util
+  publics:
+  - {name: chmod}
+  - {name: 'clj-source-file?'}
+  - {name: Coercions}
+  - {name: cwd}
+  - {name: deep-merge}
+  - {name: deep-merge-with}
+  - {name: 'file-exists?'}
+  - {name: filename}
+  - {name: 'java-source-file?'}
+  - {name: mkdirs}
+  - {name: path}
+  - {name: path->namespace}
+  - {name: relative-to}
+  - {name: source-files}

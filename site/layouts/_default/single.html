@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{ partial "header" . }}
+    </head>
+    <body>
+
+        <header class="">
+            <div class="">
+                <h1 class="">{{ .Title | markdownify }}</h1>
+                <p class="">{{ .Page.Params.Description | markdownify }}</p>
+            </div>
+        </header>
+
+        <main class="" id="content">
+            <div class="container">
+                {{ .Content }}
+            </div>
+        </main>
+
+        {{ partial "footer" . }}
+        {{ partial "scripts" . }}
+    </body>
+</html>

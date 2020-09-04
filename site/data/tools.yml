@@ -1,0 +1,31 @@
+- name: makejack.tools.compile
+  publics:
+  - {name: -main}
+  - {name: compile}
+  - {name: extra-options}
+- name: makejack.tools.init
+  publics:
+  - {name: -main}
+  - {name: default-mj}
+  - {name: extra-options}
+  - {name: init}
+- name: makejack.tools.jar
+  publics:
+  - {name: -main}
+  - {name: depstar}
+  - {name: extra-options}
+- name: makejack.tools.javac
+  publics:
+  - {name: -main}
+  - {name: extra-options}
+  - {name: javac}
+- name: makejack.tools.pom
+  publics:
+  - {name: -main}
+  - {name: extra-options}
+  - {name: pom}
+- name: makejack.tools.uberscript
+  publics:
+  - {name: -main}
+  - {name: extra-options}
+  - {name: uberscript}

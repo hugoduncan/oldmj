@@ -1,0 +1,4 @@
+{:api-project #include "../project.edn"
+ :version  #ref [:api-project :version]
+ :name     "makejack.tools"
+ :group-id "makejack"}
