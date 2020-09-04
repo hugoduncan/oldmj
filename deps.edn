@@ -8,7 +8,9 @@
  :paths   ["src/api" "src/cli"]
  :aliases {:compile  {:extra-paths ["target/classes"]
                       :jvm-opts    ["-Dclojure.compiler.direct-linking=true"
-                                    "-Dclojure.spec.skip-macros=true"]}
+                                    "-Dclojure.spec.skip-macros=true"
+                                    "-Dclojure.spec.compile-asserts=false"]
+                      :classpath-overrides {org.clojure/core.specs.alpha nil}}
            :jar      {:paths ["src/api"]}
            :uberjar  {:extra-paths ["resources"]}
            :api-docs {:extra-paths ["src-dev"]
