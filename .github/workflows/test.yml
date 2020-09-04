@@ -10,8 +10,11 @@ jobs:
     steps:
     - name: Install clojure
       run: brew install clojure
+    - name: Install babashka
+      run: brew install borkdude/brew/babashka
     - uses: actions/checkout@v2
     - name: tests
       run: |
+        bin/bootstrap-script
         clojure -m makejack.impl.build-version
         clojure -A:test:dev -m kaocha.runner
