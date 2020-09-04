@@ -1,4 +1,4 @@
-{:deps    {makejack                     {:mvn/version "0.0.1-alpha1"}
+{:deps    {makejack                     {:mvn/version "0.0.1-alpha1-SNAPSHOT"}
            org.apache.maven/maven-model {:mvn/version "3.6.3"}}
  :paths   ["src"]
  :aliases {:dev      {:override-deps {makejack {:local/root ".."}}}
