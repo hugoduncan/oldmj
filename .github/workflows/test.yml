@@ -1,0 +1,15 @@
+# A workflow run is made up of one or more jobs that can run
+# sequentially or in parallel
+on: [push, pull_request]
+name: Run tests
+
+jobs:
+  build-site:
+    name: Tests
+    runs-on: macos-latest
+    steps:
+    - name: Install clojure
+      run: brew install clojure
+    - uses: actions/checkout@v2
+    - name: tests
+      run: clojure -A:test:dev -m kaocha.runner
