@@ -42,7 +42,6 @@
 (defn pom
   "Pom file creation or update."
   [_args {:keys [mj project] :as _config} options]
-  (prn :aliases (:aliases project) (:aliases options))
   (let [aliases        (-> []
                           (into (:aliases project))
                           (into (:aliases options)))
@@ -63,11 +62,9 @@
    ])
 
 (defn -main [& args]
-  (prn :args args)
   (let [{:keys [arguments config options]}
         (tool-options/parse-options-and-apply-to-config
           args extra-options "pom [options]")]
-    (prn :options options)
     (binding [makejack/*verbose* (:verbose options)]
       (pom arguments config options))
     (shutdown-agents)))

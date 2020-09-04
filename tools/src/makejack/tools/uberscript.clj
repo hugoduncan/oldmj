@@ -22,6 +22,7 @@
       {:with-project-deps? true})
 
     (when (:script-shebang? project)
+      (println "Adding shebang")
       (let [raw (slurp (str path))]
         (spit (str path)
               (str
@@ -29,7 +30,9 @@
                 ";; Generated with makejack uberscript. Do not edit directly.\n\n"
                 raw))))
 
-    (util/chmod path mode)))
+    (util/chmod path mode)
+    (when makejack/*verbose*
+      (println {:script-mode mode}))))
 
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."

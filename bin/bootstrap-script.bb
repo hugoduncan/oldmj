@@ -126,6 +126,7 @@
     (println "build tools pom")
     (let [res (sh "clojure"  "-m" "makejack.tools.pom"
                   :dir "tools")]
+      (println (:out res))
       (when (pos? (:exit res))
         (binding [*out* *err*]
           (println "failed")
@@ -135,8 +136,10 @@
     (println "build tools jar")
     (let [res (sh "clojure"
                "-m" "makejack.tools.jar"
+               "--verbose"
                "target/makejack.tools-" version ".jar"
                :dir "tools")]
+      (println (:out res))
       (when (pos? (:exit res))
         (binding [*out* *err*]
           (println "failed")
@@ -148,6 +151,7 @@
                   "--verbose"
                   "install"
                :dir "tools")]
+      (println (:out res))
       (when (pos? (:exit res))
         (binding [*out* *err*]
           (println "failed")
@@ -158,6 +162,7 @@
     (let [res (sh "bb" "target/mj-script"
                   "--verbose"
                   "uberscript")]
+      (println (:out res))
       (when (pos? (:exit res))
         (binding [*out* *err*]
           (println "failed")
