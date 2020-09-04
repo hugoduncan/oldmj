@@ -46,7 +46,7 @@
 (def default-targets
   {:compile {:doc       "AOT compilation of clojure sources."
              :invoker   :clojure
-             :deps      {'makejack/makejack.tools {:mvn/version "0.0.1-alpha1"}}
+             :deps      mj-tools
              :main-opts ["-m" "makejack.tools.compile"
                          "--profile" ":compile"]}
 
