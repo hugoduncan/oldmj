@@ -1,6 +1,7 @@
 (ns makejack.api.util
   "Helper functions to implement tools for makejack."
-  (:require [clojure.java.io :as io]
+  (:require [babashka.process :as process]
+            [clojure.java.io :as io]
             [clojure.string :as str])
   (:import [java.io File]
            [java.nio.file
@@ -151,3 +152,20 @@
         (apply merge-with m ms)
         (apply f ms)))
     ms))
+
+(defn format-version-map
+  "Format a version map as a string."
+  [{:keys [major minor incremental qualifier]}]
+  (cond-> (str major)
+    minor (str "." minor)
+    incremental (str "." incremental)
+    qualifier (str "-" qualifier)))
+
+(defn git-sha []
+  (-> ["git" "rev-parse" "--verify" "HEAD"]
+     (process/process
+        {:err   :inherit
+         :wait  true
+         :throw true})
+     :out
+     str/trim))

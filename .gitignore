@@ -8,3 +8,4 @@ pom.xml
 /resources/_gen
 /public
 public
+src/cli/makejack/impl/version.clj

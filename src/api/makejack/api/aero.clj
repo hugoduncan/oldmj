@@ -3,7 +3,8 @@
             [aero.core :as aero]
             ;; [clojure.pprint]
             ;; [fipp.ednize]
-            [makejack.api.default-config :as default-config]))
+            [makejack.api.default-config :as default-config]
+            [makejack.api.util :as util]))
 
 ;; private in alpha, so redefine here
 (defn- rewrap
@@ -46,6 +47,18 @@
          (update :aero.core/value (rewrap tl))
          (assoc :aero.core/incomplete incomplete))
       (assoc expansion :aero.core/value (re-pattern value)))))
+
+(defmethod aero-alpha/eval-tagged-literal 'version-string
+  [tl opts env ks]
+  (let [{:keys [:aero.core/incomplete? :aero.core/value :aero.core/incomplete]
+         :as   expansion}
+        (aero-alpha/expand (:form tl) opts env ks)]
+    (if incomplete?
+      (-> expansion
+         (assoc :aero.core/incomplete? true)
+         (update :aero.core/value (rewrap tl))
+         (assoc :aero.core/incomplete incomplete))
+      (assoc expansion :aero.core/value (util/format-version-map value)))))
 
 ;; internal, to inject the default jar name depending on the :jar-type
 (defmethod aero/reader 'default-jar-name

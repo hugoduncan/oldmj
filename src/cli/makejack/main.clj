@@ -4,6 +4,7 @@
             [clojure.tools.cli :as cli]
             [makejack.api.core :as makejack]
             [makejack.api.tool-options :as tool-options]
+            [makejack.impl.version :as version]
             [makejack.impl.help :as help]
             [makejack.impl.run :as run]
             makejack.invoke.chain)
@@ -21,7 +22,8 @@
    ["-p" "--pprint" "Pretty print the makejack config."]
    ["-P" "--profile PROFILE" "Project profile to apply"
     :parse-fn read-string]
-   ["-v" "--verbose" "Show command execution"]])
+   ["-v" "--verbose" "Show command execution"]
+   ["-V" "--version" "Show makejack version and exit"]])
 
 
 (defn -main [& args]
@@ -37,6 +39,10 @@
       (:pprint options)
       (pprint/pprint
         (makejack/load-config {:profile (:profile options)}))
+
+      (:version options)
+      (pprint/pprint
+        version/info)
 
       (not (seq arguments))
       (help/usage summary)
