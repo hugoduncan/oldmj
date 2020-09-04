@@ -26,10 +26,11 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         cd public
+        git status
         [[ -z $(git status -s) ]] || git commit -m "Build site" -a
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
-        branch: gh_pages
+        branch: gh-pages
         directory: public
         github_token: ${{ secrets.GITHUB_TOKEN }}
