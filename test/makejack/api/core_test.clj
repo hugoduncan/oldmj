@@ -25,14 +25,13 @@
            (dissoc(:mj config) :targets)))
     (is (= (keys default-config/default-targets)
            (keys (-> config :mj :targets)))))
-  ;; (is (= {:name        "basic"
-  ;;         :version     "0.0.1"
-  ;;         :artifact-id "basic"
-  ;;         :group-id    "basic"
-  ;;         :jar-type    :uberjar
-  ;;         :jar-name    "basic-0.0.1-standalone.jar"
-  ;;         :aliases     [:uberjar]}
-  ;;        (:project (makejack/load-config*
-  ;;                    {:resolver (resolver "test_project_basic")
-  ;;                     :profile  :uberjar}))))
-  )
+  (is (= {:name        "basic"
+          :version     "0.0.1"
+          :artifact-id "basic"
+          :group-id    "basic"
+          :jar-type    :uberjar
+          :jar-name    "basic-0.0.1-standalone.jar"
+          :aliases     [:uberjar]}
+         (:project (makejack/load-config*
+                     {:resolver (resolver "test_project_basic")
+                      :profile  :uberjar})))))
