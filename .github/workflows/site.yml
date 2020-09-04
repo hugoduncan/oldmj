@@ -1,0 +1,33 @@
+# A workflow run is made up of one or more jobs that can run
+# sequentially or in parallel
+on:
+  push:
+    branch:
+      - 'master'
+
+name: Build site
+
+jobs:
+  build-site:
+    name: Build Site
+    runs-on: macos-latest
+    steps:
+    - name: Install hugo
+      run: brew install hugo
+    - uses: actions/checkout@v2
+    - name: build site
+      run: |
+        git submodules init
+        hug
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        cd public
+        git commit -m "Build site" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        branch: gh_pages
+        directory: public
+        github_token: ${{ secrets.GITHUB_TOKEN }}
