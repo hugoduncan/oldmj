@@ -1,7 +1,7 @@
 {:version         "0.0.1-alpha1"
  :name            "makejack"
  :main            makejack.main
- :script-name     "mj1"
+ :script-name     "mj-script"
  :script-shebang? true
  :binary-name     "mj"
  :aliases #profile {:default []

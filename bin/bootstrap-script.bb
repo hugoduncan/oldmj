@@ -152,4 +152,14 @@
         (binding [*out* *err*]
           (println "failed")
           (println (:err res)))
+        (System/exit (:exit res))))
+
+    (println "rebuild script for shebang")
+    (let [res (sh "bb" "target/mj-script"
+                  "--verbose"
+                  "uberscript")]
+      (when (pos? (:exit res))
+        (binding [*out* *err*]
+          (println "failed")
+          (println (:err res)))
         (System/exit (:exit res))))))
