@@ -18,13 +18,15 @@ jobs:
     - name: build site
       run: |
         git submodule update --recursive
+        npm install -g postcss-cli
+        npm install -g autoprefixer
         hugo
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         cd public
-        git commit -m "Build site" -a
+        [[ -z $(git status -s) ]] || git commit -m "Build site" -a
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
