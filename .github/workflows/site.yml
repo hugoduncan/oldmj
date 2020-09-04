@@ -18,7 +18,7 @@ jobs:
     - name: build site
       run: |
         git submodule update --recursive
-        hug
+        hugo
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
