@@ -168,11 +168,17 @@ jobs:
         name: makejack-${{ env.MAKEJACK_VERSION }}-macos-amd64.zip
         path: artifacts/makejack-${{ env.MAKEJACK_VERSION }}-macos-amd64.zip
         if-no-files-found: error
-    - name: Upload jar artifact
+    - name: Upload API jar artifact
       uses: actions/upload-artifact@v2
       with:
         name: makejack-${{ env.MAKEJACK_VERSION }}.jar
         path: target/makejack-${{ env.MAKEJACK_VERSION }}.jar
+        if-no-files-found: error
+    - name: Upload tools jar artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: makejack.tools-${{ env.MAKEJACK_VERSION }}.jar
+        path: tools/target/makejack.tools-${{ env.MAKEJACK_VERSION }}.jar
         if-no-files-found: error
     - name: Upload mj artifact
       uses: actions/upload-artifact@v2
@@ -223,10 +229,15 @@ jobs:
         draft: true
         prerelease: true
 
-    - name: Download jar artifact
+    - name: Download API jar artifact
       uses: actions/download-artifact@v2
       with:
         name: makejack-${{ env.MAKEJACK_VERSION }}.jar
+
+    - name: Download tools jar artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: makejack.tools-${{ env.MAKEJACK_VERSION }}.jar
 
     - name: Download linux artifact
       uses: actions/download-artifact@v2
@@ -242,8 +253,8 @@ jobs:
       # it's ID to get its outputs object, which include a
       # `upload_url`. See this blog post for more info:
       # https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-    - name: Upload Jar
-      id: upload-release-asset-jar
+    - name: Upload API Jar
+      id: upload-release-asset-api-jar
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -251,6 +262,16 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: makejack-${{ env.MAKEJACK_VERSION }}.jar
         asset_name: makejack-${{ env.MAKEJACK_VERSION }}.jar
+        asset_content_type: application/java-archive
+    - name: Upload tools Jar
+      id: upload-release-asset-tools-jar
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: makejack.tools-${{ env.MAKEJACK_VERSION }}.jar
+        asset_name: makejack.tools-${{ env.MAKEJACK_VERSION }}.jar
         asset_content_type: application/java-archive
     - name: Upload linux
       id: upload-release-asset-linux
