@@ -12,9 +12,9 @@ jobs:
   build-linux:
     name: Build linux
     runs-on: ubuntu-latest
-    container: oracle/graalvm-ce:20.0.0-java11
+    container: oracle/graalvm-ce:20.2.0-java11
     env:
-      GRAALVM_HOME: /opt/graalvm-ce-java11-20.0.0
+      GRAALVM_HOME: /opt/graalvm-ce-java11-20.2.0
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -89,7 +89,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: macos-latest
     env:
-      GRAALVM_HOME: /Users/runner/graalvm-ce-java11-20.1.0/Contents/Home
+      GRAALVM_HOME: /Users/runner/graalvm-ce-java11-20.2.0/Contents/Home
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -98,12 +98,12 @@ jobs:
       run: |
         cd ~
         pwd
-        curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java11-darwin-amd64-20.1.0.tar.gz
-        tar xzf graalvm-ce-java11-darwin-amd64-20.1.0.tar.gz
+        curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.2.0/graalvm-ce-java11-darwin-amd64-20.2.0.tar.gz
+        tar xzf graalvm-ce-java11-darwin-amd64-20.2.0.tar.gz
         ls -la
-        ls -la graalvm-ce-java11-20.1.0
-        ls -la graalvm-ce-java11-20.1.0/Contents
-        ls -la graalvm-ce-java11-20.1.0/Contents/Home
+        ls -la graalvm-ce-java11-20.2.0
+        ls -la graalvm-ce-java11-20.2.0/Contents
+        ls -la graalvm-ce-java11-20.2.0/Contents/Home
 
     - name: install native-image
       run: ${GRAALVM_HOME}/bin/gu install native-image
