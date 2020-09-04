@@ -63,11 +63,7 @@
 
 
   (println "building version source namespace")
-  (let [res (sh "clojure"
-                "-e" (str '(do
-                             (require '[makejack.impl.build-version :as bv])
-                             (bv/build-version)
-                             (shutdown-agents))))]
+  (let [res (sh "clojure" "-m" "makejack.impl.build-version")]
     (println (:out res))
     (println (:err res))
     (when (pos? (:exit res))

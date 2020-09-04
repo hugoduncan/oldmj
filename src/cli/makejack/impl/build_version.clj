@@ -59,3 +59,7 @@
   (require 'makejack.impl.version :reload)
   (let [info-var (ns-resolve 'makejack.impl.version 'info)]
     @info-var))
+
+(defn -main [& args]
+  (build-version)
+  (shutdown-agents))
