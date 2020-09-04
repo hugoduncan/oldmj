@@ -1,4 +1,4 @@
-{:version         "0.0.1-alpha1"
+{:version         "0.0.1-alpha1-SNAPSHOT"
  :name            "makejack"
  :main            makejack.main
  :script-name     "mj-script"
