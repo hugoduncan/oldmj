@@ -87,4 +87,11 @@
               :main-opts ["-m" "kaocha.runner"]
               :aliases [:dev :test]
               :options {:out :inherit
-                        :forward-options false}}}]}
+                        :forward-options false}}
+       :version-ns {:doc "Write the version info namespace"
+                    :invoker :clojure
+                    :main-opts ["-e" (do
+                                       (require '[makejack.impl.build-version :as bv])
+                                       (bv/build-version)
+                                       (shutdown-agents))]
+                    :options {:forward-options false}}}]}

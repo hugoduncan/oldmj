@@ -1,4 +1,5 @@
-{:version         "0.0.1-alpha1-SNAPSHOT"
+{:version-map     #include "version.edn"
+ :version         #version-string #ref [:version-map]
  :name            "makejack"
  :main            makejack.main
  :script-name     "mj-script"

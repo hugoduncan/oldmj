@@ -47,12 +47,34 @@
   </repositories>
   </project>")
 
+(defn format-version-map
+  "Format a version map as a string."
+  [{:keys [major minor incremental qualifier]}]
+  (cond-> (str major)
+    minor (str "." minor)
+    incremental (str "." incremental)
+    qualifier (str "-" qualifier)))
+
 ;;; Get the project version
 (println "Get version")
-(let [project (aero/read-config "project.edn")
-      version (:version project)]
+(let [version-map (aero/read-config "version.edn")
+      version (format-version-map version-map)]
   (println "version" version)
 
+
+  (println "building version source namespace")
+  (let [res (sh "clojure"
+                "-e" (str '(do
+                             (require '[makejack.impl.build-version :as bv])
+                             (bv/build-version)
+                             (shutdown-agents))))]
+    (println (:out res))
+    (println (:err res))
+    (when (pos? (:exit res))
+      (binding [*out* *err*]
+        (println "failed")
+        (println (:err res)))
+      (System/exit (:exit res))))
 
 ;;;  Build and install API jar
 
