@@ -2,8 +2,8 @@
 # sequentially or in parallel
 on:
   push:
-    branches:
-      - 'master'
+    # branches:
+    #   - 'master'
 
 name: Build site
 
@@ -18,6 +18,8 @@ jobs:
     - name: build site
       run: |
         git submodule update --recursive
+        npm install -g postcss-cli
+        npm install -g autoprefixer
         hugo
     - name: Commit files
       run: |
