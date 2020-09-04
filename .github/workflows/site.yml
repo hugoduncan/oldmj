@@ -2,7 +2,7 @@
 # sequentially or in parallel
 on:
   push:
-    branch:
+    branches:
       - 'master'
 
 name: Build site
