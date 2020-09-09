@@ -8,8 +8,8 @@
             CopyOption
             Files
             LinkOption Path Paths
-            StandardCopyOption];
-           [java.nio.file.attribute FileAttribute PosixFilePermission]
+            StandardCopyOption]
+           [java.nio.file.attribute FileAttribute PosixFilePermission];
            [java.security #_DigestInputStream MessageDigest]))
 
 ;; bb doesn't like this
@@ -208,7 +208,7 @@
 (defn delete-recursively!
   [path]
   (let [paths (->> (list-paths path)
-                 (sort-by identity (java.util.Comparator/reverseOrder))
+                 (sort-by identity (comp - compare))
                  vec)]
     (doseq [^Path path paths]
       (.delete (.toFile path)))))
