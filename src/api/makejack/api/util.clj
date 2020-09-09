@@ -196,7 +196,7 @@
   ;; (->> (Files/walk (as-path path) fvos)
   ;;    (.iterator)
   ;;    iterator-seq)
-  (->> (file-seq (io/as-file path))
+  (->> (file-seq (io/file path))
      (map as-path)))
 
 (defn delete-file!
