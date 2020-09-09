@@ -1,23 +1,23 @@
 {:deps
- {aero                      {:mvn/version "1.1.6"}
-  babashka/babashka.process {:sha "346f384584f4d4a5627729cbb23f69cf3b7b3ca5"
+ {aero/aero                 {:mvn/version "1.1.6"}
+  babashka/babashka.process {:sha     "346f384584f4d4a5627729cbb23f69cf3b7b3ca5"
                              :git/url "https://github.com/babashka/babashka.process"}
   ;; clojure always gets put into the deps, so we include it anyway
   org.clojure/clojure       {:mvn/version "1.10.2-alpha1"}
   org.clojure/tools.cli     {:mvn/version "1.0.194"}
-  digest                    {:mvn/version "1.4.4"}}
+  digest/digest             {:mvn/version "1.4.4"}}
  :paths   ["src/api" "src/cli"]
- :aliases {:compile  {:extra-paths ["target/classes"]
-                      :jvm-opts    ["-Dclojure.compiler.direct-linking=true"
-                                    "-Dclojure.spec.skip-macros=true"
-                                    "-Dclojure.spec.compile-asserts=false"]
+ :aliases {:compile  {:extra-paths         ["target/classes"]
+                      :jvm-opts            ["-Dclojure.compiler.direct-linking=true"
+                                            "-Dclojure.spec.skip-macros=true"
+                                            "-Dclojure.spec.compile-asserts=false"]
                       :classpath-overrides {org.clojure/core.specs.alpha nil}}
            :jar      {:paths ["src/api"]}
            :uberjar  {:extra-paths ["resources"]}
            :api-docs {:extra-paths ["src-dev"]
                       :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
-           :dev      {:extra-deps {codox {:mvn/version "0.10.6"}}
+           :dev      {:extra-deps  {codox/codox {:mvn/version "0.10.6"}}
                       :extra-paths ["test-resources"]}
            :test     {:extra-deps
-                      {lambdaisland/kaocha {:mvn/version "1.0.672"}
+                      {lambdaisland/kaocha           {:mvn/version "1.0.672"}
                        lambdaisland/kaocha-cloverage {:mvn/version "1.0.63"}}}}}
