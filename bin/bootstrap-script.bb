@@ -10,7 +10,7 @@
 (def API-POM "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>
   <project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\" >
   <modelVersion>4.0.0</modelVersion>
-  <groupId>makejack</groupId>
+  <groupId>org.hugoduncan</groupId>
   <artifactId>makejack</artifactId>
   <version>%s</version>
   <name>makejack</name>
@@ -104,7 +104,7 @@
   (let [res (sh "mvn"
                 "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
                 (str "-Dfile=target/makejack-" version ".jar")
-                "-DgroupId=makejack"
+                "-DgroupId=org.hugoduncan"
                 "-DartifactId=makejack"
                 (str "-Dversion=" version)
                 "-Dpackaging=jar")]
