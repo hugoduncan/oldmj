@@ -76,7 +76,7 @@
                      "--profile" ":jar"]}
 
    :uberjar {:doc       "Build an uberjar, "
-             :invoker   :babashka
+             :invoker   :clojure
              :deps      mj-tools
              :main-opts ["-m" "makejack.tools.jar"
                          "--profile" ":uberjar"]}

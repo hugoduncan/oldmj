@@ -1,4 +1,7 @@
 {:version-map     #include "../version.edn"
  :version         #version-string #ref [:version-map]
  :name     "makejack.tools"
- :group-id "makejack"}
+ :group-id "makejack"
+ :repository {:url
+              "http://localhost:8080/repo"
+              #_"https://clojars.org/repo"}}
