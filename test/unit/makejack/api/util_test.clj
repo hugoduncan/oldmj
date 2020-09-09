@@ -1,5 +1,6 @@
 (ns makejack.api.util-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [clojure.string :as str]
+            [clojure.test :refer [deftest is testing]]
             [makejack.api.util :as util])
   (:import [java.io File]
            [java.nio.file
@@ -7,6 +8,49 @@
             LinkOption Path Paths];
            [java.nio.file.attribute FileAttribute PosixFilePermission]))
 
+
+(deftest make-temp-path-path-test
+  (testing "with default options creates a path with tmp prefix and .tmp suffix"
+    (let [path (util/make-temp-path {})]
+      (is (util/file-exists? path))
+      (is (str/starts-with? (str (util/filename path)) "tmp"))
+      (is (str/ends-with? (str (util/filename path)) ".tmp"))
+      (util/delete-file! path)))
+  (testing "with sxplicit options creates a path with the given prefix and suffix"
+    (let [path (util/make-temp-path {:prefix "pre" :suffix ".sfx"})]
+      (is (util/file-exists? path))
+      (is (str/starts-with? (str (util/filename path)) "pre"))
+      (is (str/ends-with? (str (util/filename path)) ".sfx"))
+      (util/delete-file! path)))
+  (testing "with string option creates a path with the given prefix prefix"
+    (let [path (util/make-temp-path "pref")]
+      (is (util/file-exists? path))
+      (is (str/starts-with? (str (util/filename path)) "pref"))
+      (util/delete-file! path)))
+  (testing "with directory option creates a path in the given directory"
+    (let [dir (Files/createTempDirectory "xyz" util/empty-file-attributes)
+          path (util/make-temp-path "pref")]
+      (is (util/file-exists? path))
+      (is (str/starts-with? (str (util/filename path)) "pref"))
+      (util/delete-file! path))))
+
+(deftest with-temp-path-test
+  (let [paths (volatile! [])]
+    (util/with-temp-path [path {}]
+      (vreset! paths path)
+      (is (util/file-exists? path))
+      (is (str/starts-with? (str (util/filename path)) "tmp"))
+      (is (str/ends-with? (str (util/filename path)) ".tmp")))
+    (is (not (util/file-exists? @paths)))
+
+    (util/with-temp-path [path {}
+                          path2 "pref"]
+      (is (util/file-exists? path))
+      (is (util/file-exists? path2))
+      (vreset! paths [path path2])
+      (is (str/starts-with? (str (util/filename path2)) "pref")))
+    (is (not (util/file-exists? (first @paths))))
+    (is (not (util/file-exists? (second @paths))))))
 
 (deftest delete-recursive-test
   (let [file-attributes (into-array FileAttribute [])
@@ -17,7 +61,7 @@
         (Files/createFile
           (util/path dir (str sub-dir) (str file))
           (into-array FileAttribute []))))
-    (util/delete-recursively (str dir))
+    (util/delete-recursively! (str dir))
     (is (not (util/file-exists? dir))
         (str dir))))
 
@@ -36,10 +80,10 @@
 
 
 (deftest file-hashes-test
-  (util/with-temp-file [f "file-hashes-test"]
-    (spit f "something to hash")
-    (let [hashes (util/file-hashes f)]
-      (is (= "6F4815FDF1F1FD3F36AC295BF39D26B4" (:md5 hashes))
+  (util/with-temp-path [p "file-hashes-test"]
+    (spit (util/as-file p) "something to hash")
+    (let [hashes (util/file-hashes p)]
+      (is (= "6f4815fdf1f1fd3f36ac295bf39d26b4" (:md5 hashes))
           "md5 matches")
-      (is (= "72668BC961B0A78BFA1633F6141BCEA69CA37468" (:sha1 hashes))
+      (is (= "72668bc961b0a78bfa1633f6141bcea69ca37468" (:sha1 hashes))
           "sha1 matches"))))
