@@ -17,8 +17,7 @@
     (makejack/babashka
       aliases
       {}
-      (-> ["-m" (str main)]
-         (into ["--uberscript" (str path)]))
+      ["--uberscript" (str path) "-m" (str main) ]
       {:with-project-deps? true})
 
     (when (:script-shebang? project)

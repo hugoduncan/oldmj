@@ -100,12 +100,19 @@
     (fn ^Path [p] (.relativize root (path p)))))
 
 (defn source-files
-  "Return all source files under root.
+  "Return all source files under path-like.
   Return a sequence of File objects."
   [filter-fn path-like]
   (->> (file-seq (io/file (str path-like)))
      (filter filter-fn)
      (mapv (relative-to path-like))))
+
+(defn project-source-files
+  "Return all source files under path-like.
+  Return a sequence of File objects relative to the current directory."
+  [filter-fn path-like]
+  (->> (file-seq (io/file (str path-like)))
+     (filterv filter-fn)))
 
 (defn path->namespace
   "Return namespaces found under the given root path."

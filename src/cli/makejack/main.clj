@@ -54,5 +54,7 @@
 
       :else
       (binding [makejack/*verbose* (:verbose options)]
-        (apply-command (first arguments) (rest arguments) options)
-        (shutdown-agents)))))
+        (try
+          (apply-command (first arguments) (rest arguments) options)
+          (finally
+            (shutdown-agents)))))))

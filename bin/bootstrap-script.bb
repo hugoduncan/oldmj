@@ -177,10 +177,10 @@
         (System/exit (:exit res))))
 
     (println "rebuild script for shebang")
-    (let [res (sh "bb" "target/mj-script"
-                  "--verbose"
-                  "uberscript")]
+    (let [res (sh "bb" "target/mj-script" "--verbose" "uberscript")]
+      (println "rebuilt script for shebang" res)
       (println (:out res))
+      (println (:err res))
       (when (pos? (:exit res))
         (binding [*out* *err*]
           (println "failed")

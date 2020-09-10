@@ -19,27 +19,33 @@
 (defn clojure
   "Execute clojure"
   [args target-kw {:keys [mj project] :as _config} options]
-  (let [{:keys [tool-options]} (parse-args args)
-        target-config          (some-> mj :targets target-kw)
-        aliases                (-> []
+  (let [tool-options     (:tool-options (parse-args args))
+        target-config    (some-> mj :targets target-kw)
+        aliases          (-> []
                                   (into (:aliases target-config))
                                   (into (:aliases project))
                                   (into (:aliases options))
                                   (into (:aliases tool-options)))
-        deps-edn               (select-keys target-config [:deps])
-        options                (merge options (:options target-config))
-        forward-options?       (:forward-options options true)
-        repro?                 (:repro options true)
-        report                 (:report options "stderr")
-        args                   (cond-> []
-                                 repro? (conj "-Srepro")
-                                 report (into ["--report" report])
-                                 true (into (:main-opts target-config))
-                                 forward-options? (into ["-o" options]))]
+        deps-edn         (select-keys target-config [:deps])
+        options          (merge options (:options target-config))
+        forward-options? (:forward-options options true)
+        repro?           (:repro options true)
+        report           (:report options "stderr")
+        args             (cond-> (makejack/clojure-cli-args
+                                         {:deps (merge deps-edn
+                                                       (:Sdeps tool-options))
+                                          :repro repro?})
+                           (:main target-config)
+                           (into
+                             (makejack/clojure-cli-main-args
+                               {:report    report
+                                :aliases   aliases
+                                :main      (:main target-config)
+                                :main-args (cond-> []
+                                             forward-options?
+                                             (into ["-o" options])
+                                             true (into
+                                                    (:main-args target-config)))})))]
     (makejack/clojure
-      aliases
-      (merge deps-edn
-             (:Sdeps tool-options))
       args
-      options)
-    nil))
+      options)))

@@ -17,6 +17,7 @@
   [s]
   (binding [*out* *err*]
     (println s))
+  (shutdown-agents)
   (System/exit 1))
 
 (defn- load-deps* []
@@ -72,10 +73,57 @@
 (def process-option-keys
   [:dir :err :in :throw :out :wait])
 
+(defn clojure-cli-args
+  "Return a cli arguments vector given a map of cli options."
+  [{:keys [cp deps force repro threads verbose]}]
+  (cond-> []
+    cp      (into ["-Scp" cp])
+    deps    (into ["-Sdeps" (str deps)])
+    force   (conj "-Sforce")
+    repro   (conj "-Srepro")
+    threads (into ["-Sthreads" (str threads)])
+    verbose (conj "-Sverbose")))
+
+(defn clojure-cli-aliases-arg
+  [option aliases {:keys [elide-when-no-aliases] :or {elide-when-no-aliases false}}]
+  (if (or (seq aliases) (not elide-when-no-aliases))
+    (str option (str/join (mapv pr-str aliases)))))
+
+(defn ^:no-doc keypaths-in [m]
+  (if (or (not (map? m))
+          (empty? m))
+    '(())
+    (for [[k v] m
+          subkey (keypaths-in v)]
+      (cons k subkey))))
+
+(defn ^:no-doc keypath-values [m]
+  (let [keypaths (mapv vec (keypaths-in m))]
+    (vec (mapcat
+           vector
+           keypaths
+           (map (partial get-in m) keypaths)))))
+
+(defn clojure-cli-exec-args
+  "Return a cli arguments vector given an exec function to execute."
+  [{:keys [aliases exec-fn exec-args]}]
+  (cond-> [(clojure-cli-aliases-arg "-X" aliases {})]
+    exec-fn (conj (str exec-fn))
+    exec-args (into (map str (keypath-values exec-args)))))
+
+(defn clojure-cli-main-args
+  "Return a cli arguments vector given an main function to execute."
+  [{:keys [aliases expr main main-args report]}]
+  (cond-> []
+    (seq aliases) (conj (clojure-cli-aliases-arg
+                          "-A" aliases {:elide-when-no-aliases true}))
+    report        (into ["--report" report])
+    expr          (into ["-e" (str expr)])
+    main          (into ["-m" (str main)])
+    main-args     (into main-args)))
+
 (defn clojure
   "Execute clojure process.
-
-  aliases is a vector of keywords with deps.edn aliases to use.
 
   deps ia s map with external dependencies, as specifed on the :deps key
   of deps.edn.
@@ -84,11 +132,8 @@
 
   options is a map of options, as specifed in babashka.process/process.
   Defaults to {:err :inherit}."
-  [aliases deps args options]
-  (let [args (cond-> ["clojure"]
-               (not-empty aliases) (conj (str "-A" (str/join ":" aliases)))
-               deps                (into ["-Sdeps" (str deps)])
-               args                (into args))
+  [args options]
+  (let [args (into ["clojure"] args)
         args (mapv str args)]
     (when *verbose*
       (apply println args))
@@ -108,12 +153,12 @@
   of deps.edn."
   [aliases deps]
   (let [args (cond-> ["clojure"]
-               (not-empty aliases) (conj (str "-A:" (str/join ":" aliases)))
+               (not-empty aliases) (conj (clojure-cli-aliases-arg
+                                           "-A" aliases {:elide-when-no-aliases true}))
                deps                (into ["-Sdeps" (str {:deps deps})])
                true                (conj "-Spath"))
         _    (when *verbose* (apply println args))
         res  (process/process args {:err :inherit})]
-
     (-> (:out res)
        (str/replace "\n" ""))))
 

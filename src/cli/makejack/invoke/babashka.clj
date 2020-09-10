@@ -15,7 +15,8 @@
         forward-options? (:forward-options options true)
         args             (cond-> []
                            form                  (into ["-e" (str form)])
-                           true                  (into (:main-opts target-config))
+                           (:main target-config) (into ["-m" (:main target-config)])
+                           true                  (into (:main-args target-config))
                            forward-options?      (into ["-o" options])
                            (:args target-config) (into (:args target-config)))
         options          (merge options
