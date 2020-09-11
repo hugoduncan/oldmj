@@ -47,8 +47,8 @@
   {:compile {:doc       "AOT compilation of clojure sources."
              :invoker   :clojure
              :deps      mj-tools
-             :main-opts ["-m" "makejack.tools.compile"
-                         "--profile" ":compile"]}
+             :main      'makejack.tools.compile
+             :main-args ["--profile" ":compile"]}
 
    :clean {:doc     (tagged-literal
                       'join ["Remove the "
@@ -61,37 +61,37 @@
                 Creates    project.edn  and mj.edn  files if  they do not exist."
           :invoker   :babashka
           :deps      mj-tools
-          :main-opts ["-m" "makejack.tools.init"]}
+          :main      'makejack.tools.init}
 
    :pom {:doc       "Pom file creation or update."
          :invoker   :clojure
          :deps      mj-tools
-         :main-opts ["-m" "makejack.tools.pom"
-                     "--profile" ":pom"]}
+         :main      'makejack.tools.pom
+         :main-args ["--profile" ":pom"]}
 
    :jar {:doc       "Build a jar, "
          :invoker   :babashka
          :deps      mj-tools
-         :main-opts ["-m" "makejack.tools.jar"
-                     "--profile" ":jar"]}
+         :main      'makejack.tools.jar
+         :main-args ["--profile" ":jar"]}
 
    :uberjar {:doc       "Build an uberjar, "
              :invoker   :clojure
              :deps      mj-tools
-             :main-opts ["-m" "makejack.tools.jar"
-                         "--profile" ":uberjar"]}
+             :main      'makejack.tools.jar
+             :main-args ["--profile" ":uberjar"]}
 
    :javac {:doc       "Compile java sources."
            :invoker   :clojure
            :deps      mj-tools
-           :main-opts ["-m" "makejack.tools.javac"
-                       "--profile" ":javac"]}
+           :main      'makejack.tools.javac
+           :main-args ["--profile" ":javac"]}
 
    :uberscript {:doc       "Output a babashka uberscript."
                 :invoker   :babashka
                 :deps      mj-tools
-                :main-opts ["-m" "makejack.tools.uberscript"
-                            "--profile" ":uberscript"]}
+                :main      'makejack.tools.uberscript
+                :main-args ["--profile" ":uberscript"]}
 
    :binary
    {:doc       "GraalVM native-image compilation of jar file.
@@ -99,8 +99,8 @@
          See https://www.graalvm.org/reference-manual/native-image/Configuration/."
     :invoker   :clojure
     :deps      mj-tools
-    :main-opts ["-m" "makejack.tools.graal-compile"
-                "--profile" ":binary"]}})
+    :main      'makejack.tools.graal-compile
+    :main-args ["--profile" ":binary"]}})
 
 (def default-mj
   {:targets (dissoc default-targets :clean)})

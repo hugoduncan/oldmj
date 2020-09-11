@@ -1,5 +1,5 @@
-#mj {:project #project {:profile :jar}  ; helper for install target
-     :doc "Use `mj uberscript` to build an babashka uberscript.
+#mj {:project #project {:profile :jar} ; helper for install target
+     :doc     "Use `mj uberscript` to build an babashka uberscript.
           TODO - make this appear in `mj --help` output"
      :targets
      #merge
@@ -10,8 +10,7 @@
         :aliases [:api-docs]
         :deps    {codox {:mvn/version "0.10.6"}}
         :options {:forward-options false}
-        :main-opts
-        ["-e" (do (require '[codox.main :as codox]
+        :expr    (do (require '[codox.main :as codox]
                            'makejack.doc.api-writer)
                   (codox/generate-docs
                     {:metadata    {:doc/format :markdown}
@@ -20,24 +19,23 @@
                      :version     #ref [:project :version]
                      :namespaces  [#regex "^makejack\\.api\\."]
                      :writer      'makejack.doc.api-writer/write-docs
-                     }))]}
+                     }))}
        :invoker-doc
        {:doc     "Generate invoker documentation from sources."
         :invoker :clojure
         :aliases [:api-docs]
         :deps    {codox {:mvn/version "0.10.6"}}
         :options {:forward-options false}
-        :main-opts
-        ["-e" (do (require '[codox.main :as codox]
-                           'makejack.doc.invoker-writer)
-                  (codox/generate-docs
-                    {:metadata    {:doc/format :markdown}
-                     :output-path "site"
-                     :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
-                     :version     #ref [:project :version]
-                     :namespaces  [#regex "^makejack\\.invoke\\.[a-z_]+$"]
-                     :writer      'makejack.doc.invoker-writer/write-docs
-                     }))]}
+        :expt    (do (require '[codox.main :as codox]
+                              'makejack.doc.invoker-writer)
+                     (codox/generate-docs
+                       {:metadata    {:doc/format :markdown}
+                        :output-path "site"
+                        :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                        :version     #ref [:project :version]
+                        :namespaces  [#regex "^makejack\\.invoke\\.[a-z_]+$"]
+                        :writer      'makejack.doc.invoker-writer/write-docs
+                        }))}
        :tool-doc
        {:doc     "Generate tool documentation from sources."
         :invoker :clojure
@@ -45,8 +43,7 @@
         :deps    {codox {:mvn/version "0.10.6"}}
         :options {:forward-options false
                   :dir             "tools"}
-        :main-opts
-        ["-e" (do (require '[codox.main :as codox]
+        :expr    (do (require '[codox.main :as codox]
                            'makejack.doc.tool-writer)
                   (codox/generate-docs
                     {:metadata    {:doc/format :markdown}
@@ -55,40 +52,40 @@
                      :version     #ref [:project :version]
                      :namespaces  [#regex "^makejack\\.tools\\.[a-z_]+$"]
                      :writer      'makejack.doc.tool-writer/write-docs
-                     }))]}
-       :build   {:doc     "pom, compile, uberjar and binary"
-                 :invoker :chain
-                 :targets [:pom :compile :uberjar :binary]}
-       :build-api {:doc     "pom, jar and install"
-                   :invoker :chain
-                   :targets [:pom :jar :install]}
-       :site    {:doc     "Build the static site for github pages"
-                 :invoker :shell
-                 :args    ["hugo"]
-                 :options {:out :inherit}}
-       :install {:doc     "Install the API jar into the local repository.
+                     }))}
+       :build      {:doc     "pom, compile, uberjar and binary"
+                    :invoker :chain
+                    :targets [:pom :compile :uberjar :binary]}
+       :build-api  {:doc     "pom, jar and install"
+                    :invoker :chain
+                    :targets [:pom :jar :install]}
+       :site       {:doc     "Build the static site for github pages"
+                    :invoker :shell
+                    :args    ["hugo"]
+                    :options {:out :inherit}}
+       :install    {:doc     "Install the API jar into the local repository.
                           Requires maven to be installed."
-                 :invoker :shell
-                 :args    ["mvn"
-                           "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
-                           #join ["-Dfile="
-                                  #ref [:target-path]
-                                  "/"
-                                  #ref [:project :jar-name]]
-                           #join ["-DgroupId="
-                                  #ref [:project :group-id]]
-                           #join ["-DartifactId="
-                                  #ref [:project :artifact-id]]
-                           #join ["-Dversion="
-                                  #ref [:project :version]]
-                           "-Dpackaging=jar"]}
-       :test {:doc "Run tests"
-              :invoker :clojure
-              :main-opts ["-m" "kaocha.runner"]
-              :aliases [:dev :test]
-              :options {:out :inherit
-                        :forward-options false}}
-       :version-ns {:doc "Write the version info namespace"
+                    :invoker :shell
+                    :args    ["mvn"
+                              "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
+                              #join ["-Dfile="
+                                     #ref [:target-path]
+                                     "/"
+                                     #ref [:project :jar-name]]
+                              #join ["-DgroupId="
+                                     #ref [:project :group-id]]
+                              #join ["-DartifactId="
+                                     #ref [:project :artifact-id]]
+                              #join ["-Dversion="
+                                     #ref [:project :version]]
+                              "-Dpackaging=jar"]}
+       :test       {:doc     "Run tests"
                     :invoker :clojure
-                    :main-opts ["-m" "makejack.impl.build-version"]
+                    :main    kaocha.runner
+                    :aliases [:dev :test]
+                    :options {:out             :inherit
+                              :forward-options false}}
+       :version-ns {:doc     "Write the version info namespace"
+                    :invoker :clojure
+                    :main    makejack.impl.build-version
                     :options {:forward-options false}}}]}

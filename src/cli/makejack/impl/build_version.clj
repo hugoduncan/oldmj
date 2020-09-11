@@ -12,7 +12,7 @@
 
 (defn resolved-deps
   []
-  (let [deps-str (:out (makejack/clojure [] nil ["-Stree"] {}))]
+  (let [deps-str (:out (makejack/clojure ["-Stree"] {}))]
     (->> deps-str
        str/split-lines
        (mapv str/trim)

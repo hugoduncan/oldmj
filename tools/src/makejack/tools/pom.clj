@@ -51,7 +51,13 @@
         artifact-id   (:artifact-id project name)
         scm           (:scm project)
         target-path   (:target-path mj)]
-    (makejack/clojure aliases nil ["-Spom"] {})
+    (makejack/clojure
+      (into
+        (makejack/clojure-cli-args {:repro true})
+        (cond-> []
+          (seq aliases) (makejack/clojure-cli-aliases-arg "-A" aliases)
+          true          (conj "-Spom")))
+      {})
     (update-or-create-pom group-id artifact-id name version scm target-path)))
 
 

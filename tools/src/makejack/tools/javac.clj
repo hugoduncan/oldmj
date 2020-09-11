@@ -1,19 +1,30 @@
 (ns makejack.tools.javac
-  (:require [makejack.api.core :as makejack]
+  (:require [clojure.string :as str]
+            [makejack.api.core :as makejack]
             [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util]))
 
 (defn javac
   "Compile java sources."
-  [_args {:keys [mj project]} _options]
-  (let [java-paths      (:java-paths project)
-        javac-options   (:javac-options project)
-        source-files    (mapcat
-                          (partial util/source-files util/java-source-file?)
-                          java-paths)
-        args            (-> ["javac"]
-                           (into javac-options)
-                           (into source-files))]
+  [_args {:keys [mj project]} options]
+  (let [java-paths    (:java-paths project)
+        javac-options (:javac-options project)
+        source-files  (->> java-paths
+                         (mapcat
+                           (partial util/project-source-files util/java-source-file?))
+                         (mapv str))
+        aliases       (-> []
+                         (into (:aliases project))
+                         (into (:aliases options)))
+        deps          (:deps options)
+        classpath     (makejack/classpath aliases deps)
+        args          (-> ["javac"
+                          "-classpath" classpath
+                          "-sourcepath" (str/join ":" java-paths)
+                          "-d" (:classes-path mj)]
+                         (into javac-options)
+                         (into source-files))]
+    (util/mkdirs (:classes-path mj))
     (makejack/sh args {})))
 
 (def extra-options
@@ -26,5 +37,7 @@
         (tool-options/parse-options-and-apply-to-config
           args extra-options "javac [options]")]
     (binding [makejack/*verbose* (:verbose options)]
-      (javac arguments config options))
-    (shutdown-agents)))
+      (try
+        (javac arguments config options)
+        (finally
+          (shutdown-agents))))))
