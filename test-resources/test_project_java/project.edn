@@ -1,0 +1,7 @@
+{:name "java"
+ :version "0.1.0"
+ :main my.main
+ :jar-type #profile {:default :jar
+                     :uberjar :uberjar}
+ :java-paths ["src/java"]
+ :binary "test-with-java"}
