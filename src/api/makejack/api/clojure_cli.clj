@@ -46,12 +46,6 @@
        #(in-version-range? version (feature-ranges %))
        (keys feature-ranges)))))
 
-;; (features*)
-;; (features* "1.10.1.561")
-;; (features* "1.10.1.600") https://insideclojure.org/2020/07/28/clj-exec/
-;; (features* "1.10.1.672") https://insideclojure.org/2020/09/04/clj-exec/
-;; (features* "1.10.1.681")
-
 (def ^{:doc (:doc (meta #'features*))
        :arglists (:arglists (meta #'features*))}
   features

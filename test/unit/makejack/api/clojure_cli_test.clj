@@ -66,3 +66,14 @@
   (is (not (clojure-cli/version-less [1 1 0 0] [1 0 0 1])))
   (is (clojure-cli/version-less [1 1 0 0] [1 3 0 1]))
   (is (clojure-cli/version-less [1 1 0 0] [1 1 3 1])))
+
+
+(deftest known-version-test
+  (is (set? (clojure-cli/features*)))
+  (is (= #{} (clojure-cli/features* "1.10.1.561")))
+  (is (= #{:single-alias-exec-fn}
+         (clojure-cli/features* "1.10.1.600")))
+  (is (= #{:clojue-basis-property :exec-fn :explicit-main}
+         (clojure-cli/features* "1.10.1.672")))
+  (is (= #{:clojue-basis-property :exec-fn :explicit-main}
+         (clojure-cli/features* "1.10.1.681"))))
