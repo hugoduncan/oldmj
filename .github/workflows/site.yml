@@ -15,7 +15,8 @@ jobs:
     - name: Install hugo
       run: brew install hugo
     - uses: actions/checkout@v2
-      submodules: true
+      with:
+        submodules: true
     - name: build site
       run: |
         npm install -g postcss-cli
