@@ -86,9 +86,8 @@
                    :built-at date-time
                    :deps     deps
                    :vm-info  vm}]
-    (spit "src/cli/makejack/impl/version.clj"
-          (str ns-def "\n"
-               `(def ~'info '~info) "\n"))))
+    (str ns-def "\n"
+         `(def ~'info '~info) "\n")))
 
 (defn info []
   (require 'makejack.impl.version :reload)

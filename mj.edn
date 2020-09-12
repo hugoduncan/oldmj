@@ -11,22 +11,22 @@
         :deps    {codox {:mvn/version "0.10.6"}}
         :options {:forward-options false}
         :expr    (do (require '[codox.main :as codox]
-                           'makejack.doc.api-writer)
-                  (codox/generate-docs
-                    {:metadata    {:doc/format :markdown}
-                     :output-path "site"
-                     :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
-                     :version     #ref [:project :version]
-                     :namespaces  [#regex "^makejack\\.api\\."]
-                     :writer      'makejack.doc.api-writer/write-docs
-                     }))}
+                              'makejack.doc.api-writer)
+                     (codox/generate-docs
+                       {:metadata    {:doc/format :markdown}
+                        :output-path "site"
+                        :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                        :version     #ref [:project :version]
+                        :namespaces  [#regex "^makejack\\.api\\."]
+                        :writer      'makejack.doc.api-writer/write-docs
+                        }))}
        :invoker-doc
        {:doc     "Generate invoker documentation from sources."
         :invoker :clojure
         :aliases [:api-docs]
         :deps    {codox {:mvn/version "0.10.6"}}
         :options {:forward-options false}
-        :expt    (do (require '[codox.main :as codox]
+        :expr    (do (require '[codox.main :as codox]
                               'makejack.doc.invoker-writer)
                      (codox/generate-docs
                        {:metadata    {:doc/format :markdown}
@@ -44,15 +44,15 @@
         :options {:forward-options false
                   :dir             "tools"}
         :expr    (do (require '[codox.main :as codox]
-                           'makejack.doc.tool-writer)
-                  (codox/generate-docs
-                    {:metadata    {:doc/format :markdown}
-                     :output-path "../site"
-                     :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
-                     :version     #ref [:project :version]
-                     :namespaces  [#regex "^makejack\\.tools\\.[a-z_]+$"]
-                     :writer      'makejack.doc.tool-writer/write-docs
-                     }))}
+                              'makejack.doc.tool-writer)
+                     (codox/generate-docs
+                       {:metadata    {:doc/format :markdown}
+                        :output-path "../site"
+                        :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                        :version     #ref [:project :version]
+                        :namespaces  [#regex "^makejack\\.tools\\.[a-z_]+$"]
+                        :writer      'makejack.doc.tool-writer/write-docs
+                        }))}
        :build      {:doc     "pom, compile, uberjar and binary"
                     :invoker :chain
                     :targets [:pom :compile :uberjar :binary]}
@@ -63,6 +63,9 @@
                     :invoker :shell
                     :args    ["hugo"]
                     :options {:out :inherit}}
+       :build-site {:doc     "api-doc, invoker-doc, tool-doc and site "
+                    :invoker :chain
+                    :targets [:api-doc :invoker-doc :tool-doc :site]}
        :install    {:doc     "Install the API jar into the local repository.
                           Requires maven to be installed."
                     :invoker :shell

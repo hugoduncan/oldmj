@@ -14,16 +14,23 @@ jobs:
     steps:
     - name: Install hugo
       run: brew install hugo
+    - name: Install clojure
+      run: brew install clojure
+    - name: Install babashka
+      run: brew install borkdude/brew/babashka
     - uses: actions/checkout@v2
       with:
         submodules: true
+    - name: build makejack script
+      run: |
+        bin/bootstrap-script --verbose
     - name: build site
       run: |
         npm install -g postcss-cli
         npm install -g autoprefixer
         #;git submodule update --init --recursive
+        target/mj-script build-site
         cd public
-        hugo
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"

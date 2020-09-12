@@ -3,6 +3,39 @@
   - {name: -main}
   - {name: compile}
   - {name: extra-options}
+- name: makejack.tools.deploy
+  publics:
+  - {name: -main}
+  - {name: base-request}
+  - {name: check-response}
+  - {name: credentials}
+  - {name: default-repos}
+  - {name: deploy}
+  - {name: deploy-dir}
+  - {name: deploy-metadata}
+  - {name: env-credentials}
+  - {name: extra-options}
+  - {name: generate-metadata-model}
+  - {name: gpg}
+  - {name: gpg-credentials}
+  - {name: gpg-credentials-path}
+  - {name: gpg-decrypt}
+  - {name: gpg-program}
+  - {name: interactive-credentials}
+  - {name: metadata-url-path}
+  - {name: multipart-map}
+  - {name: new-url}
+  - {name: paths-to-deploy}
+  - {name: prepare-path-deploy!}
+  - {name: put!}
+  - {name: read-gpg-file}
+  - {name: read-password}
+  - {name: read-with-prompt}
+  - {name: repository}
+  - {name: request-with-cookie}
+  - {name: url-credentials}
+  - {name: url-path}
+  - {name: url-with-path}
 - name: makejack.tools.init
   publics:
   - {name: -main}

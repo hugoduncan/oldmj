@@ -96,7 +96,3 @@
                  (merge opts (:form tl))))]
     {:aero.core/value value
      :aero.core/env (assoc env ks value)}))
-
-(defmethod print-method java.util.regex.Pattern
-  [^java.util.regex.Pattern v ^java.io.Writer w]
-  (.write w (pr-str (tagged-literal 'regex (.pattern v)))))
