@@ -73,7 +73,7 @@
   (is (= #{} (clojure-cli/features* "1.10.1.561")))
   (is (= #{:single-alias-exec-fn}
          (clojure-cli/features* "1.10.1.600")))
-  (is (= #{:clojue-basis-property :exec-fn :explicit-main}
+  (is (= #{:clojure-basis-property :exec-fn :explicit-main}
          (clojure-cli/features* "1.10.1.672")))
-  (is (= #{:clojue-basis-property :exec-fn :explicit-main}
+  (is (= #{:clojure-basis-property :exec-fn :explicit-main}
          (clojure-cli/features* "1.10.1.681"))))
