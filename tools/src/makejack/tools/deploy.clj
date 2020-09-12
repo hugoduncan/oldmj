@@ -98,7 +98,7 @@
 
 (defn gpg
   [args]
-  (let [res (makejack/sh (into [(gpg-program)] args) {})]
+  (let [res (makejack/process (into [(gpg-program)] args) {})]
     (:out res)))
 
 (defn gpg-decrypt [path-like]

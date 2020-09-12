@@ -12,30 +12,30 @@
 
 (deftest java-test
   (testing "mj javac"
-    (makejack/sh ["../../target/mj-script" "--verbose" "javac"]
-                 {:dir "test-resources/test_project_java"})
+    (makejack/process ["../../target/mj-script" "--verbose" "javac"]
+                      {:dir "test-resources/test_project_java"})
     (let [class-file (util/path
                        "test-resources" "test_project_java"
                        "target" "classes" "my" "Hello.class")]
       (testing "creates class file"
         (is (util/file-exists? class-file)))))
   (testing "mj compile"
-    (makejack/sh ["../../target/mj-script" "--verbose" "compile"]
-                 {:dir "test-resources/test_project_java"})
+    (makejack/process ["../../target/mj-script" "--verbose" "compile"]
+                      {:dir "test-resources/test_project_java"})
     (let [class-file (util/path
                        "test-resources" "test_project_java"
                        "target" "classes" "my" "main__init.class")]
       (testing "creates class file"
         (is (util/file-exists? class-file)))))
   (testing "mj pom"
-    (makejack/sh ["../../target/mj-script" "--verbose" "pom"]
-                 {:dir "test-resources/test_project_java"})
+    (makejack/process ["../../target/mj-script" "--verbose" "pom"]
+                      {:dir "test-resources/test_project_java"})
     (let [pom-file (util/path "test-resources" "test_project_java" "pom.xml")]
       (testing "creates pom"
         (is (util/file-exists? pom-file)))))
   (testing "mj uberjar"
-    (makejack/sh ["../../target/mj-script" "--verbose" "uberjar"]
-                 {:dir "test-resources/test_project_java"})
+    (makejack/process ["../../target/mj-script" "--verbose" "uberjar"]
+                      {:dir "test-resources/test_project_java"})
     (let [jar (util/path "test-resources" "test_project_java" "target"
                          "java-0.1.0-standalone.jar")]
       (testing "creates uberjar file"
@@ -50,13 +50,13 @@
         (with-open [jar-file (java.util.jar.JarFile. (str jar))]
           (is (.getJarEntry jar-file "my/Hello.class"))))
       (testing "can be invoked by clojure"
-        (let [res (makejack/sh
+        (let [res (makejack/process
                     ["clojure" "-Scp" "target/java-0.1.0-standalone.jar"
                      "-m" "my.main" "world"]
                     {:dir "test-resources/test_project_java"})]
           (= "Hello world" (:out res))))
       (testing "can be invoked by java"
-        (let [res (makejack/sh
+        (let [res (makejack/process
                     ["java" "-jar" "target/java-0.1.0-standalone.jar" "world"]
                     {:dir "test-resources/test_project_java"})]
           (= "hello" (:out res)))))))

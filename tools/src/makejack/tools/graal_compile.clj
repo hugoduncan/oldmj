@@ -24,7 +24,7 @@
         args         [(str (util/path graalvm-home "bin/native-image"))
                        "-jar" jar-path
                        (str "-H:Name=" bin-path)]]
-    (makejack/sh
+    (makejack/process
       args
       (when makejack/*verbose*
         {:out :inherit}))))

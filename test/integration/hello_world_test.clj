@@ -12,8 +12,8 @@
 
 (deftest hello-world-test
   (testing "mj init"
-    (makejack/sh ["../../target/mj-script" "init"]
-                 {:dir "test-resources/test_hello_world"})
+    (makejack/process ["../../target/mj-script" "init"]
+                      {:dir "test-resources/test_hello_world"})
     (let [project-edn (util/path "test-resources" "test_hello_world" "project.edn")
           mj-edn      (util/path "test-resources" "test_hello_world" "mj.edn")]
       (testing "creates mj.edn and project.edn"
@@ -23,7 +23,7 @@
         (let [config (aero/read-config
                        (java.io.StringReader.
                          (:out
-                          (makejack/sh
+                          (makejack/process
                             ["../../target/mj-script" "--pprint"]
                             {:dir "test-resources/test_hello_world"})))
                        (resolver "test_hello_world"))]
@@ -32,8 +32,8 @@
           (is (= (keys default-config/default-targets)
                  (keys (-> config :mj :targets))))))))
   (testing "mj jar"
-    (makejack/sh ["../../target/mj-script" "--verbose" "jar"]
-                 {:dir "test-resources/test_hello_world"})
+    (makejack/process ["../../target/mj-script" "--verbose" "jar"]
+                      {:dir "test-resources/test_hello_world"})
     (let [jar (util/path "test-resources" "test_hello_world" "target"
                          "test_hello_world-0.1.0.jar")]
       (testing "creates jar file"
