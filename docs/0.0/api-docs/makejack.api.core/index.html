@@ -203,6 +203,13 @@
                     </li>
 
                     <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.deploy/"
+                           class="pure-menu-link">
+                            makejack.tools.deploy
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
                         <a href="/docs/0.0/tool-docs/makejack.tools.init/"
                            class="pure-menu-link">
                             makejack.tools.init
@@ -252,6 +259,13 @@
             <div class="">
                 <ul class="pure-menu-list">
 
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.clojure-cli/"
+                           class="pure-menu-link">
+                            makejack.api.clojure-cli
+                        </a>
+                    </li>
+
                     <li class="pure-menu-item pure-menu-selected">
                         <a href="/docs/0.0/api-docs/makejack.api.core/"
                            class="pure-menu-link">
@@ -291,18 +305,17 @@
     <p>Note: no explicit windowa support.</p>
 </div>
 
-                        <div class="namespace-docs" id="content"><h1 class="anchor" id="top">makejack.api.core</h1><div class="doc"><div class="markdown"><p>Main API namespace for tools designed to work with project.edn and mj.edn</p></div></div><div class="public anchor" id="var-*verbose*"><h3>*verbose*</h3><h4 class="dynamic">dynamic</h4><div class="usage"></div><div class="doc"><div class="markdown"><p>Bound to true when <code>--verbose</code> is specified.</p></div></div></div><div class="public anchor" id="var-babashka"><h3>babashka</h3><div class="usage"><code>(babashka args options)</code></div><div class="doc"><div class="markdown"><p>Execute babashka process.</p>
+                        <div class="namespace-docs" id="content"><h1 class="anchor" id="top">makejack.api.core</h1><div class="doc"><div class="markdown"><p>Main API namespace for tools designed to work with project.edn and mj.edn</p></div></div><div class="public anchor" id="var-*print-edn-tagged-literals*"><h3>*print-edn-tagged-literals*</h3><h4 class="dynamic">dynamic</h4><div class="usage"></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-*verbose*"><h3>*verbose*</h3><h4 class="dynamic">dynamic</h4><div class="usage"></div><div class="doc"><div class="markdown"><p>Bound to true when <code>--verbose</code> is specified.</p></div></div></div><div class="public anchor" id="var-babashka"><h3>babashka</h3><div class="usage"><code>(babashka aliases deps args options)</code></div><div class="doc"><div class="markdown"><p>Execute babashka process.</p>
 <p>args is a vector of arguments to pass.</p>
 <p>options is a map of options, as specifed in babashka.process/process. Defaults to {:err :inherit}.</p></div></div></div><div class="public anchor" id="var-classpath"><h3>classpath</h3><div class="usage"><code>(classpath aliases deps)</code></div><div class="doc"><div class="markdown"><p>Returns the project classpath, with the given extra deps map.</p>
 <p>aliases is a vector of keywords with deps.edn aliases to use.</p>
-<p>deps ia s map with external dependencies, as specifed on the :deps key of deps.edn.</p></div></div></div><div class="public anchor" id="var-clojure"><h3>clojure</h3><div class="usage"><code>(clojure aliases deps args options)</code></div><div class="doc"><div class="markdown"><p>Execute clojure process.</p>
-<p>aliases is a vector of keywords with deps.edn aliases to use.</p>
+<p>deps ia s map with external dependencies, as specifed on the :deps key of deps.edn.</p></div></div></div><div class="public anchor" id="var-clojure"><h3>clojure</h3><div class="usage"><code>(clojure args options)</code></div><div class="doc"><div class="markdown"><p>Execute clojure process.</p>
 <p>deps ia s map with external dependencies, as specifed on the :deps key of deps.edn.</p>
 <p>args is a vector of arguments to pass.</p>
 <p>options is a map of options, as specifed in babashka.process/process. Defaults to {:err :inherit}.</p></div></div></div><div class="public anchor" id="var-default-jar-name"><h3>default-jar-name</h3><div class="usage"><code>(default-jar-name {:keys [jar-type], :as project})</code></div><div class="doc"><div class="markdown"><p>Helper to return the default jar file name.</p>
 <p>When the :jar-type key of the project map specifies :uberjar, then the name will be for an uberjar.</p></div></div></div><div class="public anchor" id="var-deps-paths"><h3>deps-paths</h3><div class="usage"><code>(deps-paths deps aliases)</code></div><div class="doc"><div class="markdown"><p>Helper to return the paths for deps with the given aliases applied.</p>
 <p>aliases is a vector of keywords with deps.edn aliases to use.</p>
-<p>Returns the :paths value, with :extra-paths from the specified aliases.</p></div></div></div><div class="public anchor" id="var-error"><h3>error</h3><div class="usage"><code>(error s)</code></div><div class="doc"><div class="markdown"><p>Exit with the given error message. Exits with error code 1,</p></div></div></div><div class="public anchor" id="var-load-config"><h3>load-config</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Load a map containing the project and the mj config.</p></div></div></div><div class="public anchor" id="var-load-config*"><h3>load-config*</h3><div class="usage"><code>(load-config* &amp; [options])</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-load-deps"><h3>load-deps</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Load the deps.edn file.</p></div></div></div><div class="public anchor" id="var-load-mj"><h3>load-mj</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Load the mj.edn file.</p></div></div></div><div class="public anchor" id="var-load-mj*"><h3>load-mj*</h3><div class="usage"><code>(load-mj* &amp; [options])</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-load-project*"><h3>load-project*</h3><div class="usage"><code>(load-project* &amp; [options])</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-process-option-keys"><h3>process-option-keys</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-resolve-source"><h3>resolve-source</h3><div class="usage"><code>(resolve-source {:keys [resolver], :as _options} value)</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-sh"><h3>sh</h3><div class="usage"><code>(sh args options)</code></div><div class="doc"><div class="markdown"><p>Execute a shell process.</p>
+<p>Returns the :paths value, with :extra-paths from the specified aliases.</p></div></div></div><div class="public anchor" id="var-error"><h3>error</h3><div class="usage"><code>(error s)</code></div><div class="doc"><div class="markdown"><p>Exit with the given error message. Exits with error code 1,</p></div></div></div><div class="public anchor" id="var-load-config"><h3>load-config</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Load a map containing the project and the mj config.</p></div></div></div><div class="public anchor" id="var-load-config*"><h3>load-config*</h3><div class="usage"><code>(load-config* &amp; [options])</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-load-deps"><h3>load-deps</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Load the deps.edn file.</p></div></div></div><div class="public anchor" id="var-load-mj"><h3>load-mj</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Load the mj.edn file.</p></div></div></div><div class="public anchor" id="var-load-mj*"><h3>load-mj*</h3><div class="usage"><code>(load-mj* &amp; [options])</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-load-project*"><h3>load-project*</h3><div class="usage"><code>(load-project* &amp; [options])</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-orgininal-pattern-print-method"><h3>orgininal-pattern-print-method</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-process-option-keys"><h3>process-option-keys</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-resolve-source"><h3>resolve-source</h3><div class="usage"><code>(resolve-source {:keys [resolver], :as _options} value)</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-sh"><h3>sh</h3><div class="usage"><code>(sh args options)</code></div><div class="doc"><div class="markdown"><p>Execute a shell process.</p>
 <p>args is a vector of shell arguments.</p>
 <p>options is a map of options, as specifed in babashka.process/process. Defaults to {:err :inherit}.</p></div></div></div></div>
                     </div>

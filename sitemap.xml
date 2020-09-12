@@ -22,6 +22,9 @@
     <loc>http://makejack.hugoduncan.org/docs/0.0/guide/invokers/</loc>
   </url>
   <url>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/api-docs/makejack.api.clojure-cli/</loc>
+  </url>
+  <url>
     <loc>http://makejack.hugoduncan.org/docs/0.0/api-docs/makejack.api.core/</loc>
   </url>
   <url>
@@ -44,6 +47,9 @@
   </url>
   <url>
     <loc>http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.compile/</loc>
+  </url>
+  <url>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.deploy/</loc>
   </url>
   <url>
     <loc>http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.init/</loc>
