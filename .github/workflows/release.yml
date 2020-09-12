@@ -52,7 +52,7 @@ jobs:
 
     - name: Build mj executable
       run: |
-        bin/bootstrap-script
+        bin/bootstrap-script --verbose
         ./target/mj-script build
         pwd
         ls -l
@@ -146,7 +146,7 @@ jobs:
 
     - name: Build mj executable
       run: |
-        bin/bootstrap-script
+        bin/bootstrap-script --verbose
         ./target/mj-script build
 
     # - name: Build mj jar

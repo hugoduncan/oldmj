@@ -1,6 +1,7 @@
 (ns makejack.invoke.clojure
   "Makejack tool to invoke clojure"
-  (:require [makejack.api.core :as makejack]))
+  (:require [makejack.api.clojure-cli :as clojure-cli]
+            [makejack.api.core :as makejack]))
 
 (def ^:private option-str->keyword
   {"-Sdeps" :sdeps
@@ -31,13 +32,13 @@
         forward-options? (:forward-options options true)
         repro?           (:repro options true)
         report           (:report options "stderr")
-        args             (cond-> (makejack/clojure-cli-args
-                                         {:deps (merge deps-edn
-                                                       (:Sdeps tool-options))
-                                          :repro repro?})
+        args             (cond-> (clojure-cli/args
+                                   {:deps (merge deps-edn
+                                                 (:Sdeps tool-options))
+                                    :repro repro?})
                            (:main target-config)
                            (into
-                             (makejack/clojure-cli-main-args
+                             (clojure-cli/main-args
                                {:report    report
                                 :aliases   aliases
                                 :main      (:main target-config)

@@ -1,7 +1,8 @@
 (ns makejack.tools.compile
   "AOT compilation"
   (:refer-clojure :exclude [compile])
-  (:require [makejack.api.core :as makejack]
+  (:require [makejack.api.clojure-cli :as clojure-cli]
+            [makejack.api.core :as makejack]
             [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util]))
 
@@ -40,8 +41,8 @@
     (util/mkdirs classes-path)
     (makejack/clojure
       (concat
-        (makejack/clojure-cli-args {:repro true})
-        (makejack/clojure-cli-main-args {:aliases aliases :expr form}))
+        (clojure-cli/args {:repro true})
+        (clojure-cli/main-args {:aliases aliases :expr form}))
       {})))
 
 (def extra-options

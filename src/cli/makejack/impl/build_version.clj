@@ -1,5 +1,6 @@
 (ns makejack.impl.build-version
   (:require [clojure.string :as str]
+            [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.core :as makejack]
             [makejack.api.util :as util]))
 
@@ -10,13 +11,47 @@
   []
   (str (java.time.Instant/now)))
 
-(defn resolved-deps
+(defn- build-lib-map-from-stree [s]
+  (let [[coord ver-or-repo sha] (str/split s #"\s+")]
+    (if sha
+      {(symbol coord) {:git/url ver-or-repo :sha sha}}
+      {(symbol coord) {:mvn/version ver-or-repo}})))
+
+(defn resolved-deps-with-stree
   []
-  (let [deps-str (:out (makejack/clojure ["-Stree"] {}))]
+  (let [deps-str (:out (makejack/clojure
+                         ["-Srepro" "-Stree"]
+                         {:out :string}))]
     (->> deps-str
        str/split-lines
        (mapv str/trim)
-       (mapv #(str/split % #"\s+")))))
+       (mapv build-lib-map-from-stree)
+       (into {}))))
+
+(defn filter-basis-dep
+  [[coord spec]]
+  [coord (dissoc spec :paths :dependents :deps/manifest :deps/root)])
+
+(defn resolved-deps-with-clojure-basis
+  []
+  (let [deps-str (:out
+                  (makejack/clojure
+                    (concat
+                      (clojure-cli/args {:repro true})
+                      (clojure-cli/main-args
+                        {:expr (clojure-cli/clojure-basis-form)}))
+                    {}))]
+    (->> deps-str
+       (clojure.edn/read-string)
+       :libs
+       (mapv filter-basis-dep)
+       (into {}))))
+
+(defn resolved-deps
+  []
+  (if (:clojure-basis-property (clojure-cli/features))
+    (resolved-deps-with-clojure-basis)
+    (resolved-deps-with-stree)))
 
 (defn vm-info
   []
@@ -53,7 +88,7 @@
                    :vm-info  vm}]
     (spit "src/cli/makejack/impl/version.clj"
           (str ns-def "\n"
-               `(def ~'info ~info) "\n"))))
+               `(def ~'info '~info) "\n"))))
 
 (defn info []
   (require 'makejack.impl.version :reload)
