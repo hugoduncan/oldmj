@@ -180,3 +180,14 @@
   (mapcat
     #(some-> deps :aliases % :extra-paths)
     aliases))
+
+(def ^:dynamic *print-edn-tagged-literals* nil)
+
+(def orgininal-pattern-print-method
+  (get-method print-method java.util.regex.Pattern))
+
+(defmethod print-method java.util.regex.Pattern
+  [^java.util.regex.Pattern value ^java.io.Writer writer]
+  (if *print-edn-tagged-literals*
+    (.write writer (pr-str (tagged-literal 'regex (.pattern value))))
+    (orgininal-pattern-print-method value writer)))

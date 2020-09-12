@@ -103,7 +103,8 @@
   (println "building version source namespace")
   (let [res (sh (-> ["clojure"]
                    (into (main-switches))
-                   (into ["makejack.impl.build-version"])))]
+                   (into ["makejack.impl.build-version"])
+                   (into verbose-args)))]
     (when verbose
       (println (:out res))
       (println (:err res)))

@@ -1,5 +1,18 @@
+- name: makejack.api.clojure-cli
+  publics:
+  - {name: aliases-arg}
+  - {name: args}
+  - {name: clojure-basis-form}
+  - {name: exec-args}
+  - {name: feature-ranges}
+  - {name: features}
+  - {name: features*}
+  - {name: main-args}
+  - {name: read-clojure-basis}
+  - {name: version}
 - name: makejack.api.core
   publics:
+  - {name: '*print-edn-tagged-literals*'}
   - {name: '*verbose*'}
   - {name: babashka}
   - {name: classpath}
@@ -13,6 +26,7 @@
   - {name: load-mj}
   - {name: load-mj*}
   - {name: load-project*}
+  - {name: orgininal-pattern-print-method}
   - {name: process-option-keys}
   - {name: resolve-source}
   - {name: sh}
@@ -25,17 +39,35 @@
   - {name: usage}
 - name: makejack.api.util
   publics:
+  - {name: as-file}
   - {name: chmod}
   - {name: 'clj-source-file?'}
   - {name: Coercions}
+  - {name: copy-file!}
+  - {name: copy-options}
   - {name: cwd}
   - {name: deep-merge}
   - {name: deep-merge-with}
+  - {name: delete-file!}
+  - {name: delete-on-exit-if-exists!}
+  - {name: delete-recursively!}
+  - {name: empty-file-attributes}
   - {name: 'file-exists?'}
+  - {name: file-hashes}
+  - {name: 'file?'}
   - {name: filename}
+  - {name: format-version-map}
+  - {name: git-sha}
   - {name: 'java-source-file?'}
+  - {name: list-paths}
+  - {name: make-temp-dir}
+  - {name: make-temp-path}
   - {name: mkdirs}
   - {name: path}
   - {name: path->namespace}
+  - {name: path-with-extension}
+  - {name: project-source-files}
   - {name: relative-to}
   - {name: source-files}
+  - {name: with-temp-dir}
+  - {name: with-temp-path}

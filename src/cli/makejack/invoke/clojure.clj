@@ -32,21 +32,21 @@
         forward-options? (:forward-options options true)
         repro?           (:repro options true)
         report           (:report options "stderr")
-        args             (cond-> (clojure-cli/args
-                                   {:deps (merge deps-edn
-                                                 (:Sdeps tool-options))
-                                    :repro repro?})
-                           (:main target-config)
-                           (into
-                             (clojure-cli/main-args
-                               {:report    report
-                                :aliases   aliases
-                                :main      (:main target-config)
-                                :main-args (cond-> []
-                                             forward-options?
-                                             (into ["-o" options])
-                                             true (into
-                                                    (:main-args target-config)))})))]
+        args             (concat
+                           (clojure-cli/args
+                             {:deps  (merge deps-edn
+                                           (:Sdeps tool-options))
+                              :repro repro?})
+                           (clojure-cli/main-args
+                             {:report    report
+                              :aliases   aliases
+                              :expr      (:expr target-config)
+                              :main      (:main target-config)
+                              :main-args (cond-> []
+                                           forward-options?
+                                           (into ["-o" options])
+                                           true (into
+                                                  (:main-args target-config)))}))]
     (makejack/clojure
       args
       options)))
