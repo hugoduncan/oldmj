@@ -15,15 +15,13 @@ jobs:
     - name: Install hugo
       run: brew install hugo
     - uses: actions/checkout@v2
+      submodules: true
     - name: build site
       run: |
         npm install -g postcss-cli
         npm install -g autoprefixer
-        git submodule update --recursive
+        #;git submodule update --init --recursive
         cd public
-        git fetch origin gh-pages
-        git checkout gh-pages
-        cd ..
         hugo
     - name: Commit files
       run: |
