@@ -4,7 +4,17 @@
 ;; bootstrap the mj binary
 (require '[aero.core :as aero])
 (require '[clojure.edn :as edn])
-(require '[clojure.java.shell :refer [sh]])
+(require '[clojure.java.shell :as shell])
+(require '[clojure.string :as str])
+(require '[clojure.tools.cli :as cli])
+
+(def bootstrap-options-spec
+  [["-v" "--verbose" "Show command execution"]])
+
+(def bootstrap-options
+  (:options (cli/parse-opts *command-line-args* bootstrap-options-spec)))
+
+(def verbose (:verbose bootstrap-options))
 
 
 (def API-POM "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>
@@ -47,6 +57,33 @@
   </repositories>
   </project>")
 
+(defn sh [args]
+  (when verbose
+    (prn args))
+  (apply shell/sh args))
+
+(def clojure-cli-version
+  (let [res (sh ["clojure" "--help"])]
+    (-> (:out res)
+        str/split-lines
+        first
+        (str/split #"\s+")
+        second)))
+
+(if verbose
+  (println "Bootstrap with clojure CLI version" clojure-cli-version))
+
+(def verbose-args (if (:verbose bootstrap-options) ["--verbose"] []))
+
+(def explicit-main (pos? (compare clojure-cli-version "1.10.1.600")))
+
+(defn main-switches
+  ([] (if explicit-main ["-M" "-m"] ["-m"]))
+  ([aliases] (if explicit-main
+               [(str "-M" aliases) "-m"]
+               [(str "-A" aliases) "-m"])))
+
+
 (defn format-version-map
   "Format a version map as a string."
   [{:keys [major minor incremental qualifier]}]
@@ -59,13 +96,17 @@
 (println "Get version")
 (let [version-map (aero/read-config "version.edn")
       version (format-version-map version-map)]
-  (println "version" version)
+  (when verbose
+    (println "Bootstrapping makejack version" version))
 
 
   (println "building version source namespace")
-  (let [res (sh "clojure" "-m" "makejack.impl.build-version")]
-    (println (:out res))
-    (println (:err res))
+  (let [res (sh (-> ["clojure"]
+                   (into (main-switches))
+                   (into ["makejack.impl.build-version"])))]
+    (when verbose
+      (println (:out res))
+      (println (:err res)))
     (when (pos? (:exit res))
       (binding [*out* *err*]
         (println "failed")
@@ -86,14 +127,16 @@
 
 
   (println "building API jar")
-  (let [res (sh "clojure"
-                "-A:jar"
-                "-Sdeps" "{:deps {seancorfield/depstar {:mvn/version \"1.1.104\"}}}"
-                "-m" "hf.depstar.jar"
-                " --verbose"
-                (str "target/makejack-" version ".jar"))]
-    (println (:out res))
-    (println (:err res))
+  (let [res (sh (-> ["clojure"]
+                   (into ["-Sdeps"
+                          "{:deps {seancorfield/depstar {:mvn/version \"1.1.104\"}}}"])
+                   (into (main-switches ":jar"))
+                   (into ["hf.depstar.jar"])
+                   (into verbose-args)
+                   (conj (str "target/makejack-" version ".jar"))))]
+    (when verbose
+      (println (:out res))
+      (println (:err res)))
     (when (pos? (:exit res))
       (binding [*out* *err*]
         (println "failed")
@@ -101,14 +144,15 @@
       (System/exit (:exit res))))
 
   (println "Install API jar")
-  (let [res (sh "mvn"
-                "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
-                (str "-Dfile=target/makejack-" version ".jar")
-                "-DgroupId=org.hugoduncan"
-                "-DartifactId=makejack"
-                (str "-Dversion=" version)
-                "-Dpackaging=jar")]
-    (println (:out res))
+  (let [res (sh ["mvn"
+                 "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
+                 (str "-Dfile=target/makejack-" version ".jar")
+                 "-DgroupId=org.hugoduncan"
+                 "-DartifactId=makejack"
+                 (str "-Dversion=" version)
+                 "-Dpackaging=jar"])]
+    (when verbose
+      (println (:out res)))
     (when (pos? (:exit res))
       (binding [*out* *err*]
         (println "failed")
@@ -118,8 +162,8 @@
 ;;; Build mj-script
 
   (println "Get main classpath")
-  (let [res     (sh "clojure" "-Spath")
-        main-cp (:out res)]
+  (let [res     (sh ["clojure" "-Srepro" "-Spath"])
+        main-cp (str/trim (:out res))]
     (when (pos? (:exit res))
       (binding [*out* *err*]
         (println "failed")
@@ -128,11 +172,12 @@
 
 
     (println "building mj-script")
-    (let [res (sh "bb"
-                  "-cp" main-cp
-                  "-m" "makejack.main"
-                  "--uberscript" "target/mj-script")]
-      (println (:out res))
+    (let [res (sh ["bb"
+                   "-cp" main-cp
+                   "-m" "makejack.main"
+                   "--uberscript" "target/mj-script"])]
+      (when verbose
+        (println (:out res)))
       (when (pos? (:exit res))
         (binding [*out* *err*]
           (println "failed")
@@ -142,9 +187,12 @@
 ;;; Build tools jar
 
     (println "build tools pom")
-    (let [res (sh "clojure"  "-m" "makejack.tools.pom"
-                  :dir "tools")]
-      (println (:out res))
+    (let [res (sh (-> ["clojure"]
+                     (into (main-switches))
+                     (into ["makejack.tools.pom"])
+                     (into [ :dir "tools"])))]
+      (when verbose
+        (println (:out res)))
       (when (pos? (:exit res))
         (binding [*out* *err*]
           (println "failed")
@@ -152,12 +200,14 @@
         (System/exit (:exit res))))
 
     (println "build tools jar")
-    (let [res (sh "clojure"
-               "-m" "makejack.tools.jar"
-               "--verbose"
-               "target/makejack.tools-" version ".jar"
-               :dir "tools")]
-      (println (:out res))
+    (let [res (sh (-> ["clojure"]
+                     (into (main-switches))
+                     (into ["makejack.tools.jar"])
+                     (into verbose-args)
+                     (into [(str "target/makejack.tools-" version ".jar")
+                            :dir "tools"])))]
+      (when verbose
+        (println (:out res)))
       (when (pos? (:exit res))
         (binding [*out* *err*]
           (println "failed")
@@ -165,11 +215,13 @@
         (System/exit (:exit res))))
 
     (println "install tools jar")
-    (let [res (sh "bb" "../target/mj-script"
-                  "--verbose"
-                  "install"
-               :dir "tools")]
-      (println (:out res))
+    (let [res (sh (concat
+                    ["bb" "../target/mj-script"]
+                    verbose-args
+                    ["install"
+                     :dir "tools"]))]
+      (when verbose
+        (println (:out res)))
       (when (pos? (:exit res))
         (binding [*out* *err*]
           (println "failed")
@@ -177,10 +229,13 @@
         (System/exit (:exit res))))
 
     (println "rebuild script for shebang")
-    (let [res (sh "bb" "target/mj-script" "--verbose" "uberscript")]
-      (println "rebuilt script for shebang" res)
-      (println (:out res))
-      (println (:err res))
+    (let [res (sh (concat
+                    ["bb" "target/mj-script"]
+                    verbose-args
+                    ["uberscript"]))]
+      (when verbose
+        (println (:out res))
+        (println (:err res)))
       (when (pos? (:exit res))
         (binding [*out* *err*]
           (println "failed")

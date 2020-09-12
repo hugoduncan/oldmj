@@ -1,11 +1,14 @@
 (ns makejack.api.core
   "Main API namespace for tools designed to work with project.edn and mj.edn"
   (:require [aero.core :as aero]
-            [clojure.string :as str]
             [babashka.process :as process]
+            [clojure.string :as str]
             makejack.api.aero           ; for defmethod
+            [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.default-config :as default-config]
             [makejack.api.util :as util]))
+
+(set! *warn-on-reflection* true)
 
 (def ^:dynamic *verbose*
   "Bound to true when `--verbose` is specified."
@@ -73,55 +76,6 @@
 (def process-option-keys
   [:dir :err :in :throw :out :wait])
 
-(defn clojure-cli-args
-  "Return a cli arguments vector given a map of cli options."
-  [{:keys [cp deps force repro threads verbose]}]
-  (cond-> []
-    cp      (into ["-Scp" cp])
-    deps    (into ["-Sdeps" (str deps)])
-    force   (conj "-Sforce")
-    repro   (conj "-Srepro")
-    threads (into ["-Sthreads" (str threads)])
-    verbose (conj "-Sverbose")))
-
-(defn clojure-cli-aliases-arg
-  [option aliases {:keys [elide-when-no-aliases] :or {elide-when-no-aliases false}}]
-  (if (or (seq aliases) (not elide-when-no-aliases))
-    (str option (str/join (mapv pr-str aliases)))))
-
-(defn ^:no-doc keypaths-in [m]
-  (if (or (not (map? m))
-          (empty? m))
-    '(())
-    (for [[k v] m
-          subkey (keypaths-in v)]
-      (cons k subkey))))
-
-(defn ^:no-doc keypath-values [m]
-  (let [keypaths (mapv vec (keypaths-in m))]
-    (vec (mapcat
-           vector
-           keypaths
-           (map (partial get-in m) keypaths)))))
-
-(defn clojure-cli-exec-args
-  "Return a cli arguments vector given an exec function to execute."
-  [{:keys [aliases exec-fn exec-args]}]
-  (cond-> [(clojure-cli-aliases-arg "-X" aliases {})]
-    exec-fn (conj (str exec-fn))
-    exec-args (into (map str (keypath-values exec-args)))))
-
-(defn clojure-cli-main-args
-  "Return a cli arguments vector given an main function to execute."
-  [{:keys [aliases expr main main-args report]}]
-  (cond-> []
-    (seq aliases) (conj (clojure-cli-aliases-arg
-                          "-A" aliases {:elide-when-no-aliases true}))
-    report        (into ["--report" report])
-    expr          (into ["-e" (str expr)])
-    main          (into ["-m" (str main)])
-    main-args     (into main-args)))
-
 (defn clojure
   "Execute clojure process.
 
@@ -144,6 +98,7 @@
         {:err :inherit}
         (select-keys options process-option-keys)))))
 
+
 (defn classpath
   "Returns the project classpath, with the given extra deps map.
 
@@ -153,7 +108,7 @@
   of deps.edn."
   [aliases deps]
   (let [args (cond-> ["clojure"]
-               (not-empty aliases) (conj (clojure-cli-aliases-arg
+               (not-empty aliases) (conj (clojure-cli/aliases-arg
                                            "-A" aliases {:elide-when-no-aliases true}))
                deps                (into ["-Sdeps" (str {:deps deps})])
                true                (conj "-Spath"))

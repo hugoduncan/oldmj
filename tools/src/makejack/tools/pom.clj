@@ -2,6 +2,7 @@
   "Create a pom file"
   (:require [clojure.java.io :as io]
             [clojure.tools.cli :as cli]
+            [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.core :as makejack]
             [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util])
@@ -53,9 +54,9 @@
         target-path   (:target-path mj)]
     (makejack/clojure
       (into
-        (makejack/clojure-cli-args {:repro true})
+        (clojure-cli/args {:repro true})
         (cond-> []
-          (seq aliases) (makejack/clojure-cli-aliases-arg "-A" aliases)
+          (seq aliases) (clojure-cli/aliases-arg "-A" aliases)
           true          (conj "-Spom")))
       {})
     (update-or-create-pom group-id artifact-id name version scm target-path)))

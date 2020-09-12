@@ -4,8 +4,7 @@
                              :git/url "https://github.com/babashka/babashka.process"}
   ;; clojure always gets put into the deps, so we include it anyway
   org.clojure/clojure       {:mvn/version "1.10.2-alpha1"}
-  org.clojure/tools.cli     {:mvn/version "1.0.194"}
-  digest/digest             {:mvn/version "1.4.4"}}
+  org.clojure/tools.cli     {:mvn/version "1.0.194"}}
  :paths   ["src/api" "src/cli"]
  :aliases {:compile    {:extra-paths         ["target/classes"]
                         :jvm-opts            ["-Dclojure.compiler.direct-linking=true"

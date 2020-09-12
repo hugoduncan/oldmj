@@ -1,5 +1,6 @@
 (ns makejack.tools.jar
-  (:require [makejack.api.core :as makejack]
+  (:require [makejack.api.clojure-cli :as clojure-cli]
+            [makejack.api.core :as makejack]
             [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util])
   (:gen-class))
@@ -27,11 +28,11 @@
                           (:verbose options)  (conj "--verbose"))]
     (makejack/clojure
       (concat
-        (makejack/clojure-cli-args {:repro true
-                                    :deps  deps})
-        (makejack/clojure-cli-main-args {:aliases   aliases
-                                         :main      depstar-main-ns
-                                         :main-args depstar-args}))
+        (clojure-cli/args {:repro true
+                           :deps  deps})
+        (clojure-cli/main-args {:aliases   aliases
+                                :main      depstar-main-ns
+                                :main-args depstar-args}))
       options)))
 
 
