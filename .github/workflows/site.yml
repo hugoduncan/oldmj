@@ -21,6 +21,7 @@ jobs:
         npm install -g autoprefixer
         git submodule update --recursive
         cd public
+        git fetch origin gh-pages
         git checkout gh-pages
         cd ..
         hugo
