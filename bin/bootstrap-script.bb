@@ -101,7 +101,7 @@
 
 
   (println "building version source namespace")
-  (let [res (sh (-> ["clojure"]
+  (let [res (sh (-> ["clojure" "--report" "stderr"]
                    (into (main-switches))
                    (into ["makejack.impl.build-version"])
                    (into verbose-args)))]
@@ -130,7 +130,8 @@
   (println "building API jar")
   (let [res (sh (-> ["clojure"]
                    (into ["-Sdeps"
-                          "{:deps {seancorfield/depstar {:mvn/version \"1.1.104\"}}}"])
+                          "{:deps {seancorfield/depstar {:mvn/version \"1.1.104\"}}}"
+                          "--report" "stderr"])
                    (into (main-switches ":jar"))
                    (into ["hf.depstar.jar"])
                    (into verbose-args)
@@ -188,7 +189,7 @@
 ;;; Build tools jar
 
     (println "build tools pom")
-    (let [res (sh (-> ["clojure"]
+    (let [res (sh (-> ["clojure" "--report" "stderr"]
                      (into (main-switches))
                      (into ["makejack.tools.pom"])
                      (into [ :dir "tools"])))]
@@ -201,7 +202,7 @@
         (System/exit (:exit res))))
 
     (println "build tools jar")
-    (let [res (sh (-> ["clojure"]
+    (let [res (sh (-> ["clojure" "--report" "stderr"]
                      (into (main-switches))
                      (into ["makejack.tools.jar"])
                      (into verbose-args)
