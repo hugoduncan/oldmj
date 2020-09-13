@@ -2,7 +2,7 @@
   (:require [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.core :as makejack]
             [makejack.api.tool-options :as tool-options]
-            [makejack.api.util :as util])
+            [makejack.api.path :as path])
   (:gen-class))
 
 (defn depstar
@@ -17,7 +17,7 @@
         target-path     (:target-path mj)
         jar-name        (or (:jar-name project)
                             (makejack/default-jar-name project))
-        jar-path        (str (util/path target-path jar-name ))
+        jar-path        (str (path/path target-path jar-name ))
         uberjar?        (= :uberjar (:jar-type project))
         depstar-main-ns (if uberjar?
                           "hf.depstar.uberjar"

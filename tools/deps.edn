@@ -6,4 +6,7 @@
  :paths     ["src"]
  :aliases   {:dev      {:override-deps {org.hugoduncan/makejack {:local/root ".."}}}
              :api-docs {:extra-paths ["src-dev"]
-                        :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}}}
+                        :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
+             :test     {:extra-deps
+                        {lambdaisland/kaocha           {:mvn/version "1.0.672"}
+                         lambdaisland/kaocha-cloverage {:mvn/version "1.0.63"}}}}}

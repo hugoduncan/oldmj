@@ -3,8 +3,8 @@
   (:require [clojure.java.io :as io]
             [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.core :as makejack]
-            [makejack.api.tool-options :as tool-options]
-            [makejack.api.util :as util])
+            [makejack.api.filesystem :as filesystem]
+            [makejack.api.tool-options :as tool-options])
   (:import [org.apache.maven.model
             Build Model Scm]
            [org.apache.maven.model.io.xpp3
@@ -32,12 +32,12 @@
                  (.setOutputDirectory target-path)))))
 
 (defn- update-or-create-pom [group-id artifact-id name version scm target-path]
-  (let [^Model model (if (util/file-exists? "pom.xml")
-                       (with-open [in (io/input-stream "pom.xml")]
+  (let [^Model model (if (filesystem/file-exists? "pom.xml")
+                       (with-open [^java.io.InputStream in (io/input-stream "pom.xml")]
                          (.read (MavenXpp3Reader.) in false))
                        (Model.))]
     (set-details model group-id artifact-id name version scm target-path)
-    (with-open [out (io/output-stream "pom.xml")]
+    (with-open [^java.io.OutputStream out (io/output-stream "pom.xml")]
       (.write (MavenXpp3Writer.) out model))))
 
 

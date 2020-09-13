@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
             [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.core :as makejack]
+            [makejack.api.filesystem :as filesystem]
             [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util]))
 
@@ -25,7 +26,7 @@
                           "-d" (:classes-path mj)]
                          (into javac-options)
                          (into source-files))]
-    (util/mkdirs (:classes-path mj))
+    (filesystem/mkdirs (:classes-path mj))
     (makejack/process args {})))
 
 (def extra-options
