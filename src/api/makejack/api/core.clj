@@ -5,7 +5,7 @@
             [clojure.string :as str]
             makejack.api.aero           ; for defmethod
             [makejack.api.default-config :as default-config]
-            [makejack.api.util :as util]))
+            [makejack.api.filesystem :as filesystem]))
 
 (set! *warn-on-reflection* true)
 
@@ -49,7 +49,7 @@
 
 (defn load-mj* [& [options]]
   (aero/read-config
-    (if (util/file-exists? "mj.edn")
+    (if (filesystem/file-exists? "mj.edn")
       (resolve-source options "mj.edn")
       (java.io.StringReader. (pr-str default-config/default-mj)))
     (merge
@@ -62,7 +62,7 @@
 
 (defn load-config* [& [options]]
   (let [mj      (load-mj* options)
-        project (if (util/file-exists? "project.edn")
+        project (if (filesystem/file-exists? "project.edn")
                   (load-project* options)
                   {})]
     {:mj      mj
@@ -123,5 +123,5 @@
 (defmethod print-method java.util.regex.Pattern
   [^java.util.regex.Pattern value ^java.io.Writer writer]
   (if *print-edn-tagged-literals*
-    (.write writer (pr-str (tagged-literal 'regex (.pattern value))))
+    (.write writer ^String (pr-str (tagged-literal 'regex (.pattern value))))
     (orgininal-pattern-print-method value writer)))

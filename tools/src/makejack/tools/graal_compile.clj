@@ -1,7 +1,7 @@
 (ns makejack.tools.graal-compile
   (:require [makejack.api.core :as makejack]
-            [makejack.api.tool-options :as tool-options]
-            [makejack.api.util :as util]))
+            [makejack.api.path :as path]
+            [makejack.api.tool-options :as tool-options]))
 
 (defn graal-compile
   "GraalVM native-image compilation of jar file.
@@ -16,12 +16,12 @@
                                     (makejack/default-jar-name project)))
         target-path  (:target-path mj)
         bin-name     (:binary-name project)
-        bin-path     (str (util/path target-path bin-name))
-        jar-path     (str (util/path target-path uberjar-name))
+        bin-path     (str (path/path target-path bin-name))
+        jar-path     (str (path/path target-path uberjar-name))
         graalvm-home (System/getenv "GRAALVM_HOME")
         _            (when-not graalvm-home
                         (makejack/error "GRAALVM_HOME not set"))
-        args         [(str (util/path graalvm-home "bin/native-image"))
+        args         [(str (path/path graalvm-home "bin/native-image"))
                        "-jar" jar-path
                        (str "-H:Name=" bin-path)]]
     (makejack/process

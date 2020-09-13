@@ -4,6 +4,7 @@
   (:require [clj-yaml.core :as yaml]
             [clojure.java.io :as io]
             [codox.writer.html :as html]
+            [makejack.api.path :as path]
             [makejack.api.util :as util]))
 
 (defn var-data [var-map]
@@ -18,8 +19,8 @@
      (update :name str)))
 
 (defn- write-tools-data [output-dir project]
-  (util/mkdirs (util/path output-dir "data"))
-  (spit (io/file (str (util/path output-dir "data" "tools.yml")))
+  (filesystem/mkdirs (path/path output-dir "data"))
+  (spit (io/file (str (path/path output-dir "data" "tools.yml")))
         (yaml/generate-string
           (mapv namespace-data (:namespaces project)))))
 
@@ -70,11 +71,11 @@
 
 (defn- write-namespaces [output-dir project]
   (let [version (re-find #"\d+\.\d+" (:version project))]
-    (util/mkdirs (util/path output-dir "content" "docs" version "tool-docs"))
+    (filesystem/mkdirs (path/path output-dir "content" "docs" version "tool-docs"))
     (doseq [namespace (:namespaces project)]
-      (let [p (util/path output-dir "content" "docs" version "tool-docs")]
+      (let [p (path/path output-dir "content" "docs" version "tool-docs")]
         (spit
-          (io/file (str (util/path p (str (:name namespace) ".html"))))
+          (io/file (str (path/path p (str (:name namespace) ".html"))))
           (namespace-content project namespace))))))
 
 (defn write-docs

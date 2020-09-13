@@ -1,8 +1,9 @@
 (ns makejack.tools.uberscript
   (:require [makejack.api.babashka :as babashka]
             [makejack.api.core :as makejack]
-            [makejack.api.tool-options :as tool-options]
-            [makejack.api.util :as util]))
+            [makejack.api.filesystem :as filesystem]
+            [makejack.api.path :as path]
+            [makejack.api.tool-options :as tool-options]))
 
 (defn uberscript
   "Output a babashka uberscript."
@@ -13,7 +14,7 @@
         main        (:main project)
         script-name (:script-name project (:name project))
         mode        (:script-mode project "750")
-        path        (util/path (:target-path mj) script-name)]
+        path        (path/path (:target-path mj) script-name)]
 
     (babashka/process
       aliases
@@ -30,7 +31,7 @@
                 ";; Generated with makejack uberscript. Do not edit directly.\n\n"
                 raw))))
 
-    (util/chmod path mode)
+    (filesystem/chmod path mode)
     (when makejack/*verbose*
       (println {:script-mode mode}))))
 

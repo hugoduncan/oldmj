@@ -4,6 +4,8 @@
             [clojure.java.io :as io]
             [clojure.string :as str]
             [makejack.api.core :as makejack]
+            [makejack.api.filesystem :as filesystem]
+            [makejack.api.path :as path]
             [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util]
             [org.httpkit.client :as client]
@@ -22,28 +24,28 @@
   (let [target-path (:target-path mj)
         version     (:version project)
         artifact-id (:artifact-id project)]
-    [{:source-path (util/path "pom.xml")
+    [{:source-path (path/path "pom.xml")
       :target-path (str artifact-id "-" version ".pom")}
-     {:source-path (util/path target-path (:jar-name project))
+     {:source-path (path/path target-path (:jar-name project))
       :target-path (:jar-name project)}]))
 
 (defn prepare-path-deploy! [path-map dir]
   (let [source-path (:source-path path-map)
-        target-path (util/path dir (:target-path path-map))]
-    (util/copy-file! source-path target-path)
+        target-path (path/path dir (:target-path path-map))]
+    (filesystem/copy-file! source-path target-path)
     (let [{:keys [md5 sha1]} (util/file-hashes source-path)]
-      (spit (.toFile (util/path-with-extension target-path ".md5")) md5)
-      (spit (.toFile (util/path-with-extension target-path ".sha1")) sha1))))
+      (spit (.toFile (path/path-with-extension target-path ".md5")) md5)
+      (spit (.toFile (path/path-with-extension target-path ".sha1")) sha1))))
 
 (defn multipart-map
   "Return a multipart map for the given paths"
   [path-like]
-  {:name     (str (util/filename path-like))
-   :filename (str (util/filename path-like))
-   :content  (.toFile (util/path path-like))})
+  {:name     (str (path/filename path-like))
+   :filename (str (path/filename path-like))
+   :content  (.toFile (path/path path-like))})
 
 (defn url-with-path [url url-path]
-  (if (.isAbsolute (util/path url-path))
+  (if (.isAbsolute (path/path url-path))
     (str url url-path)
     (str url "/" url-path)))
 
@@ -109,7 +111,7 @@
 
 (defn gpg-credentials-path
   []
-  (util/path
+  (path/path
     (System/getProperty "user.home")
     ".makejack"
     "credentials.edn.gpg"))
@@ -117,7 +119,7 @@
 (defn gpg-credentials
   [repo-name]
   (let [path (gpg-credentials-path)]
-    (if (util/file-exists? path)
+    (if (filesystem/file-exists? path)
       (if-let [config (read-gpg-file path)]
         (get config repo-name)))))
 
@@ -153,27 +155,27 @@
 
 (defn deploy-dir [dir repository url-path request]
   (let [url            (:url repository)
-        [path & paths] (filterv util/file? (util/list-paths dir))
+        [path & paths] (filterv filesystem/file? (filesystem/list-paths dir))
         response       (check-response
                          @(put!
-                            (assoc request :body (.toFile path))
+                            (assoc request :body (path/as-file path))
                             url
-                            (util/path url-path (util/filename path))))
+                            (path/path url-path (path/filename path))))
         request        (request-with-cookie request response)
         uploads        (for [path paths]
                          (put!
-                           (assoc request :body (.toFile path))
+                           (assoc request :body (path/as-file path))
                            url
-                           (util/path url-path (util/filename path))))]
+                           (path/path url-path (path/filename path))))]
     (doseq [upload uploads]
       (check-response @upload))
     request))
 
 (defn url-path [project]
-  (str (util/path (:group-id project) (:artifact-id project) (:version project))))
+  (str (path/path (:group-id project) (:artifact-id project) (:version project))))
 
 (defn metadata-url-path [project]
-  (str (util/path (:group-id project) (:artifact-id project) "maven-metadata.xml")))
+  (str (path/path (:group-id project) (:artifact-id project) "maven-metadata.xml")))
 
 (defn generate-metadata-model
   [project dir]
@@ -183,7 +185,8 @@
     (.setArtifactId metadata (:artifact-id project))
     (.setVersion metadata (:version project))
     (.setFileComment writer "Written by Makejack")
-    (with-open [out (io/output-stream (.toFile (util/path dir "maven-metadata.xml")))]
+    (with-open [^java.io.OutputStream out (io/output-stream
+                                            (path/as-file dir "maven-metadata.xml"))]
       (.write writer out metadata ))))
 
 (defn deploy-metadata [project dir request]
@@ -192,7 +195,7 @@
     @(put!
        (merge
          request
-         {:body (.toFile (util/path dir "maven-metadata.xml"))})
+         {:body (.toFile (path/path dir "maven-metadata.xml"))})
        (-> project :repository :url)
        (metadata-url-path project))))
 
@@ -219,7 +222,7 @@
   (let [repository  (repository repo-name)
         credentials (credentials repository)
         paths       (paths-to-deploy mj project)]
-    (util/with-temp-dir [dir "mj-deploy"]
+    (filesystem/with-temp-dir [dir "mj-deploy"]
       (doseq [path paths]
         (prepare-path-deploy! path dir))
       (let [request (base-request credentials)

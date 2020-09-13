@@ -12,3 +12,4 @@ src/cli/makejack/impl/version.clj
 site/content/docs/0.0/tool-docs/api-docs
 site/content/docs/0.0/tool-docs/invoker-docs
 site/content/docs/0.0/tool-docs/tool-docs
+test-resources/*/target

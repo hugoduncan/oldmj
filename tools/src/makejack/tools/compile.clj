@@ -3,6 +3,7 @@
   (:refer-clojure :exclude [compile])
   (:require [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.core :as makejack]
+            [makejack.api.filesystem :as filesystem]
             [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util]))
 
@@ -38,7 +39,7 @@
              classes-path
              " must be in the deps.edn :paths")))
 
-    (util/mkdirs classes-path)
+    (filesystem/mkdirs classes-path)
     (clojure-cli/process
       (concat
         (clojure-cli/args {:repro true})
