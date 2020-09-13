@@ -25,7 +25,7 @@
                          (into javac-options)
                          (into source-files))]
     (util/mkdirs (:classes-path mj))
-    (makejack/sh args {})))
+    (makejack/process args {})))
 
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."

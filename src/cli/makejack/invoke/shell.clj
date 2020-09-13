@@ -7,6 +7,6 @@
   [_args target-kw config _options]
   (let [target-config (get-in config [:mj :targets target-kw])
         args          (:args target-config)
-        res           (makejack/sh args (:options target-config))]
+        res           (makejack/process args (:options target-config))]
     (if (pos? (:exit res))
       (makejack/error "makejack.shell tool failed"))))

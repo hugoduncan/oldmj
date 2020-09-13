@@ -76,6 +76,25 @@
 (def process-option-keys
   [:dir :err :in :throw :out :wait])
 
+
+(defn process
+  "Execute a process.
+
+  args is a vector of arguments, the first of which is the program to
+  execute.  The arguments are used as strings.
+
+  options is a map of options, as specifed in babashka.process/process.
+  Defaults to {:err :inherit}."
+  [args options]
+  (when *verbose*
+    (apply println args))
+  (process/process
+    args
+    (merge
+      (if *verbose* {:out :inherit})
+      {:err :inherit}
+      (select-keys options process-option-keys))))
+
 (defn clojure
   "Execute clojure process.
 
@@ -142,22 +161,7 @@
         {:err :inherit}
         (select-keys options process-option-keys)))))
 
-(defn sh
-  "Execute a shell process.
 
-  args is a vector of shell arguments.
-
-  options is a map of options, as specifed in babashka.process/process.
-  Defaults to {:err :inherit}."
-  [args options]
-  (when *verbose*
-    (apply println args))
-  (process/process
-    args
-    (merge
-      (if *verbose* {:out :inherit})
-      {:err :inherit}
-      (select-keys options process-option-keys))))
 
 (defn default-jar-name
   "Helper to return the default jar file name.
