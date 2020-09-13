@@ -78,10 +78,12 @@
 (def explicit-main (pos? (compare clojure-cli-version "1.10.1.600")))
 
 (defn main-switches
-  ([] (if explicit-main ["-M" "-m"] ["-m"]))
+  ([] (if explicit-main
+        ["-M" "--report" "stderr" "-m"]
+        ["--report" "stderr" "-m"]))
   ([aliases] (if explicit-main
-               [(str "-M" aliases) "-m"]
-               [(str "-A" aliases) "-m"])))
+               [(str "-M" aliases) "--report" "stderr" "-m"]
+               [(str "-A" aliases) "--report" "stderr" "-m"])))
 
 
 (defn format-version-map
@@ -101,7 +103,7 @@
 
 
   (println "building version source namespace")
-  (let [res (sh (-> ["clojure" "--report" "stderr"]
+  (let [res (sh (-> ["clojure"]
                    (into (main-switches))
                    (into ["makejack.impl.build-version"])
                    (into verbose-args)))]
@@ -131,7 +133,7 @@
   (let [res (sh (-> ["clojure"]
                    (into ["-Sdeps"
                           "{:deps {seancorfield/depstar {:mvn/version \"1.1.104\"}}}"
-                          "--report" "stderr"])
+                          ])
                    (into (main-switches ":jar"))
                    (into ["hf.depstar.jar"])
                    (into verbose-args)
@@ -189,7 +191,7 @@
 ;;; Build tools jar
 
     (println "build tools pom")
-    (let [res (sh (-> ["clojure" "--report" "stderr"]
+    (let [res (sh (-> ["clojure"]
                      (into (main-switches))
                      (into ["makejack.tools.pom"])
                      (into [ :dir "tools"])))]
@@ -202,7 +204,7 @@
         (System/exit (:exit res))))
 
     (println "build tools jar")
-    (let [res (sh (-> ["clojure" "--report" "stderr"]
+    (let [res (sh (-> ["clojure"]
                      (into (main-switches))
                      (into ["makejack.tools.jar"])
                      (into verbose-args)
