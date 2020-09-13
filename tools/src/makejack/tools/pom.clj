@@ -1,7 +1,6 @@
 (ns makejack.tools.pom
   "Create a pom file"
   (:require [clojure.java.io :as io]
-            [clojure.tools.cli :as cli]
             [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.core :as makejack]
             [makejack.api.tool-options :as tool-options]
@@ -12,9 +11,11 @@
             MavenXpp3Reader
             MavenXpp3Writer]))
 
+(set! *warn-on-reflection* true)
+
 (defn- scm [{:keys [connection developer-connection url
                     tag location]}]
-  (let [scm (Scm.)]
+  (doto (Scm.)
     (.setTag tag)
     (.setConnection connection)
     (.setDeveloperConnection developer-connection)
@@ -31,10 +32,10 @@
                  (.setOutputDirectory target-path)))))
 
 (defn- update-or-create-pom [group-id artifact-id name version scm target-path]
-  (let [model (if (util/file-exists? "pom.xml")
-                (with-open [in (io/input-stream "pom.xml")]
-                  (.read (MavenXpp3Reader.) in false))
-                (Model.))]
+  (let [^Model model (if (util/file-exists? "pom.xml")
+                       (with-open [in (io/input-stream "pom.xml")]
+                         (.read (MavenXpp3Reader.) in false))
+                       (Model.))]
     (set-details model group-id artifact-id name version scm target-path)
     (with-open [out (io/output-stream "pom.xml")]
       (.write (MavenXpp3Writer.) out model))))
@@ -52,7 +53,7 @@
         artifact-id   (:artifact-id project name)
         scm           (:scm project)
         target-path   (:target-path mj)]
-    (makejack/clojure
+    (clojure-cli/process
       (into
         (clojure-cli/args {:repro true})
         (cond-> []

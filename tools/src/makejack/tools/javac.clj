@@ -1,5 +1,6 @@
 (ns makejack.tools.javac
   (:require [clojure.string :as str]
+            [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.core :as makejack]
             [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util]))
@@ -17,7 +18,7 @@
                          (into (:aliases project))
                          (into (:aliases options)))
         deps          (:deps options)
-        classpath     (makejack/classpath aliases deps)
+        classpath     (clojure-cli/classpath aliases deps)
         args          (-> ["javac"
                           "-classpath" classpath
                           "-sourcepath" (str/join ":" java-paths)

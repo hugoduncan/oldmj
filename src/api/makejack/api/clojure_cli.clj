@@ -1,7 +1,8 @@
 (ns makejack.api.clojure-cli
   "Helpers for working with Clojure CLI"
   (:require [babashka.process :as process]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [makejack.api.core :as makejack]))
 
 (defn version
   "Return the clojure cli version string"
@@ -122,7 +123,6 @@
      main                         (into ["-m" (str main)])
      main-args                    (into main-args))))
 
-
 (defn read-clojure-basis
   []
   (some-> (System/getProperty "clojure.basis")
@@ -135,3 +135,34 @@
       slurp
       clojure.edn/read-string
       prn))
+
+(defn process
+  "Execute clojure process.
+
+  deps ia s map with external dependencies, as specifed on the :deps key
+  of deps.edn.
+
+  args is a vector of arguments to pass.
+
+  options is a map of options, as specifed in babashka.process/process.
+  Defaults to {:err :inherit}."
+  [args options]
+  (makejack/process (into ["clojure"] args) options))
+
+(defn classpath
+  "Returns the project classpath, with the given extra deps map.
+
+  aliases is a vector of keywords with deps.edn aliases to use.
+
+  deps ia s map with external dependencies, as specifed on the :deps key
+  of deps.edn."
+  [aliases deps]
+  (let [args (cond-> []
+               (not-empty aliases) (conj (aliases-arg
+                                           "-A" aliases
+                                           {:elide-when-no-aliases true}))
+               deps                (into ["-Sdeps" (str {:deps deps})])
+               true                (conj "-Spath"))
+        res  (process args {:err :inherit :out :string})]
+    (-> (:out res)
+       (str/replace "\n" ""))))

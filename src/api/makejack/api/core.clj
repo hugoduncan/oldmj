@@ -4,7 +4,6 @@
             [babashka.process :as process]
             [clojure.string :as str]
             makejack.api.aero           ; for defmethod
-            [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.default-config :as default-config]
             [makejack.api.util :as util]))
 
@@ -73,9 +72,8 @@
   "Load a map containing the project and the mj config."
   (memoize load-config*))
 
-(def process-option-keys
+(def ^:no-doc process-option-keys
   [:dir :err :in :throw :out :wait])
-
 
 (defn process
   "Execute a process.
@@ -89,79 +87,11 @@
   (when *verbose*
     (apply println args))
   (process/process
-    args
+    (map str args)
     (merge
-      (if *verbose* {:out :inherit})
       {:err :inherit}
+      (if *verbose* {:out :inherit})
       (select-keys options process-option-keys))))
-
-(defn clojure
-  "Execute clojure process.
-
-  deps ia s map with external dependencies, as specifed on the :deps key
-  of deps.edn.
-
-  args is a vector of arguments to pass.
-
-  options is a map of options, as specifed in babashka.process/process.
-  Defaults to {:err :inherit}."
-  [args options]
-  (let [args (into ["clojure"] args)
-        args (mapv str args)]
-    (when *verbose*
-      (apply println args))
-    (process/process
-      args
-      (merge
-        (if *verbose* {:out :inherit})
-        {:err :inherit}
-        (select-keys options process-option-keys)))))
-
-
-(defn classpath
-  "Returns the project classpath, with the given extra deps map.
-
-  aliases is a vector of keywords with deps.edn aliases to use.
-
-  deps ia s map with external dependencies, as specifed on the :deps key
-  of deps.edn."
-  [aliases deps]
-  (let [args (cond-> ["clojure"]
-               (not-empty aliases) (conj (clojure-cli/aliases-arg
-                                           "-A" aliases {:elide-when-no-aliases true}))
-               deps                (into ["-Sdeps" (str {:deps deps})])
-               true                (conj "-Spath"))
-        _    (when *verbose* (apply println args))
-        res  (process/process args {:err :inherit})]
-    (-> (:out res)
-       (str/replace "\n" ""))))
-
-(defn babashka
-  "Execute babashka process.
-
-  args is a vector of arguments to pass.
-
-  options is a map of options, as specifed in babashka.process/process.
-  Defaults to {:err :inherit}."
-  [aliases deps args options]
-  (let [cp   (cond-> ""
-               (or (:with-project-deps? options)
-                   deps
-                   aliases)
-               (str ":" (classpath aliases deps)))
-        args (cond-> ["bb"]
-               (not (str/blank? cp)) (into ["-cp" cp])
-               args                  (into args))]
-    (when *verbose*
-      (apply println args))
-    (process/process
-      args
-      (merge
-        (if *verbose* {:out :inherit})
-        {:err :inherit}
-        (select-keys options process-option-keys)))))
-
-
 
 (defn default-jar-name
   "Helper to return the default jar file name.

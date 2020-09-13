@@ -1,7 +1,6 @@
 (ns makejack.invoke.clojure
   "Makejack tool to invoke clojure"
-  (:require [makejack.api.clojure-cli :as clojure-cli]
-            [makejack.api.core :as makejack]))
+  (:require [makejack.api.clojure-cli :as clojure-cli]))
 
 (def ^:private option-str->keyword
   {"-Sdeps" :sdeps
@@ -47,6 +46,4 @@
                                            (into ["-o" options])
                                            true (into
                                                   (:main-args target-config)))}))]
-    (makejack/clojure
-      args
-      options)))
+    (clojure-cli/process args options)))
