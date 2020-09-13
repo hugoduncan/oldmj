@@ -6,6 +6,8 @@
             [makejack.api.default-config :as default-config]
             [makejack.api.util :as util]))
 
+(set! *warn-on-reflection* true)
+
 ;; private in alpha, so redefine here
 (defn- rewrap
   [tl]

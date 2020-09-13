@@ -19,9 +19,7 @@
 
 (defn resolved-deps-with-stree
   []
-  (let [deps-str (:out (makejack/clojure
-                         ["-Srepro" "-Stree"]
-                         {:out :string}))]
+  (let [deps-str (:out (clojure-cli/process ["-Srepro" "-Stree"] {:out :string}))]
     (->> deps-str
        str/split-lines
        (mapv str/trim)
@@ -35,7 +33,7 @@
 (defn resolved-deps-with-clojure-basis
   []
   (let [deps-str (:out
-                  (makejack/clojure
+                  (clojure-cli/process
                     (concat
                       (clojure-cli/args {:repro true})
                       (clojure-cli/main-args

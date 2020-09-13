@@ -26,7 +26,7 @@
                           (and uberjar? main) (into ["-m" (str main)])
                           true                (conj jar-path)
                           (:verbose options)  (conj "--verbose"))]
-    (makejack/clojure
+    (clojure-cli/process
       (concat
         (clojure-cli/args {:repro true
                            :deps  deps})
@@ -35,11 +35,9 @@
                                 :main-args depstar-args}))
       options)))
 
-
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."
-    :parse-fn tool-options/parse-kw-stringlist]
-   ])
+    :parse-fn tool-options/parse-kw-stringlist]])
 
 (defn -main [& args]
   (let [{:keys [arguments config options]}

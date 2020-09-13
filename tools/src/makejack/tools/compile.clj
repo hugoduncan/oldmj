@@ -39,7 +39,7 @@
              " must be in the deps.edn :paths")))
 
     (util/mkdirs classes-path)
-    (makejack/clojure
+    (clojure-cli/process
       (concat
         (clojure-cli/args {:repro true})
         (clojure-cli/main-args {:aliases aliases :expr form}))

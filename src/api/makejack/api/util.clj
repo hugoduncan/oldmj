@@ -22,7 +22,7 @@
   (^{:tag java.nio.file.Path} as-path [x]
    "Coerce argument to a Path."))
 
-(def ^:private empty-strings (make-array String 0))
+(def ^:private ^"[Ljava.lang.String;" empty-strings (make-array String 0))
 
 (extend-protocol Coercions
   nil
@@ -40,7 +40,7 @@
 (defn as-file ^File [^Path path-like]
   (.toFile (as-path path-like)))
 
-(defn ^Path path
+(defn path
   "Return a java.nio.file.Path, passing each argument to as-path.
 
   Multiple-arg versions treat the first argument as parent and subsequent args as
@@ -97,7 +97,7 @@
   "Return a function that will return its argument path relative to the given root."
   [root]
   (let [root (path root)]
-    (fn ^Path [p] (.relativize root (path p)))))
+    (fn ^Path [p] (.relativize ^Path root (path p)))))
 
 (defn source-files
   "Return all source files under path-like.
@@ -188,33 +188,36 @@
   [path-like]
   (.isFile (.toFile (path path-like))))
 
-(def copy-options
+(def ^"[Ljava.nio.file.CopyOption;" copy-options
   (into-array
     CopyOption
     [StandardCopyOption/COPY_ATTRIBUTES]))
 
 (defn copy-file!
   [source-path target-path]
-  (Files/copy (as-path source-path) (as-path target-path) copy-options))
+  (Files/copy
+    (path source-path)
+    (path target-path)
+     copy-options))
 
 (defn list-paths
   "Return a lazy sequence of paths under path in depth first order."
-  [path]
+  [path-like]
   ;; (->> (Files/walk (as-path path) fvos)
   ;;    (.iterator)
   ;;    iterator-seq)
-  (->> (file-seq (io/file path))
-     (map as-path)))
+  (->> (file-seq (.toFile (path path-like)))
+     (map path)))
 
 (defn delete-file!
   "Delete the file at the specified path-like.
   Semantics as for java.nio.file.Files/delete."
   [path-like]
-  (Files/delete (as-path path-like)))
+  (Files/delete (path path-like)))
 
 (defn delete-recursively!
-  [path]
-  (let [paths (->> (list-paths path)
+  [path-like]
+  (let [paths (->> (list-paths path-like)
                  (sort-by identity (comp - compare))
                  vec)]
     (doseq [^Path path paths]
@@ -392,7 +395,7 @@
 
 (defn- read-bytes
   ^bytes [^java.io.InputStream stream]
-  (let [buffer (byte-buffer)
+  (let [^bytes buffer (byte-buffer)
         num-bytes (.read stream buffer)]
     (if (pos? num-bytes)
       (if (= buffer-size num-bytes)
@@ -422,7 +425,7 @@
     ;;                          (io/input-stream (.toFile (as-path path))) md5)
     ;;             sha1-digest (DigestInputStream. md5-digest sha1)]
     ;;   (while (> (.read sha1-digest) -1)))
-    (with-open [stream (io/input-stream (.toFile (as-path path)))]
+    (with-open [^java.io.InputStream stream (io/input-stream (.toFile (as-path path)))]
       (byte-seq-digest [md5 sha1] (byte-seq stream))
       {:md5  (digest-string md5)
        :sha1 (digest-string sha1)})))
@@ -431,7 +434,7 @@
   "Return the path with extension added to it.
   The extension is a string, including any required dot."
   ^Path [path-like extension]
-  (let [base-path (as-path path-like)
+  (let [^Path base-path (path path-like)
         parent-path (.getParent base-path)
         filename (str (.getFileName base-path) extension)]
     (if parent-path

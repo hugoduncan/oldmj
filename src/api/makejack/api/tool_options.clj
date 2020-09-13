@@ -4,6 +4,8 @@
             [clojure.tools.cli :as cli]
             [makejack.api.core :as makejack]))
 
+(set! *warn-on-reflection* true)
+
 (defn parse-kw-stringlist [kwlist-str]
   (->> (str/split kwlist-str #":")
      (filter (complement str/blank?))

@@ -1,5 +1,6 @@
 (ns makejack.tools.uberscript
-  (:require [makejack.api.core :as makejack]
+  (:require [makejack.api.babashka :as babashka]
+            [makejack.api.core :as makejack]
             [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util]))
 
@@ -14,7 +15,7 @@
         mode        (:script-mode project "750")
         path        (util/path (:target-path mj) script-name)]
 
-    (makejack/babashka
+    (babashka/process
       aliases
       {}
       ["--uberscript" (str path) "-m" (str main) ]

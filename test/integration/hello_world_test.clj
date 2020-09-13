@@ -33,7 +33,8 @@
                  (keys (-> config :mj :targets))))))))
   (testing "mj jar"
     (makejack/process ["../../target/mj-script" "--verbose" "jar"]
-                      {:dir "test-resources/test_hello_world"})
+                      {:err :inherit
+                       :dir "test-resources/test_hello_world"})
     (let [jar (util/path "test-resources" "test_hello_world" "target"
                          "test_hello_world-0.1.0.jar")]
       (testing "creates jar file"

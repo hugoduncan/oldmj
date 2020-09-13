@@ -214,6 +214,7 @@
            :name repo-name)))
 
 (defn deploy
+  "Deploy a project to a maven repository."
   [[repo-name] {:keys [mj project] :as _config} _options]
   (let [repository  (repository repo-name)
         credentials (credentials repository)

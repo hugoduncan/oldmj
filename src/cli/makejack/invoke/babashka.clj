@@ -1,6 +1,6 @@
 (ns makejack.invoke.babashka
   "Makejack tool to invoke babashka"
-  (:require [makejack.api.core :as makejack]))
+  (:require [makejack.api.babashka :as babashka]))
 
 (defn babashka
   "Invoke babashka"
@@ -21,7 +21,7 @@
                            (:args target-config) (into (:args target-config)))
         options          (merge options
                                   (select-keys [:with-project-deps?] target-config))]
-    (makejack/babashka
+    (babashka/process
       aliases
       deps
       args
