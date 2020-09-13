@@ -19,5 +19,6 @@ jobs:
     - name: tests
       run: |
         bin/bootstrap-script --verbose
-        clojure -m makejack.impl.build-version
-        clojure -A:test:dev -m kaocha.runner
+        target/mj-script test
+        cd tools
+        ../target/mj-script test
