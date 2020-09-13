@@ -13,7 +13,7 @@
   Creates project.edn and mj.edn files if they do not exist.  "
   [_args _config _options]
   (when-not (filesystem/file-exists? "project,edn")
-    (let [dir-name (path/filename (filesystem/cwd))
+    (let [dir-name (path/filename (filesystem/real-path (filesystem/cwd)))
           default-project {:name (str dir-name)
                            :version "0.1.0"}]
       (spit "project.edn" (pr-str default-project))))

@@ -77,7 +77,9 @@
     incremental (str "." incremental)
     qualifier (str "-" qualifier)))
 
-(defn git-sha []
+(defn git-sha
+  "Return the current git sha as a string."
+  []
   (-> ["git" "rev-parse" "--verify" "HEAD"]
      (process/process
         {:err   :inherit

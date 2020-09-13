@@ -18,7 +18,8 @@
 
 (def ^:private dont-follow-links (make-array LinkOption 0))
 
-(defn real-path [path-like]
+(defn real-path
+  ^Path [path-like]
   (.toRealPath (path/path path-like) dont-follow-links))
 
 

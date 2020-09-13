@@ -28,10 +28,18 @@
                             ["../../target/mj-script" "--pprint"]
                             {:dir "test-resources/test_hello_world"})))
                        (resolver "test_hello_world"))]
-          (is (= "test_hello_world" (-> config :project :name)))
+          (is (= "test_hello_world" (-> config :project :name))
+              config)
           (is (= "0.1.0" (-> config :project :version)))
           (is (= (keys default-config/default-targets)
                  (keys (-> config :mj :targets))))))))
+  (testing "mj clean"
+    (makejack/process ["../../target/mj-script" "--verbose" "clean"]
+                      {:err :inherit
+                       :dir "test-resources/test_hello_world"})
+    (let [target (path/path "test-resources" "test_hello_world" "target")]
+      (testing "target doesn't exist"
+        (is (<= (count (filesystem/list-paths target)) 2)))))
   (testing "mj jar"
     (makejack/process ["../../target/mj-script" "--verbose" "jar"]
                       {:err :inherit
