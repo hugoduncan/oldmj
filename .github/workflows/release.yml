@@ -24,7 +24,13 @@ jobs:
 
     - name: install requirements from yum
       run: |
-        yum install zip unzip git maven -y
+        yum install zip unzip maven -y
+
+    - name: install recent git
+      run: |
+        sudo yum remove git*
+        sudo yum -y install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.7-1.x86_64.rpm
+        sudo yum install git -y
 
     - name: Install babashka
       run: |
