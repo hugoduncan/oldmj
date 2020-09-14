@@ -57,7 +57,7 @@ jobs:
         pwd
         ls -l
         ls target
-        echo "::set-env name=MAKEJACK_VERSION::$(target/mj --pprint | jet --query ':project :version symbol' --edn-reader-opts '{:default tagged-literal}')"
+        echo "::set-env name=MAKEJACK_VERSION::$(target/mj --version | jet --query ':version symbol')"
         mkdir -p artifacts
         cd artifacts
         zip --junk-paths makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip ../target/mj
@@ -67,7 +67,7 @@ jobs:
     #   run: bin/bootstrap
 
     - name: Set version
-      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --pprint | jet --query ':project :version symbol' --edn-reader-opts '{:default tagged-literal}')"
+      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --version | jet --query ':version symbol')"
 
     - name: Create linux artifacts
       run: |
@@ -153,7 +153,7 @@ jobs:
     #   run: target/mj jar
 
     - name: Set version
-      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --pprint | jet --query ':project :version symbol' --edn-reader-opts '{:default tagged-literal}')"
+      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --version | jet --query ':version symbol')"
 
     - name: Create mac artifacts
       run: |
@@ -211,7 +211,7 @@ jobs:
       run: |
         ls -l
         chmod +x ./mj
-        echo "::set-env name=MAKEJACK_VERSION::$(./mj --pprint | jet --query ':project :version symbol' --edn-reader-opts '{:default tagged-literal}')"
+        echo "::set-env name=MAKEJACK_VERSION::$(./mj --version | jet --query ':version symbol')"
 
     - name: Create Release
       id: create_release
