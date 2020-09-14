@@ -22,13 +22,15 @@ jobs:
     - name: install native-image
       run: gu install native-image
 
-    - name: install zip
+    - name: install requirements from yum
       run: |
-        yum install zip unzip -y
+        yum install zip unzip maven -y
 
-    - name: install maven
+    - name: install recent git
       run: |
-        yum install maven -y
+        yum remove git*
+        yum -y install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.7-1.x86_64.rpm
+        yum install git -y
 
     - name: Install babashka
       run: |
@@ -57,7 +59,7 @@ jobs:
         pwd
         ls -l
         ls target
-        echo "::set-env name=MAKEJACK_VERSION::$(target/mj --pprint | jet --query ':project :version symbol' --edn-reader-opts '{:default tagged-literal}')"
+        echo "::set-env name=MAKEJACK_VERSION::$(target/mj --version | jet --query ':version symbol')"
         mkdir -p artifacts
         cd artifacts
         zip --junk-paths makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip ../target/mj
@@ -67,7 +69,7 @@ jobs:
     #   run: bin/bootstrap
 
     - name: Set version
-      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --pprint | jet --query ':project :version symbol' --edn-reader-opts '{:default tagged-literal}')"
+      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --version | jet --query ':version symbol')"
 
     - name: Create linux artifacts
       run: |
@@ -153,7 +155,7 @@ jobs:
     #   run: target/mj jar
 
     - name: Set version
-      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --pprint | jet --query ':project :version symbol' --edn-reader-opts '{:default tagged-literal}')"
+      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --version | jet --query ':version symbol')"
 
     - name: Create mac artifacts
       run: |
@@ -211,7 +213,7 @@ jobs:
       run: |
         ls -l
         chmod +x ./mj
-        echo "::set-env name=MAKEJACK_VERSION::$(./mj --pprint | jet --query ':project :version symbol' --edn-reader-opts '{:default tagged-literal}')"
+        echo "::set-env name=MAKEJACK_VERSION::$(./mj --version | jet --query ':version symbol')"
 
     - name: Create Release
       id: create_release

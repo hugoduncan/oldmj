@@ -78,10 +78,12 @@
 (def explicit-main (pos? (compare clojure-cli-version "1.10.1.600")))
 
 (defn main-switches
-  ([] (if explicit-main ["-M" "-m"] ["-m"]))
+  ([] (if explicit-main
+        ["-M" "--report" "stderr" "-m"]
+        ["--report" "stderr" "-m"]))
   ([aliases] (if explicit-main
-               [(str "-M" aliases) "-m"]
-               [(str "-A" aliases) "-m"])))
+               [(str "-M" aliases) "--report" "stderr" "-m"]
+               [(str "-A" aliases) "--report" "stderr" "-m"])))
 
 
 (defn format-version-map
@@ -130,7 +132,8 @@
   (println "building API jar")
   (let [res (sh (-> ["clojure"]
                    (into ["-Sdeps"
-                          "{:deps {seancorfield/depstar {:mvn/version \"1.1.104\"}}}"])
+                          "{:deps {seancorfield/depstar {:mvn/version \"1.1.104\"}}}"
+                          ])
                    (into (main-switches ":jar"))
                    (into ["hf.depstar.jar"])
                    (into verbose-args)
