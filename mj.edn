@@ -91,4 +91,6 @@
        :version-ns {:doc     "Write the version info namespace"
                     :invoker :clojure
                     :main    makejack.impl.build-version
-                    :options {:forward-options false}}}]}
+                    :options {:forward-options false}}
+       :submodule {:invoker :shell
+                   :args ["git" "submodule" "update" "--recursive"]}}]}
