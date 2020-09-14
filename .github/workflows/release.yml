@@ -22,13 +22,9 @@ jobs:
     - name: install native-image
       run: gu install native-image
 
-    - name: install zip
+    - name: install requirements from yum
       run: |
-        yum install zip unzip -y
-
-    - name: install maven
-      run: |
-        yum install maven -y
+        yum install zip unzip git maven -y
 
     - name: Install babashka
       run: |
