@@ -100,7 +100,7 @@
 
 (defn gpg
   [args]
-  (let [res (makejack/process (into [(gpg-program)] args) {})]
+  (let [res (makejack/process (into [(gpg-program)] args) {:out :string})]
     (:out res)))
 
 (defn gpg-decrypt [path-like]
@@ -149,12 +149,29 @@
 
 (defn check-response [response]
   (let [status (:status response)]
+    (prn response)
     (when (>= status 400)
-      (throw (ex-info "Upload failed" {:status status}))))
+      (throw (ex-info "Upload failed" {:response response}))))
   response)
 
-(defn deploy-dir [dir repository url-path request]
+(defn group-path [project]
+  (str/replace (:group-id project) "." "/"))
+
+(defn url-path [project]
+  (str (path/path
+         (group-path project)
+         (:artifact-id project)
+         (:version project))))
+
+(defn metadata-url-path [project]
+  (str (path/path
+         (group-path project)
+         (:artifact-id project)
+         "maven-metadata.xml")))
+
+(defn deploy-dir [project dir repository request]
   (let [url            (:url repository)
+        url-path       (url-path project)
         [path & paths] (filterv filesystem/file? (filesystem/list-paths dir))
         response       (check-response
                          @(put!
@@ -171,12 +188,6 @@
       (check-response @upload))
     request))
 
-(defn url-path [project]
-  (str (path/path (:group-id project) (:artifact-id project) (:version project))))
-
-(defn metadata-url-path [project]
-  (str (path/path (:group-id project) (:artifact-id project) "maven-metadata.xml")))
-
 (defn generate-metadata-model
   [project dir]
   (let [metadata (Metadata.)
@@ -186,17 +197,17 @@
     (.setVersion metadata (:version project))
     (.setFileComment writer "Written by Makejack")
     (with-open [^java.io.OutputStream out (io/output-stream
-                                            (path/as-file dir "maven-metadata.xml"))]
+                                            (path/as-file
+                                              (path/path dir "maven-metadata.xml")))]
       (.write writer out metadata ))))
 
-(defn deploy-metadata [project dir request]
-  (generate-metadata-model project dir)
+(defn deploy-metadata [project dir repository request]
   (check-response
     @(put!
        (merge
          request
          {:body (.toFile (path/path dir "maven-metadata.xml"))})
-       (-> project :repository :url)
+       (:url repository)
        (metadata-url-path project))))
 
 (def default-repos
@@ -206,15 +217,15 @@
 (defn repository [repo-name]
   (let [deps-edn (makejack/load-deps)
         repos    (merge default-repos
-                        (:mvn/repos deps-edn))]
-    (assoc (if repo-name
-             (or (get repos repo-name)
-                 (throw (ex-info "Could not find repository"
-                                 {:repository repo-name
-                                  :repos repos
-                                  :deps-edn deps-edn})))
-             (get repos "clojars"))
-           :name repo-name)))
+                        (:mvn/repos deps-edn))
+        repo-name (or repo-name "clojars")]
+    (assoc
+      (or (get repos repo-name)
+          (throw (ex-info "Could not find repository"
+                          {:repository repo-name
+                           :repos      repos
+                           :deps-edn   deps-edn})))
+      :name repo-name)))
 
 (defn deploy
   "Deploy a project to a maven repository."
@@ -225,9 +236,10 @@
     (filesystem/with-temp-dir [dir "mj-deploy"]
       (doseq [path paths]
         (prepare-path-deploy! path dir))
-      (let [request (base-request credentials)
-            request (deploy-dir dir repository (url-path project) request)]
-        (deploy-metadata project dir request))))
+      (let [request  (base-request credentials)
+            request  (deploy-dir project dir repository request)]
+        (generate-metadata-model project dir)
+        (deploy-metadata project dir repository request))))
   nil)
 
 (def extra-options
