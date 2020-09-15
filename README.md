@@ -20,8 +20,6 @@ the project.
 
 See [DEVELOPMENT.md](docs/DEVELOPMENT.md)
 
-**Not implemented yet**
-
 ~~Install the `mj` binary using homebrew:~~
 
 ```shell
