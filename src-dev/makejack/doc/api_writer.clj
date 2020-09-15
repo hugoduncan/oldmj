@@ -4,8 +4,8 @@
   (:require [clj-yaml.core :as yaml]
             [clojure.java.io :as io]
             [codox.writer.html :as html]
-            [makejack.api.path :as path]
-            [makejack.api.util :as util]))
+            [makejack.api.filesystem :as filesystem]
+            [makejack.api.path :as path]))
 
 (defn var-data [var-map]
   (-> var-map
@@ -46,6 +46,7 @@
   (let [version (re-find #"\d+\.\d+" (:version project))]
     (doseq [namespace (:namespaces project)]
       (let [p (path/path output-dir "content" "docs" version "api-docs")]
+        (filesystem/mkdirs p)
         (spit
           (io/file (str (path/path p (str (:name namespace) ".html"))))
           (namespace-content project namespace))))))
