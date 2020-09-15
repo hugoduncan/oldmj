@@ -4,8 +4,8 @@
   (:require [clj-yaml.core :as yaml]
             [clojure.java.io :as io]
             [codox.writer.html :as html]
-            [makejack.api.path :as path]
-            [makejack.api.util :as util]))
+            [makejack.api.filesystem :as filesystem]
+            [makejack.api.path :as path]))
 
 (defn var-data [var-map]
   (-> var-map
@@ -74,6 +74,7 @@
     (filesystem/mkdirs (path/path output-dir "content" "docs" version "invoker-docs"))
     (doseq [namespace (:namespaces project)]
       (let [p (path/path output-dir "content" "docs" version "invoker-docs")]
+        (filesystem/mkdirs p)
         (spit
           (io/file (str (path/path p (str (:name namespace) ".html"))))
           (namespace-content project namespace))))))
@@ -81,7 +82,7 @@
 (defn write-docs
   "Take raw documentation info and turn it into hugo pages."
   [{:keys [output-path] :as project}]
-  (prn "writing to" output-path "from" (util/cwd))
+  (prn "writing to" output-path "from" (filesystem/cwd))
   (doto output-path
     (write-tools-data project)
     ;; (write-index project)

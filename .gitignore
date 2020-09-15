@@ -9,7 +9,7 @@ pom.xml
 /public
 public
 src/cli/makejack/impl/version.clj
-site/content/docs/0.0/tool-docs/api-docs
-site/content/docs/0.0/tool-docs/invoker-docs
-site/content/docs/0.0/tool-docs/tool-docs
+site/content/docs/0.0/api-docs
+site/content/docs/0.0/invoker-docs
+site/content/docs/0.0/tool-docs
 test-resources/*/target
