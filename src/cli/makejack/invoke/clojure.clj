@@ -45,5 +45,6 @@
                                            forward-options?
                                            (into ["-o" options])
                                            true (into
-                                                  (:main-args target-config)))}))]
+                                                  (:main-args target-config)))})
+                           args)]
     (clojure-cli/process args options)))

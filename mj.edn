@@ -3,7 +3,7 @@
           TODO - make this appear in `mj --help` output"
      :targets
      #merge
-     [#default-targets [:pom :clean :jar :uberjar :compile :binary :uberscript]
+     [#default-targets [:pom :clean :jar :uberjar :compile :binary :uberscript :deploy]
       {:api-doc
        {:doc     "Generate API documentation from sources."
         :invoker :clojure

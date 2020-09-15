@@ -92,6 +92,11 @@
                 :deps      mj-tools
                 :main      'makejack.tools.uberscript
                 :main-args ["--profile" ":uberscript"]}
+   :deploy {:doc       "Build a jar, "
+            :invoker   :clojure
+            :deps      mj-tools
+            :main      'makejack.tools.deploy
+            :main-args ["--profile" ":deploy"]}
 
    :binary
    {:doc       "GraalVM native-image compilation of jar file.
