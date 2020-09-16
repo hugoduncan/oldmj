@@ -1,6 +1,7 @@
 (ns makejack.invoke.clojure
   "Makejack tool to invoke clojure"
-  (:require [makejack.api.clojure-cli :as clojure-cli]))
+  (:require [makejack.api.clojure-cli :as clojure-cli]
+            [makejack.impl.util :as util]))
 
 (def ^:private option-str->keyword
   {"-Sdeps" :sdeps
@@ -47,4 +48,7 @@
                                            true (into
                                                   (:main-args target-config)))})
                            args)]
-    (clojure-cli/process args options)))
+    (try
+      (clojure-cli/process args options)
+      (catch clojure.lang.ExceptionInfo e
+        (util/handle-invoker-exception e)))))

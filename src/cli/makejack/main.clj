@@ -11,8 +11,9 @@
   (:gen-class))
 
 (defn apply-command [cmd args options]
-  (let [cmd        (read-string cmd)]
-    (run/run-command cmd args options)))
+  (let [cmd (read-string cmd)]
+    (run/run-command cmd args options)
+    nil))
 
 (defn error-msg [errors]
   (str "makejack error:\n" (str/join \newline errors)))

@@ -14,13 +14,15 @@
   nil)
 
 (defn error
-  "Exit with the given error message.
-   Exits with error code 1,"
-  [s]
-  (binding [*out* *err*]
-    (println s))
-  (shutdown-agents)
-  (System/exit 1))
+  "Exit with the given error message and exit code.
+   The default exit-code is 1,"
+  ([message] (error message 1))
+  ([message exit-code]
+   (binding [*out* *err*]
+     (println message))
+   (shutdown-agents)
+   (System/exit exit-code)))
+
 
 (defn- load-deps* []
   (try
