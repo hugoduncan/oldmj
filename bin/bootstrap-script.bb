@@ -235,20 +235,6 @@
           (println (:err res)))
         (System/exit (:exit res))))
 
-
-    ;; (let [res (sh (concat
-    ;;                 ["bb" "../target/mj-script"]
-    ;;                 verbose-args
-    ;;                 ["install"
-    ;;                  :dir "tools"]))]
-    ;;   (when verbose
-    ;;     (println (:out res)))
-    ;;   (when (pos? (:exit res))
-    ;;     (binding [*out* *err*]
-    ;;       (println "failed")
-    ;;       (println (:err res)))
-    ;;     (System/exit (:exit res))))
-
     (println "rebuild script for shebang")
     (let [res (sh (concat
                     ["bb" "target/mj-script"]
