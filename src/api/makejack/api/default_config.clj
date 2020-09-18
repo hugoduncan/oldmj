@@ -4,7 +4,7 @@
   {:target-path "target"
    :classes-path "target/classes"})
 
-(def mj-tools {'org.hugoduncan/makejack.tools {:mvn/version "0.0.1-alpha1"}})
+(def mj-tools {'org.hugoduncan/makejack.tools {:mvn/version "0.0.1-alpha2-SNAPSHOT"}})
 
 (def project-with-defaults
   ;; project-project is the project's project.edn, as is
