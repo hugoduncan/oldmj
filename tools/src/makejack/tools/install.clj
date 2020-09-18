@@ -1,7 +1,6 @@
 (ns makejack.tools.install
   "Install to local repository"
-  (:require [clojure.edn :as edn]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [makejack.api.core :as makejack]
             [makejack.api.filesystem :as filesystem]
@@ -31,18 +30,6 @@
       (spit (.toFile (path/path-with-extension target-path ".md5")) md5)
       (spit (.toFile (path/path-with-extension target-path ".sha1")) sha1))))
 
-(defn url-with-path [url url-path]
-  (if (.isAbsolute (path/path url-path))
-    (str url url-path)
-    (str url "/" url-path)))
-
-(defn check-response [response]
-  (let [status (:status response)]
-    (prn response)
-    (when (>= status 400)
-      (throw (ex-info "Upload failed" {:response response}))))
-  response)
-
 (defn group-path [project]
   (apply path/path (str/split (:group-id project) #"\.")))
 
@@ -68,7 +55,7 @@
 
 (defn install
   "Install a project to a maven repository."
-  [[] {:keys [mj project] :as _config} _options]
+  [_args {:keys [mj project] :as _config} _options]
   (let [paths         (paths-to-install mj project)
         repo-home     (path/path (System/getProperty "user.home") ".m2" "repository")
         artifact-path (path/path repo-home (group-path project) (:name project))
