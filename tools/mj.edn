@@ -1,7 +1,7 @@
 #mj {:project #project {:profile :jar}
      :targets
      #merge
-     [#default-targets [:pom :clean :jar :uberjar :compile :binary]
+     [#default-targets [:pom :clean :jar :uberjar :compile :binary :deploy]
       {:install
        {:invoker :shell
         :args    ["mvn"
