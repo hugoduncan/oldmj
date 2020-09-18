@@ -1,21 +1,8 @@
 #mj {:project #project {:profile :jar}
      :targets
      #merge
-     [#default-targets [:pom :clean :jar :uberjar :compile :binary :deploy]
-      {:install
-       {:invoker :shell
-        :args    ["mvn"
-                  "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
-                  #join ["-Dfile="
-                         #ref [:target-path] "/" #ref [:project :jar-name]]
-                  #join ["-DgroupId="
-                         #ref [:project :group-id]]
-                  #join ["-DartifactId="
-                         #ref [:project :artifact-id]]
-                  #join ["-Dversion="
-                         #ref [:project :version]]
-                  "-Dpackaging=jar"]}
-       :test {:doc     "Run tests"
+     [#default-targets [:pom :clean :jar :uberjar :compile :binary :install :deploy]
+      {:test {:doc     "Run tests"
               :invoker :clojure
               :main    kaocha.runner
               :aliases [:dev :test]

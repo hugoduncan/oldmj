@@ -3,7 +3,8 @@
           TODO - make this appear in `mj --help` output"
      :targets
      #merge
-     [#default-targets [:pom :clean :jar :uberjar :compile :binary :uberscript :deploy]
+     [#default-targets [:pom :clean :jar :uberjar :compile :binary :uberscript
+                        :install :deploy]
       {:api-doc
        {:doc     "Generate API documentation from sources."
         :invoker :clojure
@@ -66,22 +67,6 @@
        :build-site {:doc     "api-doc, invoker-doc, tool-doc and site "
                     :invoker :chain
                     :targets [:api-doc :invoker-doc :tool-doc :site]}
-       :install    {:doc     "Install the API jar into the local repository.
-                          Requires maven to be installed."
-                    :invoker :shell
-                    :args    ["mvn"
-                              "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
-                              #join ["-Dfile="
-                                     #ref [:target-path]
-                                     "/"
-                                     #ref [:project :jar-name]]
-                              #join ["-DgroupId="
-                                     #ref [:project :group-id]]
-                              #join ["-DartifactId="
-                                     #ref [:project :artifact-id]]
-                              #join ["-Dversion="
-                                     #ref [:project :version]]
-                              "-Dpackaging=jar"]}
        :test       {:doc     "Run tests"
                     :invoker :clojure
                     :main    kaocha.runner

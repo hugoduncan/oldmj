@@ -92,7 +92,12 @@
                 :deps      mj-tools
                 :main      'makejack.tools.uberscript
                 :main-args ["--profile" ":uberscript"]}
-   :deploy {:doc       "Build a jar, "
+   :install {:doc       "Install jar to local repository."
+             :invoker   :clojure
+             :deps      mj-tools
+             :main      'makejack.tools.install
+             :main-args ["--profile" ":deploy"]}
+   :deploy {:doc       "Deploy a jar to a remote repository, "
             :invoker   :clojure
             :deps      mj-tools
             :main      'makejack.tools.deploy

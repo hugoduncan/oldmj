@@ -5,9 +5,12 @@
             [makejack.api.path :as path])
   (:import [java.io File]
            [java.nio.file
+            CopyOption
             Files
-            LinkOption Path Paths];
-           [java.nio.file.attribute FileAttribute PosixFilePermission]))
+            LinkOption Path Paths
+            StandardCopyOption];
+           [java.nio.file.attribute FileAttribute PosixFilePermission]
+           [java.util Arrays]))
 
 
 (deftest make-temp-path-path-test
@@ -78,3 +81,20 @@
       (is (filesystem/file-exists? (path/path dir "xx"))))
     (is (not (filesystem/file-exists? (path/path @capture-dir "xx"))))
     (is (not (filesystem/file-exists? @capture-dir)))))
+
+
+(deftest copy-options-test
+  (is (Arrays/equals
+        (into-array CopyOption [])
+        (filesystem/copy-options {})))
+  (is (Arrays/equals
+        (into-array CopyOption [StandardCopyOption/COPY_ATTRIBUTES])
+        (filesystem/copy-options {:copy-attributes true})) )
+  (is (Arrays/equals
+        (into-array CopyOption [StandardCopyOption/REPLACE_EXISTING])
+        (filesystem/copy-options {:replace-existing true})) )
+  (is (Arrays/equals
+        (into-array CopyOption
+                    [StandardCopyOption/COPY_ATTRIBUTES
+                     StandardCopyOption/REPLACE_EXISTING])
+        (filesystem/copy-options {:copy-attributes true :replace-existing true})) ))

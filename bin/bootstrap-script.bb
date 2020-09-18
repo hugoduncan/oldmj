@@ -219,11 +219,14 @@
         (System/exit (:exit res))))
 
     (println "install tools jar")
-    (let [res (sh (concat
-                    ["bb" "../target/mj-script"]
-                    verbose-args
-                    ["install"
-                     :dir "tools"]))]
+    (let [res (sh ["mvn"
+                   "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
+                   (str "-Dfile=target/makejack.tools-" version ".jar")
+                   "-DgroupId=org.hugoduncan"
+                   "-DartifactId=makejack.tools"
+                   (str "-Dversion=" version)
+                   "-Dpackaging=jar"
+                   :dir "tools"])]
       (when verbose
         (println (:out res)))
       (when (pos? (:exit res))
