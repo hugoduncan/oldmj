@@ -1,6 +1,7 @@
 (ns makejack.invoke.babashka
   "Makejack tool to invoke babashka"
-  (:require [makejack.api.babashka :as babashka]))
+  (:require [makejack.api.babashka :as babashka]
+            [makejack.impl.util :as util]))
 
 (defn babashka
   "Invoke babashka"
@@ -20,15 +21,18 @@
                            forward-options?      (into ["-o" options])
                            (:args target-config) (into (:args target-config)))
         options          (merge options
-                                  (select-keys [:with-project-deps?] target-config))]
-    (babashka/process
-      aliases
-      deps
-      args
-      (merge
-        (if (seq args)
-          {}
-          {:out :inherit ; run a bb repl
-           :err :inherit
-           :in  :inherit})
-        options))))
+                                (select-keys [:with-project-deps?] target-config))]
+    (try
+      (babashka/process
+        aliases
+        deps
+        args
+        (merge
+          (if (seq args)
+            {}
+            {:out :inherit ; run a bb repl
+             :err :inherit
+             :in  :inherit})
+          options))
+      (catch clojure.lang.ExceptionInfo e
+        (util/handle-invoker-exception e)))))
