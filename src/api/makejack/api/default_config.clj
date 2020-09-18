@@ -1,8 +1,10 @@
 (ns ^:no-doc makejack.api.default-config)
 
-(def default-mj-config
+(defn default-mj-config
+  []
   {:target-path "target"
-   :classes-path "target/classes"})
+   :classes-path "target/classes"
+   :project-root (System/getProperty "user.dir")})
 
 (def mj-tools {'org.hugoduncan/makejack.tools {:mvn/version "0.0.1-alpha2-SNAPSHOT"}})
 
