@@ -11,8 +11,7 @@
             LinkOption Path Paths
             StandardCopyOption]
            [java.nio.file.attribute FileAttribute PosixFilePermission];
-           [java.security #_DigestInputStream MessageDigest])
-  )
+           [java.security #_DigestInputStream MessageDigest]))
 
 
 
@@ -80,17 +79,31 @@
   [path-like]
   (.isFile (.toFile (path/path path-like))))
 
-(def ^"[Ljava.nio.file.CopyOption;" copy-options
+(def copy-option-values
+  {:copy-attributes StandardCopyOption/COPY_ATTRIBUTES
+   :replace-existing StandardCopyOption/REPLACE_EXISTING})
+
+(defn copy-options
+  ^"[Ljava.nio.file.CopyOption;" [{:keys [copy-attributes replace-existing]
+                                   :as options}]
   (into-array
     CopyOption
-    [StandardCopyOption/COPY_ATTRIBUTES]))
+    (reduce
+      (fn [vals [kw option-value]]
+        (if (kw options)
+          (conj vals option-value)
+          vals))
+      []
+      copy-option-values)))
 
 (defn copy-file!
-  [source-path target-path]
-  (Files/copy
-    (path/path source-path)
-    (path/path target-path)
-     copy-options))
+  ([source-path target-path]
+   (copy-file! source-path target-path {:copy-attributes true}))
+  ([source-path target-path {:keys [copy-attributes replace-existing] :as options}]
+   (Files/copy
+     (path/path source-path)
+     (path/path target-path)
+     (copy-options options))))
 
 (defn list-paths
   "Return a lazy sequence of paths under path in depth first order."
