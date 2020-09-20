@@ -18,7 +18,7 @@
                            form                  (into ["-e" (str form)])
                            (:main target-config) (into ["-m" (:main target-config)])
                            true                  (into (:main-args target-config))
-                           forward-options?      (into ["-o" options])
+                           forward-options?      (into ["-o" (dissoc options :dir)])
                            (:args target-config) (into (:args target-config)))
         options          (merge options
                                 (select-keys [:with-project-deps?] target-config))]

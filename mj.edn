@@ -78,4 +78,6 @@
                     :main    makejack.impl.build-version
                     :options {:forward-options false}}
        :submodule {:invoker :shell
-                   :args ["git" "submodule" "update" "--recursive"]}}]}
+                   :args ["git" "submodule" "update" "--recursive"]}
+       :modules   {:invoker :modules
+                   :modules ["tools"]}}]}

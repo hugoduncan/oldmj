@@ -59,7 +59,8 @@
         (cond-> []
           (seq aliases) (clojure-cli/aliases-arg "-A" aliases)
           true          (conj "-Spom")))
-      {})
+      (merge options
+             {:out :inherit :err :inherit}))
     (update-or-create-pom group-id artifact-id name version scm target-path)))
 
 

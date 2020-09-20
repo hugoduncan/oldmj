@@ -44,7 +44,7 @@
                               :main      (:main target-config)
                               :main-args (cond-> []
                                            forward-options?
-                                           (into ["-o" options])
+                                           (into ["-o" (dissoc options :dir)])
                                            true (into
                                                   (:main-args target-config)))})
                            args)]
