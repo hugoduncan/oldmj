@@ -73,7 +73,7 @@
 (defmethod aero-alpha/eval-tagged-literal 'mj
   [tl opts env ks]
   (aero-alpha/expand
-    (merge default-config/default-mj-config (:form tl))
+    (merge (default-config/default-mj-config) (:form tl))
     opts
     env
     ks))

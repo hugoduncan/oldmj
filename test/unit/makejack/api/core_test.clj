@@ -21,6 +21,7 @@
            (:project config)))
     (is (= {:target-path  "target"
             :classes-path "target/classes"
+            :project-root (System/getProperty "user.dir")
             :tp "target"}
            (dissoc(:mj config) :targets)))
     (is (= (keys default-config/default-targets)
