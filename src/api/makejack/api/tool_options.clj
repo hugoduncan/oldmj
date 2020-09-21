@@ -23,8 +23,8 @@
     "Project profile to apply when executing the command."
     :parse-fn read-string
     :default :default]
-   ["-v" "--verbose" "Show command execution"]
-   ])
+   ["-d" "--debug" "Output command executions"]
+   ["-v" "--verbose" "Show target execution"]])
 
 
 (defn parse-options

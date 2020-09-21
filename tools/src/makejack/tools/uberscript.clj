@@ -41,9 +41,9 @@
    ])
 
 (defn -main [& args]
-  (let [{:keys [arguments config options]}
+  (let [{:keys [arguments options] {:keys [project] :as config} :config}
         (tool-options/parse-options-and-apply-to-config
           args extra-options "uberscript [options]")]
-    (binding [makejack/*verbose* (:verbose options)]
+    (makejack/with-makejack-tool ["uberscript" options project]
       (uberscript arguments config options))
     (shutdown-agents)))

@@ -13,6 +13,10 @@
   "Bound to true when `--verbose` is specified."
   nil)
 
+(def ^:dynamic *debug*
+  "Bound to true when `--debug` is specified."
+  nil)
+
 (defn error
   "Exit with the given error message and exit code.
    The default exit-code is 1,"
@@ -86,13 +90,13 @@
   options is a map of options, as specifed in babashka.process/process.
   Defaults to {:err :inherit}."
   [args options]
-  (when *verbose*
+  (when *debug*
     (apply println args))
   (process/process
     (map str args)
     (merge
       {:err :inherit}
-      (if *verbose* {:out :inherit})
+      (if *debug* {:out :inherit})
       (select-keys options process-option-keys))))
 
 (defn default-jar-name
@@ -127,3 +131,23 @@
   (if *print-edn-tagged-literals*
     (.write writer ^String (pr-str (tagged-literal 'regex (.pattern value))))
     (orgininal-pattern-print-method value writer)))
+
+
+(defmacro with-output-bindings [[options] & body]
+  `(binding [*verbose* (:verbose ~options)
+             *debug* (:debug ~options)]
+      ~@body))
+
+(defn project-description
+  [{:keys [group-id name version] :as _project}]
+  (str group-id  "/" name " " version))
+
+(defn verbose-println
+  [& args]
+  (when *verbose*
+    (apply println args)))
+
+(defmacro with-makejack-tool [[tool-name options project] & body]
+  `(with-output-bindings [~options]
+     (verbose-println ~tool-name (project-description ~project))
+     ~@body))

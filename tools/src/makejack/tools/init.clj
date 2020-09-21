@@ -28,6 +28,7 @@
   (let [{:keys [arguments config options]}
         (tool-options/parse-options-and-apply-to-config
           args extra-options "init [options]")]
-    (binding [makejack/*verbose* (:verbose options)]
+    (makejack/with-output-bindings [options]
+      (makejack/verbose-println "Initialise project for makejack")
       (init arguments config options))
     (shutdown-agents)))
