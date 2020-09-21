@@ -1,0 +1,5 @@
+#mj {:targets
+     #merge
+     [#default-targets :all
+      {:modules {:invoker :modules
+                 :modules ["a" "b"]}}]}
