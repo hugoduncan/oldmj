@@ -7,7 +7,8 @@
             [makejack.impl.version :as version]
             [makejack.impl.help :as help]
             [makejack.impl.run :as run]
-            makejack.invoke.chain)
+            makejack.invoke.chain
+            makejack.invoke.modules)
   (:gen-class))
 
 (defn apply-command [cmd args options]

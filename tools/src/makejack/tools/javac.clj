@@ -19,7 +19,7 @@
                          (into (:aliases project))
                          (into (:aliases options)))
         deps          (:deps options)
-        classpath     (clojure-cli/classpath aliases deps)
+        classpath     (clojure-cli/classpath aliases deps options)
         args          (-> ["javac"
                           "-classpath" classpath
                           "-sourcepath" (str/join ":" java-paths)

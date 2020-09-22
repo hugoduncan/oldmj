@@ -156,13 +156,13 @@
 
   deps ia s map with external dependencies, as specifed on the :deps key
   of deps.edn."
-  [aliases deps]
+  [aliases deps options]
   (let [args (cond-> []
                (not-empty aliases) (conj (aliases-arg
                                            "-A" aliases
                                            {:elide-when-no-aliases true}))
                deps                (into ["-Sdeps" (str {:deps deps})])
                true                (conj "-Spath"))
-        res  (process args {:err :inherit :out :string})]
+        res  (process args (merge options {:err :inherit :out :string}))]
     (-> (:out res)
        (str/replace "\n" ""))))
