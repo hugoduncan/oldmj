@@ -8,7 +8,7 @@
             [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util])
   (:import [java.net URL]
-           [org.apache.maven.artifact.repository.metadata Metadata]
+           [org.apache.maven.artifact.repository.metadata Metadata Versioning]
            [org.apache.maven.artifact.repository.metadata.io.xpp3
             MetadataXpp3Reader MetadataXpp3Writer]))
 
@@ -25,6 +25,7 @@
 (defn prepare-path-install! [path-map dir]
   (let [source-path (:source-path path-map)
         target-path (path/path dir (:target-path path-map))]
+    (filesystem/mkdirs target-path)
     (filesystem/copy-file! source-path target-path {:replace-existing true})
     (let [{:keys [md5 sha1]} (util/file-hashes source-path)]
       (spit (.toFile (path/path-with-extension target-path ".md5")) md5)
@@ -45,7 +46,7 @@
     (.setGroupId metadata (:group-id project))
     (.setArtifactId metadata (:artifact-id project))
     (.setFileComment writer "Written by Makejack")
-    (let [versioning (.getVersioning metadata)]
+    (let [versioning (or (.getVersioning metadata) (Versioning.))]
       (.addVersion versioning (:version project))
       (.updateTimestamp versioning))
     (with-open [^java.io.OutputStream out (io/output-stream

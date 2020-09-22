@@ -15,7 +15,7 @@
                (or (:with-project-deps? options)
                    deps
                    aliases)
-               (str ":" (clojure-cli/classpath aliases deps)))
+               (str ":" (clojure-cli/classpath aliases deps options)))
         args (cond-> ["bb"]
                (not (str/blank? cp)) (into ["-cp" cp])
                args                  (into args))]
