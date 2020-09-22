@@ -35,10 +35,10 @@
    ])
 
 (defn -main [& args]
-  (let [{:keys [arguments config options]}
+  (let [{:keys [arguments options] {:keys [project] :as config} :config}
         (tool-options/parse-options-and-apply-to-config
           args extra-options "javac [options]")]
-    (binding [makejack/*verbose* (:verbose options)]
+    (makejack/with-makejack-tool ["javac" options project]
       (try
         (javac arguments config options)
         (finally

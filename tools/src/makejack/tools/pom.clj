@@ -71,9 +71,9 @@
    ])
 
 (defn -main [& args]
-  (let [{:keys [arguments config options]}
+  (let [{:keys [arguments options] {:keys [project] :as config} :config}
         (tool-options/parse-options-and-apply-to-config
           args extra-options "pom [options]")]
-    (binding [makejack/*verbose* (:verbose options)]
+    (makejack/with-makejack-tool ["pom" options project]
       (pom arguments config options))
     (shutdown-agents)))

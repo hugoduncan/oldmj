@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: tests
       run: |
-        bin/bootstrap-script --verbose
+        bin/bootstrap-script --debug --verbose
         target/mj-script test
         cd tools
         ../target/mj-script test

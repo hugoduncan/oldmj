@@ -9,12 +9,14 @@
 (require '[clojure.tools.cli :as cli])
 
 (def bootstrap-options-spec
-  [["-v" "--verbose" "Show command execution"]])
+  [["-d" "--debug" "Show command execution"]
+   ["-v" "--verbose" "Show target execution"]])
 
 (def bootstrap-options
   (:options (cli/parse-opts *command-line-args* bootstrap-options-spec)))
 
 (def verbose (:verbose bootstrap-options))
+(def debug (:debug bootstrap-options))
 
 
 (def API-POM "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>
@@ -58,7 +60,7 @@
   </project>")
 
 (defn sh [args]
-  (when verbose
+  (when debug
     (prn args))
   (apply shell/sh args))
 
@@ -73,7 +75,10 @@
 (if verbose
   (println "Bootstrap with clojure CLI version" clojure-cli-version))
 
-(def verbose-args (if (:verbose bootstrap-options) ["--verbose"] []))
+(def verbose-args
+  (cond-> []
+    (:verbose bootstrap-options) (conj "--verbose")
+    (:debug bootstrap-options) (conj "--debug")))
 
 (def explicit-main (pos? (compare clojure-cli-version "1.10.1.600")))
 
@@ -107,7 +112,7 @@
                    (into (main-switches))
                    (into ["makejack.impl.build-version"])
                    (into verbose-args)))]
-    (when verbose
+    (when debug
       (println (:out res))
       (println (:err res)))
     (when (pos? (:exit res))
@@ -138,7 +143,7 @@
                    (into ["hf.depstar.jar"])
                    (into verbose-args)
                    (conj (str "target/makejack-" version ".jar"))))]
-    (when verbose
+    (when debug
       (println (:out res))
       (println (:err res)))
     (when (pos? (:exit res))
@@ -155,7 +160,7 @@
                  "-DartifactId=makejack"
                  (str "-Dversion=" version)
                  "-Dpackaging=jar"])]
-    (when verbose
+    (when debug
       (println (:out res)))
     (when (pos? (:exit res))
       (binding [*out* *err*]
@@ -180,7 +185,7 @@
                    "-cp" main-cp
                    "-m" "makejack.main"
                    "--uberscript" "target/mj-script"])]
-      (when verbose
+      (when debug
         (println (:out res)))
       (when (pos? (:exit res))
         (binding [*out* *err*]
@@ -195,7 +200,7 @@
                      (into (main-switches))
                      (into ["makejack.tools.pom"])
                      (into [ :dir "tools"])))]
-      (when verbose
+      (when debug
         (println (:out res)))
       (when (pos? (:exit res))
         (binding [*out* *err*]
@@ -210,7 +215,7 @@
                      (into verbose-args)
                      (into [(str "target/makejack.tools-" version ".jar")
                             :dir "tools"])))]
-      (when verbose
+      (when debug
         (println (:out res)))
       (when (pos? (:exit res))
         (binding [*out* *err*]
@@ -227,7 +232,7 @@
                    (str "-Dversion=" version)
                    "-Dpackaging=jar"
                    :dir "tools"])]
-      (when verbose
+      (when debug
         (println (:out res)))
       (when (pos? (:exit res))
         (binding [*out* *err*]
@@ -240,7 +245,7 @@
                     ["bb" "target/mj-script"]
                     verbose-args
                     ["uberscript"]))]
-      (when verbose
+      (when debug
         (println (:out res))
         (println (:err res)))
       (when (pos? (:exit res))

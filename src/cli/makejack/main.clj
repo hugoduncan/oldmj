@@ -24,7 +24,8 @@
    ["-p" "--pprint" "Pretty print the makejack config."]
    ["-P" "--profile PROFILE" "Project profile to apply"
     :parse-fn read-string]
-   ["-v" "--verbose" "Show command execution"]
+   ["-d" "--debug" "Output command executions"]
+   ["-v" "--verbose" "Show target execution"]
    ["-V" "--version" "Show makejack version and exit"]])
 
 
@@ -55,7 +56,8 @@
         (help/usage summary))
 
       :else
-      (binding [makejack/*verbose* (:verbose options)]
+      (binding [makejack/*verbose* (:verbose options)
+                makejack/*debug* (:debug options)]
         (try
           (apply-command (first arguments) (rest arguments) options)
           (finally
