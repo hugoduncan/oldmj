@@ -2,7 +2,6 @@
   "Main API namespace for tools designed to work with project.edn and mj.edn"
   (:require [aero.core :as aero]
             [babashka.process :as process]
-            [clojure.java.io :as io]
             makejack.api.aero           ; for defmethod
             [makejack.api.default-config :as default-config]
             [makejack.api.filesystem :as filesystem]
@@ -40,24 +39,28 @@
   "Load the deps.edn file."
   (memoize load-deps*))
 
+(defn- maybe-path
+  "Return a path from source if source can be understood as a path."
+  [source]
+  (try
+    (path/as-path source)
+    (catch java.lang.IllegalArgumentException _ nil)))
+
 (defn relative-to-resolver
   "Resolves relative to the source file, or to the given directory."
   [dir]
-  (fn
-    [source include]
-    (let [fl (if (.isAbsolute (io/file include))
-               (io/file include)
-               (if-let [source-file
-                          (try
-                            (io/file source)
-                            ;; Handle the case where the source isn't file compatible:
-                            (catch java.lang.IllegalArgumentException _ nil))]
-                 (io/file (.getParent ^java.io.File source-file) include)
+  (fn relative-to-resolver [source include]
+    (let [fl (if (path/absolute? include)
+               include
+               (if-let [source-path (maybe-path source)]
+                 (if-let [parent (path/parent source-path)]
+                   (path/path parent include)
+                   include)
                  (if dir
-                   (io/file dir include)
-                   (io/file include))))]
-      (if (and fl (.exists fl))
-        fl
+                   (path/path dir include)
+                   include)))]
+      (if (and fl (filesystem/file-exists? fl))
+        (path/as-file fl)
         (java.io.StringReader. (pr-str {:aero/missing-include include}))))))
 
 (defn project-path [dir]
