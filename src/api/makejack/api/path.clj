@@ -62,6 +62,16 @@
   ^Path [path-like]
   (.getFileName (path path-like)))
 
+(defn parent
+  "Return the parent directory of a the given path as a Path"
+  ^Path [path-like]
+  (.getParent (path path-like)))
+
+(defn absolute?
+  "Predicate for an absolute path."
+  [path-like]
+  (.isAbsolute (path path-like)))
+
 (defn path-with-extension
   "Return the path with extension added to it.
   The extension is a string, including any required dot."
