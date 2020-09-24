@@ -1,18 +1,14 @@
 (ns makejack.api.filesystem
   "File system manipulation functions."
-  (:require [babashka.process :as process]
-            [clojure.java.io :as io]
-            [clojure.string :as str]
+  (:require [clojure.java.io :as io]
             [makejack.api.path :as path])
   (:import [java.io File]
            [java.nio.file
             CopyOption
             Files
-            LinkOption Path Paths
+            LinkOption Path
             StandardCopyOption]
-           [java.nio.file.attribute FileAttribute PosixFilePermission];
-           [java.security #_DigestInputStream MessageDigest]))
-
+           [java.nio.file.attribute FileAttribute PosixFilePermission]))
 
 
 (def ^:private dont-follow-links (make-array LinkOption 0))
@@ -219,7 +215,7 @@
   :prefix - prefix for the file name (default \"tmp\")
             Must be at elast three characters long.
   :suffix - suffix for the file name (default \".tmp\")"
-  [[sym prefix-or-options & more :as bindings] & body]
+  [bindings & body]
   (with-bindings-macro bindings body `with-temp-path with-temp-path-fn))
 
 (defn ^File make-temp-dir

@@ -1,6 +1,7 @@
 (ns makejack.api.clojure-cli
   "Helpers for working with Clojure CLI"
   (:require [babashka.process :as process]
+            [clojure.edn :as edn]
             [clojure.string :as str]
             [makejack.api.core :as makejack]))
 
@@ -99,7 +100,7 @@
        exec-fn   (conj (str exec-fn))
        exec-args (into (map str (keypath-values exec-args))))
 
-     :elae
+     :else
      (throw (ex-info "exec-fn not supported in clojure cli version"
                      {:version (version)})))))
 
@@ -127,13 +128,13 @@
   []
   (some-> (System/getProperty "clojure.basis")
           slurp
-          clojure.edn/read-string))
+          edn/read-string))
 
 (defn clojure-basis-form
   []
   `(-> (System/getProperty "clojure.basis")
       slurp
-      clojure.edn/read-string
+      edn/read-string
       prn))
 
 (defn process

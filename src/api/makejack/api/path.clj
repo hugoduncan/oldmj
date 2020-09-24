@@ -1,16 +1,7 @@
 (ns makejack.api.path
   "Path manipulation functions"
-  (:require [babashka.process :as process]
-            [clojure.java.io :as io]
-            [clojure.string :as str])
   (:import [java.io File]
-           [java.nio.file
-            CopyOption
-            Files
-            LinkOption Path Paths
-            StandardCopyOption]
-           [java.nio.file.attribute FileAttribute PosixFilePermission];
-           [java.security #_DigestInputStream MessageDigest]))
+           [java.nio.file Path Paths]))
 
 ;; bb doesn't allow this
 ;; (extend-protocol io/Coercions

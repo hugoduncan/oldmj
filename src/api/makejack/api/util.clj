@@ -4,14 +4,7 @@
             [clojure.java.io :as io]
             [clojure.string :as str]
             [makejack.api.path :as path])
-  (:import [java.io File]
-           [java.nio.file
-            CopyOption
-            Files
-            LinkOption Path Paths
-            StandardCopyOption]
-           [java.nio.file.attribute FileAttribute PosixFilePermission];
-           [java.security #_DigestInputStream MessageDigest]))
+  (:import [java.security #_DigestInputStream MessageDigest]))
 
 
 (defn source-files

@@ -3,7 +3,6 @@
             [clojure.string :as str]
             [clojure.tools.cli :as cli]
             [makejack.api.core :as makejack]
-            [makejack.api.tool-options :as tool-options]
             [makejack.impl.version :as version]
             [makejack.impl.help :as help]
             [makejack.impl.run :as run]

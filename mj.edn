@@ -86,6 +86,6 @@
        :fmt        {:invoker   :clojure
                     :deps      {cljfmt {:mvn/version "0.6.4"}}
                     :main      cljfmt.main
-                    :main-args ["check"]
+                    :main-args ["check" "--indents" ".cljfmt/indents.edn"]
                     :options   {:out             :inherit
                                 :forward-options false}}}]}

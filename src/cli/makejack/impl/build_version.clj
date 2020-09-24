@@ -1,5 +1,6 @@
 (ns makejack.impl.build-version
-  (:require [clojure.string :as str]
+  (:require [clojure.edn :as edn]
+            [clojure.string :as str]
             [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.core :as makejack]
             [makejack.api.util :as util]))
@@ -40,7 +41,7 @@
                         {:expr (clojure-cli/clojure-basis-form)}))
                     {}))]
     (->> deps-str
-       (clojure.edn/read-string)
+       edn/read-string
        :libs
        (mapv filter-basis-dep)
        (into {}))))
@@ -93,6 +94,6 @@
   (let [info-var (ns-resolve 'makejack.impl.version 'info)]
     @info-var))
 
-(defn -main [& args]
+(defn -main [& _args]
   (build-version)
   (shutdown-agents))

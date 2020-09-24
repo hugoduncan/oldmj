@@ -81,7 +81,7 @@
 ;; target to inject the default targets
 ;; Use :all, or a vector of keywords to select targets.
 (defmethod aero-alpha/eval-tagged-literal 'default-targets
-  [tl opts env ks]
+  [tl _opts _env _ks]
   {:aero.core/value
    (if (= :all (:form tl))
      default-config/default-targets
