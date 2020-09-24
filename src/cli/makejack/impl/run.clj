@@ -6,7 +6,8 @@
   (let [config       (makejack/load-config {:profile (:profile options)
                                             :dir (:dir options)})
         target-kw     (keyword cmd)
-        target        (resolve/resolve-target target-kw config)
+        target        (or (resolve/resolve-target target-kw config)
+                          (resolve/resolve-target :undefined config))
         f             (resolve/resolve-target-invoker target)]
     (when-not target
       (makejack/error (str "Unknown target: " cmd)))
