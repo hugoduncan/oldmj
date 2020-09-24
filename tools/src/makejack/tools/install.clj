@@ -25,7 +25,7 @@
 (defn prepare-path-install! [path-map dir]
   (let [source-path (:source-path path-map)
         target-path (path/path dir (:target-path path-map))]
-    (filesystem/mkdirs target-path)
+    (filesystem/mkdirs dir)
     (filesystem/copy-file! source-path target-path {:replace-existing true})
     (let [{:keys [md5 sha1]} (util/file-hashes source-path)]
       (spit (.toFile (path/path-with-extension target-path ".md5")) md5)
