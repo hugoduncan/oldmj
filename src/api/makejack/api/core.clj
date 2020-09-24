@@ -2,10 +2,11 @@
   "Main API namespace for tools designed to work with project.edn and mj.edn"
   (:require [aero.core :as aero]
             [babashka.process :as process]
-            [clojure.string :as str]
+            [clojure.java.io :as io]
             makejack.api.aero           ; for defmethod
             [makejack.api.default-config :as default-config]
-            [makejack.api.filesystem :as filesystem]))
+            [makejack.api.filesystem :as filesystem]
+            [makejack.api.path :as path]))
 
 (set! *warn-on-reflection* true)
 
@@ -39,12 +40,38 @@
   "Load the deps.edn file."
   (memoize load-deps*))
 
-(defn load-project* [& [options]]
+(defn relative-to-resolver
+  "Resolves relative to the source file, or to the given directory."
+  [dir]
+  (fn
+    [source include]
+    (let [fl (if (.isAbsolute (io/file include))
+               (io/file include)
+               (if-let [source-file
+                          (try
+                            (io/file source)
+                            ;; Handle the case where the source isn't file compatible:
+                            (catch java.lang.IllegalArgumentException _ nil))]
+                 (io/file (.getParent ^java.io.File source-file) include)
+                 (if dir
+                   (io/file dir include)
+                   (io/file include))))]
+      (if (and fl (.exists fl))
+        fl
+        (java.io.StringReader. (pr-str {:aero/missing-include include}))))))
+
+(defn project-path [dir]
+  (if dir
+    (path/path dir "project.edn")
+    (path/path "project.edn")))
+
+(defn load-project* [& [{:keys [dir] :as options}]]
   (:project
    (aero/read-config
-     (java.io.StringReader. (pr-str default-config/project-with-defaults))
+     (java.io.StringReader.
+       (pr-str default-config/project-with-defaults))
      (merge
-       {:resolver aero/root-resolver}
+       {:resolver (relative-to-resolver dir)}
        options))))
 
 (defn resolve-source [{:keys [resolver] :as _options} value]
@@ -53,22 +80,27 @@
     resolver        (resolver nil value)
     :else           value))
 
-(defn load-mj* [& [options]]
+(defn mj-path [dir]
+  (if dir
+    (path/path dir "mj.edn")
+    (path/path "mj.edn")))
+
+(defn load-mj* [& [{:keys [dir] :as options}]]
   (aero/read-config
-    (if (filesystem/file-exists? "mj.edn")
-      (resolve-source options "mj.edn")
+    (if (filesystem/file-exists? (mj-path nil))
+      (resolve-source options (path/as-file (mj-path dir)))
       (java.io.StringReader. (pr-str default-config/default-mj)))
     (merge
-      {:resolver aero/root-resolver}
+      {:resolver (relative-to-resolver dir)}
       options)))
 
 (def load-mj
   "Load the mj.edn file."
   (memoize load-mj*))
 
-(defn load-config* [& [options]]
+(defn load-config* [& [{:keys [dir] :as options}]]
   (let [mj      (load-mj* options)
-        project (if (filesystem/file-exists? "project.edn")
+        project (if (filesystem/file-exists? (project-path dir))
                   (load-project* options)
                   {})]
     {:mj      mj
@@ -91,12 +123,12 @@
   Defaults to {:err :inherit}."
   [args options]
   (when *debug*
-    (apply println args))
+    (apply println (into args (when-let [dir (:dir options)] ["in" dir]))))
   (process/process
     (map str args)
     (merge
       {:err :inherit}
-      (if *debug* {:out :inherit})
+      (when *debug* {:out :inherit})
       (select-keys options process-option-keys))))
 
 (defn default-jar-name
