@@ -9,6 +9,6 @@
   or as a no-op specification for a specific target."
   [_args target-kw config _options]
   (let [target-config (get-in config [:mj :targets target-kw])
-        message (:message target-config)]
+        message       (:message target-config)]
     (when message
       (println message))))

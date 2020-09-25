@@ -1,11 +1,8 @@
 (ns modules-test
-  (:require [aero.core :as aero]
-            [clojure.java.io :as io]
-            [clojure.test :refer [deftest is testing]]
+  (:require [clojure.test :refer [deftest is testing]]
             [makejack.api.core :as makejack]
             [makejack.api.filesystem :as filesystem]
             [makejack.api.path :as path]))
-
 
 (deftest modules-test
   (testing "mj modules pom"

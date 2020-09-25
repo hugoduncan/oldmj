@@ -27,7 +27,6 @@
    ["-v" "--verbose" "Show target execution"]
    ["-V" "--version" "Show makejack version and exit"]])
 
-
 (defn -main [& args]
   (let [{:keys [arguments errors options summary]}
         (cli/parse-opts args cli-options :in-order true)]
@@ -40,11 +39,11 @@
 
       (:pprint options)
       (pprint/pprint
-        (makejack/load-config {:profile (:profile options)}))
+       (makejack/load-config {:profile (:profile options)}))
 
       (:version options)
       (pprint/pprint
-        version/info)
+       version/info)
 
       (not (seq arguments))
       (help/usage summary)
@@ -56,7 +55,7 @@
 
       :else
       (binding [makejack/*verbose* (:verbose options)
-                makejack/*debug* (:debug options)]
+                makejack/*debug*   (:debug options)]
         (try
           (apply-command (first arguments) (rest arguments) options)
           (finally

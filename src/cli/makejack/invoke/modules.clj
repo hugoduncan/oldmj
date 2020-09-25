@@ -13,21 +13,21 @@
         modules       (:modules target-config)]
     (when-not (sequential? modules)
       (makejack/error
-        (str "ERROR: the :modules key of the "
-             target-kw
-             " target must specify a vector of subprojects")))
+       (str "ERROR: the :modules key of the "
+            target-kw
+            " target must specify a vector of subprojects")))
     (doseq [module modules]
       (when makejack/*verbose*
         (println "Running" (first args) "in" module))
       (run/run-command
-        (first args)
-        (rest args)
-        (assoc options :dir module)))
+       (first args)
+       (rest args)
+       (assoc options :dir module)))
     (run/run-command
-      (first args)
-      (rest args)
-      options)))
+     (first args)
+     (rest args)
+     options)))
 
 (alter-var-root
-  #'invokers/invokers
-  assoc :modules #'modules)
+ #'invokers/invokers
+ assoc :modules #'modules)

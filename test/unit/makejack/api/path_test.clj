@@ -1,12 +1,7 @@
 (ns makejack.api.path-test
-  (:require [clojure.string :as str]
-            [clojure.test :refer [deftest is testing]]
+  (:require [clojure.test :refer [deftest is]]
             [makejack.api.path :as path])
-  (:import [java.io File]
-           [java.nio.file
-            Files
-            LinkOption Path Paths];
-           [java.nio.file.attribute FileAttribute PosixFilePermission]))
+  (:import [java.io File]))
 
 (deftest path-test
   (is (path/path? (path/path ".")))

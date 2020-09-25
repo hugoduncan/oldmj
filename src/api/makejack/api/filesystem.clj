@@ -10,13 +10,11 @@
             StandardCopyOption]
            [java.nio.file.attribute FileAttribute PosixFilePermission]))
 
-
 (def ^:private dont-follow-links (make-array LinkOption 0))
 
 (defn real-path
   ^Path [path-like]
   (.toRealPath (path/path path-like) dont-follow-links))
-
 
 (defn- char-to-int
   [c]
@@ -38,18 +36,16 @@
   [path-like mode]
   (let [specs (map char-to-int mode)
         perms (reduce
-                (fn [perms [who spec]]
-                  (cond-> perms
-                    (pos? (bit-and spec 1)) (conj (first (POSIX-PERMS who)))
-                    (pos? (bit-and spec 2)) (conj (second (POSIX-PERMS who)))
-                    (pos? (bit-and spec 4)) (conj (last (POSIX-PERMS who)))))
-                #{}
-                (map vector [:owner :group :others] specs))]
+               (fn [perms [who spec]]
+                 (cond-> perms
+                   (pos? (bit-and spec 1)) (conj (first (POSIX-PERMS who)))
+                   (pos? (bit-and spec 2)) (conj (second (POSIX-PERMS who)))
+                   (pos? (bit-and spec 4)) (conj (last (POSIX-PERMS who)))))
+               #{}
+               (map vector [:owner :group :others] specs))]
     (Files/setPosixFilePermissions
-      (path/path path-like)
-      perms)))
-
-
+     (path/path path-like)
+     perms)))
 
 (defn mkdirs
   "Ensure the given path exists."
@@ -63,12 +59,10 @@
 
 (def ^:private link-options (make-array LinkOption 0))
 
-
 (defn file-exists?
   "Predicate for the given path existing."
   [path-like]
   (Files/exists (path/path path-like) link-options))
-
 
 (defn file?
   "Predicate for path referring to a file."
@@ -76,30 +70,30 @@
   (.isFile (.toFile (path/path path-like))))
 
 (def copy-option-values
-  {:copy-attributes StandardCopyOption/COPY_ATTRIBUTES
+  {:copy-attributes  StandardCopyOption/COPY_ATTRIBUTES
    :replace-existing StandardCopyOption/REPLACE_EXISTING})
 
 (defn copy-options
   ^"[Ljava.nio.file.CopyOption;" [{:keys [copy-attributes replace-existing]
-                                   :as options}]
+                                   :as   options}]
   (into-array
-    CopyOption
-    (reduce
-      (fn [vals [kw option-value]]
-        (if (kw options)
-          (conj vals option-value)
-          vals))
-      []
-      copy-option-values)))
+   CopyOption
+   (reduce
+    (fn [vals [kw option-value]]
+      (if (kw options)
+        (conj vals option-value)
+        vals))
+    []
+    copy-option-values)))
 
 (defn copy-file!
   ([source-path target-path]
    (copy-file! source-path target-path {:copy-attributes true}))
   ([source-path target-path {:keys [copy-attributes replace-existing] :as options}]
    (Files/copy
-     (path/path source-path)
-     (path/path target-path)
-     (copy-options options))))
+    (path/path source-path)
+    (path/path target-path)
+    (copy-options options))))
 
 (defn list-paths
   "Return a lazy sequence of paths under path in depth first order."
@@ -108,7 +102,7 @@
   ;;    (.iterator)
   ;;    iterator-seq)
   (->> (file-seq (.toFile (path/path path-like)))
-     (map path/path)))
+       (map path/path)))
 
 (defn delete-file!
   "Delete the file at the specified path-like.
@@ -119,20 +113,20 @@
 (defn delete-recursively!
   [path-like]
   (let [paths (->> (list-paths path-like)
-                 (sort-by identity (comp - compare))
-                 vec)]
+                   (sort-by identity (comp - compare))
+                   vec)]
     (doseq [^Path path paths]
       (.delete (.toFile path)))))
 
 (defn delete-on-exit-if-exists! [path-like]
   (let [path (path/path path-like)]
     (-> (java.lang.Runtime/getRuntime)
-       (.addShutdownHook
+        (.addShutdownHook
          (Thread.
-           (fn []
-             (when (file-exists? path)
-               (delete-recursively! path)
-               (delete-file! path))))))))
+          (fn []
+            (when (file-exists? path)
+              (delete-recursively! path)
+              (delete-file! path))))))))
 
 (def empty-file-attributes (into-array FileAttribute []))
 
@@ -140,19 +134,16 @@
   [bindings body macro-sym macro-fn]
   {:pre [(vector? bindings) (even? (count bindings))]}
   (cond
-    (not (seq bindings))
-    `(do ~@body)
-
-    (symbol? (bindings 0))
-    (macro-fn
-      (subvec bindings 0 2)
-      [`(~macro-sym ~(subvec bindings 2)
-         ~@body)])
-
-    :else
-    (throw (IllegalArgumentException.
-             (str (name macro-sym) " only allows [symbol value] pairs in bindings")))))
-
+    (not (seq bindings))   `(do ~@body)
+    (symbol? (bindings 0)) (macro-fn
+                            (subvec bindings 0 2)
+                            [`(~macro-sym
+                               ~(subvec bindings 2)
+                               ~@body)])
+    :else                  (throw
+                            (IllegalArgumentException.
+                             (str (name macro-sym)
+                                  " only allows [symbol value] pairs in bindings")))))
 
 (defn make-temp-path
   "Return a temporary file path.
@@ -176,18 +167,17 @@
                    "tmp")
         path   (if dir
                  (Files/createTempFile
-                   (path/path dir)
-                   prefix
-                   suffix
-                   empty-file-attributes)
+                  (path/path dir)
+                  prefix
+                  suffix
+                  empty-file-attributes)
                  (Files/createTempFile
-                   prefix
-                   suffix
-                   empty-file-attributes))]
+                  prefix
+                  suffix
+                  empty-file-attributes))]
     (when delete-on-exit
       (delete-on-exit-if-exists! path))
     path))
-
 
 (defn ^:no-doc with-temp-path-fn
   [[sym prefix-or-options] body]
@@ -200,7 +190,6 @@
        (finally
          (if delete#
            (delete-file! ~sym))))))
-
 
 (defmacro with-temp-path
   "A scope with sym bound to a java.io.File object for a temporary
@@ -228,31 +217,30 @@
   :prefix - a string that is used to name the directory."
   [prefix-or-options]
   ^Path {:pre [(or (string? prefix-or-options) (map? prefix-or-options))]}
-  (let [prefix (if (string? prefix-or-options)
-                 prefix-or-options
-                 (:prefix prefix-or-options))
+  (let [prefix          (if (string? prefix-or-options)
+                          prefix-or-options
+                          (:prefix prefix-or-options))
         {:keys [delete-on-exit dir]
          :or   {delete-on-exit true}
          :as   options} (if (map? prefix-or-options) prefix-or-options {})
-        _ (assert (string? prefix))
-        _ (assert (map? options))
-        dir (if dir (.toPath (io/file dir)))
+        _               (assert (string? prefix))
+        _               (assert (map? options))
+        dir             (if dir (.toPath (io/file dir)))
         file-attributes (into-array FileAttribute [])
-        file (..
-               (if dir
-                 (Files/createTempDirectory dir prefix file-attributes)
-                 (Files/createTempDirectory prefix file-attributes))
-               (toFile))]
+        file            (..
+                         (if dir
+                           (Files/createTempDirectory dir prefix file-attributes)
+                           (Files/createTempDirectory prefix file-attributes))
+                         (toFile))]
     (when delete-on-exit
       (-> (java.lang.Runtime/getRuntime)
           (.addShutdownHook
-            (Thread.
-              (fn []
-                (when (file-exists? file)
-                  (delete-recursively! file)
-                  (.delete file)))))))
+           (Thread.
+            (fn []
+              (when (file-exists? file)
+                (delete-recursively! file)
+                (.delete file)))))))
     file))
-
 
 (defn ^:no-doc with-temp-dir-fn
   [[sym prefix-or-options] body]
@@ -262,7 +250,6 @@
        (finally
          (delete-recursively! ~sym)
          (.delete ~sym)))))
-
 
 (defmacro with-temp-dir
   "bindings => [name prefix-or-options ...]

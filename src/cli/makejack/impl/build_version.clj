@@ -22,10 +22,10 @@
   []
   (let [deps-str (:out (clojure-cli/process ["-Srepro" "-Stree"] {:out :string}))]
     (->> deps-str
-       str/split-lines
-       (mapv str/trim)
-       (mapv build-lib-map-from-stree)
-       (into {}))))
+         str/split-lines
+         (mapv str/trim)
+         (mapv build-lib-map-from-stree)
+         (into {}))))
 
 (defn filter-basis-dep
   [[coord spec]]
@@ -35,16 +35,16 @@
   []
   (let [deps-str (:out
                   (clojure-cli/process
-                    (concat
-                      (clojure-cli/args {:repro true})
-                      (clojure-cli/main-args
-                        {:expr (clojure-cli/clojure-basis-form)}))
-                    {}))]
+                   (concat
+                    (clojure-cli/args {:repro true})
+                    (clojure-cli/main-args
+                     {:expr (clojure-cli/clojure-basis-form)}))
+                   {}))]
     (->> deps-str
-       edn/read-string
-       :libs
-       (mapv filter-basis-dep)
-       (into {}))))
+         edn/read-string
+         :libs
+         (mapv filter-basis-dep)
+         (into {}))))
 
 (defn resolved-deps
   []
@@ -56,8 +56,8 @@
   []
   (let [props (System/getProperties)
         props (zipmap
-                (map keyword (keys props))
-                (vals props))]
+               (map keyword (keys props))
+               (vals props))]
     (select-keys props [:java.runtime.name
                         :java.vm.version
                         :java.vm.vendor
@@ -69,7 +69,6 @@
                         :java.vm.specification.version
                         :java.version
                         :java.vendor])))
-
 
 (defn build-version
   "Create the makejack.impl.version namespace source"

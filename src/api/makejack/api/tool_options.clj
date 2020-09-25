@@ -8,9 +8,8 @@
 
 (defn parse-kw-stringlist [kwlist-str]
   (->> (str/split kwlist-str #":")
-     (filter (complement str/blank?))
-     (mapv keyword)))
-
+       (filter (complement str/blank?))
+       (mapv keyword)))
 
 (def cli-options
   "Recommended CLI options for tools."
@@ -26,7 +25,6 @@
    ["-d" "--debug" "Output command executions"]
    ["-v" "--verbose" "Show target execution"]])
 
-
 (defn parse-options
   "Parse the cli options, with the given extra options."
   [args extra-options]
@@ -35,11 +33,11 @@
 
 (defn usage [intro summary]
   (println
-    (str/join
-      "\n"
-      [intro
-       ""
-       summary]))
+   (str/join
+    "\n"
+    [intro
+     ""
+     summary]))
   (System/exit 0))
 
 (defn parse-options-and-apply-to-config
@@ -52,7 +50,7 @@
     (cond
       errors
       (makejack/error
-        (str/join \newline errors))
+       (str/join \newline errors))
 
       (:help options)
       (usage summary intro)

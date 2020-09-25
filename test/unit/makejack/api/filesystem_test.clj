@@ -3,15 +3,12 @@
             [clojure.test :refer [deftest is testing]]
             [makejack.api.filesystem :as filesystem]
             [makejack.api.path :as path])
-  (:import [java.io File]
-           [java.nio.file
+  (:import [java.nio.file
             CopyOption
             Files
-            LinkOption Path Paths
             StandardCopyOption];
-           [java.nio.file.attribute FileAttribute PosixFilePermission]
+           [java.nio.file.attribute FileAttribute]
            [java.util Arrays]))
-
 
 (deftest make-temp-path-path-test
   (testing "with default options creates a path with tmp prefix and .tmp suffix"
@@ -32,7 +29,7 @@
       (is (str/starts-with? (str (path/filename path)) "pref"))
       (filesystem/delete-file! path)))
   (testing "with directory option creates a path in the given directory"
-    (let [dir (Files/createTempDirectory "xyz" filesystem/empty-file-attributes)
+    (let [dir  (Files/createTempDirectory "xyz" filesystem/empty-file-attributes)
           path (filesystem/make-temp-path "pref")]
       (is (filesystem/file-exists? path))
       (is (str/starts-with? (str (path/filename path)) "pref"))
@@ -48,7 +45,7 @@
     (is (not (filesystem/file-exists? @paths)))
 
     (filesystem/with-temp-path [path {}
-                          path2 "pref"]
+                                path2 "pref"]
       (is (filesystem/file-exists? path))
       (is (filesystem/file-exists? path2))
       (vreset! paths [path path2])
@@ -58,17 +55,17 @@
 
 (deftest delete-recursive-test
   (let [file-attributes (into-array FileAttribute [])
-        dir (Files/createTempDirectory "delete-recursive-test" file-attributes)]
+        dir             (Files/createTempDirectory
+                         "delete-recursive-test" file-attributes)]
     (doseq [sub-dir (range 3)]
       (filesystem/mkdirs (path/path dir (str sub-dir)))
       (doseq [file (range 3)]
         (Files/createFile
-          (path/path dir (str sub-dir) (str file))
-          (into-array FileAttribute []))))
+         (path/path dir (str sub-dir) (str file))
+         (into-array FileAttribute []))))
     (filesystem/delete-recursively! (str dir))
     (is (not (filesystem/file-exists? dir))
         (str dir))))
-
 
 (deftest wirh-temp-dir-test
   (let [capture-dir (volatile! nil)]
@@ -76,25 +73,29 @@
       (vreset! capture-dir dir)
       (filesystem/file-exists? dir)
       (Files/createFile
-        (path/path dir "xx")
-        (into-array FileAttribute []))
+       (path/path dir "xx")
+       (into-array FileAttribute []))
       (is (filesystem/file-exists? (path/path dir "xx"))))
     (is (not (filesystem/file-exists? (path/path @capture-dir "xx"))))
     (is (not (filesystem/file-exists? @capture-dir)))))
 
-
 (deftest copy-options-test
   (is (Arrays/equals
-        (into-array CopyOption [])
-        (filesystem/copy-options {})))
+       ^"[Ljava.nio.file.CopyOption;" (into-array CopyOption [])
+       (filesystem/copy-options {})))
   (is (Arrays/equals
-        (into-array CopyOption [StandardCopyOption/COPY_ATTRIBUTES])
-        (filesystem/copy-options {:copy-attributes true})) )
+       ^"[Ljava.nio.file.CopyOption;" (into-array
+                                       CopyOption
+                                       [StandardCopyOption/COPY_ATTRIBUTES])
+       (filesystem/copy-options {:copy-attributes true})))
   (is (Arrays/equals
-        (into-array CopyOption [StandardCopyOption/REPLACE_EXISTING])
-        (filesystem/copy-options {:replace-existing true})) )
+       ^"[Ljava.nio.file.CopyOption;" (into-array
+                                       CopyOption
+                                       [StandardCopyOption/REPLACE_EXISTING])
+       (filesystem/copy-options {:replace-existing true})))
   (is (Arrays/equals
-        (into-array CopyOption
-                    [StandardCopyOption/COPY_ATTRIBUTES
-                     StandardCopyOption/REPLACE_EXISTING])
-        (filesystem/copy-options {:copy-attributes true :replace-existing true})) ))
+       ^"[Ljava.nio.file.CopyOption;" (into-array
+                                       CopyOption
+                                       [StandardCopyOption/COPY_ATTRIBUTES
+                                        StandardCopyOption/REPLACE_EXISTING])
+       (filesystem/copy-options {:copy-attributes true :replace-existing true}))))

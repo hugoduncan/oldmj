@@ -15,16 +15,16 @@
     (makejack/process ["../../target/mj-script" "--verbose" "javac"]
                       {:dir "test-resources/test_project_java"})
     (let [class-file (path/path
-                       "test-resources" "test_project_java"
-                       "target" "classes" "my" "Hello.class")]
+                      "test-resources" "test_project_java"
+                      "target" "classes" "my" "Hello.class")]
       (testing "creates class file"
         (is (filesystem/file-exists? class-file)))))
   (testing "mj compile"
     (makejack/process ["../../target/mj-script" "--verbose" "compile"]
                       {:dir "test-resources/test_project_java"})
     (let [class-file (path/path
-                       "test-resources" "test_project_java"
-                       "target" "classes" "my" "main__init.class")]
+                      "test-resources" "test_project_java"
+                      "target" "classes" "my" "main__init.class")]
       (testing "creates class file"
         (is (filesystem/file-exists? class-file)))))
   (testing "mj pom"
@@ -51,12 +51,12 @@
           (is (.getJarEntry jar-file "my/Hello.class"))))
       (testing "can be invoked by clojure"
         (let [res (makejack/process
-                    ["clojure" "-Scp" "target/java-0.1.0-standalone.jar"
-                     "-m" "my.main" "world"]
-                    {:dir "test-resources/test_project_java"})]
+                   ["clojure" "-Scp" "target/java-0.1.0-standalone.jar"
+                    "-m" "my.main" "world"]
+                   {:dir "test-resources/test_project_java"})]
           (= "Hello world" (:out res))))
       (testing "can be invoked by java"
         (let [res (makejack/process
-                    ["java" "-jar" "target/java-0.1.0-standalone.jar" "world"]
-                    {:dir "test-resources/test_project_java"})]
+                   ["java" "-jar" "target/java-0.1.0-standalone.jar" "world"]
+                   {:dir "test-resources/test_project_java"})]
           (= "hello" (:out res)))))))

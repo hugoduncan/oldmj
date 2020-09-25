@@ -22,12 +22,12 @@
         (is (filesystem/file-exists? mj-edn)))
       (testing "injects default targets"
         (let [config (aero/read-config
-                       (java.io.StringReader.
-                         (:out
-                          (makejack/process
-                            ["../../target/mj-script" "--pprint"]
-                            {:dir "test-resources/test_hello_world"})))
-                       (resolver "test_hello_world"))]
+                      (java.io.StringReader.
+                       (:out
+                        (makejack/process
+                         ["../../target/mj-script" "--pprint"]
+                         {:dir "test-resources/test_hello_world"})))
+                      (resolver "test_hello_world"))]
           (is (= "test_hello_world" (-> config :project :name))
               config)
           (is (= "0.1.0" (-> config :project :version)))

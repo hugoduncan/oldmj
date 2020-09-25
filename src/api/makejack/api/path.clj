@@ -8,10 +8,10 @@
 ;;   Path
 ;;   (as-file [p] (.toFile p)))
 
+;; "Coerce between various 'resource-namish' things."
 (defprotocol Coercions
-  ;; "Coerce between various 'resource-namish' things."
-  (^{:tag java.nio.file.Path} as-path [x]
-   "Coerce argument to a Path."))
+  (as-path ^{:tag java.nio.file.Path} [x]
+    "Coerce argument to a Path."))
 
 (def ^:private ^"[Ljava.lang.String;" empty-strings (make-array String 0))
 
@@ -68,8 +68,8 @@
   The extension is a string, including any required dot."
   ^Path [path-like extension]
   (let [^Path base-path (path path-like)
-        parent-path (.getParent base-path)
-        filename (str (.getFileName base-path) extension)]
+        parent-path     (.getParent base-path)
+        filename        (str (.getFileName base-path) extension)]
     (if parent-path
       (path parent-path filename)
       (path filename))))

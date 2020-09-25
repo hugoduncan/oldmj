@@ -8,9 +8,9 @@
   [_args target-kw {:keys [mj project] :as _config} options]
   (let [target-config    (get-in mj [:targets target-kw])
         aliases          (-> []
-                            (into (:aliases project))
-                            (into (:aliases target-config))
-                            (into (:aliases options)))
+                             (into (:aliases project))
+                             (into (:aliases target-config))
+                             (into (:aliases options)))
         form             (:form target-config)
         deps             (:deps target-config)
         forward-options? (:forward-options options true)
@@ -24,15 +24,15 @@
                                 (select-keys [:with-project-deps?] target-config))]
     (try
       (babashka/process
-        aliases
-        deps
-        args
-        (merge
-          (if (seq args)
-            {}
-            {:out :inherit ; run a bb repl
-             :err :inherit
-             :in  :inherit})
-          options))
+       aliases
+       deps
+       args
+       (merge
+        (if (seq args)
+          {}
+          {:out :inherit ; run a bb repl
+           :err :inherit
+           :in  :inherit})
+        options))
       (catch clojure.lang.ExceptionInfo e
         (util/handle-invoker-exception e)))))

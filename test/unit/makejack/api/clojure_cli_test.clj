@@ -54,8 +54,7 @@
          (clojure-cli/main-args {:main-args ["a" "b"]} #{})))
   (is (= ["-m" "a.b" "a" "b"]
          (clojure-cli/main-args {:main 'a.b :main-args ["a" "b"]} #{})))
-  (is (= ["-e" "(+ 1)"] (clojure-cli/main-args {:expr '(+ 1)} #{})))
-  )
+  (is (= ["-e" "(+ 1)"] (clojure-cli/main-args {:expr '(+ 1)} #{}))))
 
 (deftest version-test
   (is (re-matches #"\d+\.\d+\.\d+\.\d+" (clojure-cli/version))))
@@ -66,7 +65,6 @@
   (is (not (clojure-cli/version-less [1 1 0 0] [1 0 0 1])))
   (is (clojure-cli/version-less [1 1 0 0] [1 3 0 1]))
   (is (clojure-cli/version-less [1 1 0 0] [1 1 3 1])))
-
 
 (deftest known-version-test
   (is (set? (clojure-cli/features*)))
