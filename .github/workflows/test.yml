@@ -45,9 +45,9 @@ jobs:
         name: mj-script
     - name: tests
       run: |
-        ./mj-script test
+        bb ./mj-script test
         cd tools
-        ../mj-script test
+        bb ../mj-script test
 
   lint:
     name: Lint
@@ -65,15 +65,12 @@ jobs:
         name: mj-script
     - name: tests
       run: |
-        ./mj-script lint
+        bb ./mj-script lint
 
   fmt:
     name: Format
     runs-on: macos-latest
     needs: [build]
-    strategy:
-      matrix:
-        cli-version: ["clojure", "clojure/tools/clojure@1.10.1.681"]
     steps:
     - name: Install clojure
       run: brew install clojure
@@ -86,4 +83,4 @@ jobs:
         name: mj-script
     - name: tests
       run: |
-        ./mj-script fmt
+        bb ./mj-script fmt
