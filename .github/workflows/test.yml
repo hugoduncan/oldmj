@@ -4,7 +4,7 @@ on: [push, pull_request]
 name: Run tests
 
 jobs:
-  buil:
+  build:
     name: Build
     runs-on: macos-latest
     strategy:
