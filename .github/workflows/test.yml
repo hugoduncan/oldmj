@@ -29,6 +29,7 @@ jobs:
   tests:
     name: Tests
     runs-on: macos-latest
+    needs: [build]
     strategy:
       matrix:
         cli-version: ["clojure", "clojure/tools/clojure@1.10.1.681"]
@@ -51,6 +52,7 @@ jobs:
   lint:
     name: Lint
     runs-on: macos-latest
+    needs: [build]
     steps:
     - name: Install clojure
       run: brew install clojure
@@ -68,6 +70,7 @@ jobs:
   fmt:
     name: Format
     runs-on: macos-latest
+    needs: [build]
     strategy:
       matrix:
         cli-version: ["clojure", "clojure/tools/clojure@1.10.1.681"]
