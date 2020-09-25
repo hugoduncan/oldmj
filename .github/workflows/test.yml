@@ -4,7 +4,29 @@ on: [push, pull_request]
 name: Run tests
 
 jobs:
-  build-site:
+  buil:
+    name: Build
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        cli-version: ["clojure", "clojure/tools/clojure@1.10.1.681"]
+    steps:
+    - name: Install clojure
+      run: brew install ${{ matrix.cli-version }}
+    - name: Install babashka
+      run: brew install borkdude/brew/babashka
+    - uses: actions/checkout@v2
+    - name: build
+      run: |
+        bin/bootstrap-script --debug --verbose
+    - name: Upload script
+      uses: actions/upload-artifact@v2
+      with:
+        name: mj-script
+        path: target/mj-script
+        if-no-files-found: error
+
+  tests:
     name: Tests
     runs-on: macos-latest
     strategy:
@@ -16,9 +38,49 @@ jobs:
     - name: Install babashka
       run: brew install borkdude/brew/babashka
     - uses: actions/checkout@v2
+    - name: Download API jar artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: mj-script
     - name: tests
       run: |
-        bin/bootstrap-script --debug --verbose
-        target/mj-script test
+        ./mj-script test
         cd tools
-        ../target/mj-script test
+        ../mj-script test
+
+  lint:
+    name: Lint
+    runs-on: macos-latest
+    steps:
+    - name: Install clojure
+      run: brew install clojure
+    - name: Install babashka
+      run: brew install borkdude/brew/babashka
+    - uses: actions/checkout@v2
+    - name: Download API jar artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: mj-script
+    - name: tests
+      run: |
+        ./mj-script lint
+
+  fmt:
+    name: Format
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        cli-version: ["clojure", "clojure/tools/clojure@1.10.1.681"]
+    steps:
+    - name: Install clojure
+      run: brew install clojure
+    - name: Install babashka
+      run: brew install borkdude/brew/babashka
+    - uses: actions/checkout@v2
+    - name: Download API jar artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: mj-script
+    - name: tests
+      run: |
+        ./mj-script fmt
