@@ -21,12 +21,12 @@ jobs:
         bin/bootstrap-script --debug --verbose
     - name: tests
       run: |
-        bb ./mj-script test
+        bb ./target/mj-script test
         cd tools
-        bb ../mj-script test
+        bb ../target/mj-script test
     - name: lint
       run: |
-        bb ./mj-script lint
+        bb ./target/mj-script lint
     - name: fmt
       run: |
-        bb ./mj-script fmt
+        bb ./target/mj-script fmt
