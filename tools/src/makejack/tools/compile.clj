@@ -21,7 +21,7 @@
                       (reduce
                        (fn [paths alias]
                          (into paths (some-> deps :aliases alias :extra-paths)))
-                       (:paths deps)
+                       (:paths deps ["src"])
                        aliases))
         classes-path (:classes-path mj "target/classes")
         source-files (mapcat

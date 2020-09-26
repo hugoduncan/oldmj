@@ -183,8 +183,8 @@
         (println (:err res)))
       (System/exit (:exit res)))
 
-
     (println "building mj-script")
+    (.mkdirs (java.io.File. "cli/target"))
     (let [res (sh ["bb"
                    "-cp" main-cp
                    "-m" "makejack.main"

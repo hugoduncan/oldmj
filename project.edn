@@ -1,15 +1,4 @@
-{:version-map     #include "version.edn"
- :version         #version-string #ref [:version-map]
- :name            "makejack"
- :group-id        "org.hugoduncan"
- :main            makejack.main
- :script-name     "mj-script"
- :script-shebang? true
- :binary-name     "mj"
- :aliases #profile {:default []
-                    :compile [:compile]
-                    :uberjar [:uberjar :compile]
-                    :jar     [:jar]}
- :jar-type #profile {:default :jar
-                     :uberjar :uberjar
-                     :binary  :uberjar}}
+{:version-map #include "version.edn"
+ :version     #version-string #ref [:version-map]
+ :name        "makejack"
+ :group-id    "org.hugoduncan"}

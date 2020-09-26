@@ -54,12 +54,6 @@
                        :namespaces  [#regex "^makejack\\.tools\\.[a-z_]+$"]
                        :writer      'makejack.doc.tool-writer/write-docs
                        }))}
-       :build      {:doc     "pom, compile, uberjar and binary"
-                    :invoker :chain
-                    :targets [:pom :compile :uberjar :binary]}
-       :build-api  {:doc     "pom, jar and install"
-                    :invoker :chain
-                    :targets [:pom :jar :install]}
        :site       {:doc     "Build the static site for github pages"
                     :invoker :shell
                     :args    ["hugo"]
@@ -71,6 +65,14 @@
                     :args    ["git" "submodule" "update" "--recursive"]}
        :modules    {:invoker :modules
                     :modules ["tools"]}
+       :build      {:invoker :modules
+                    :modules ["api" "cli" "tools"]
+                    :args    ["build"]
+                    :self    false}
+       :doc-gen    {:invoker :modules
+                    :modules ["api" "tools"]
+                    :args    ["doc-gen"]
+                    :self    false}
        :lint       {:invoker :modules
                     :modules ["api" "cli" "tools"]
                     :args    ["lint"]
@@ -79,7 +81,7 @@
                     :modules ["api" "cli" "tools"]
                     :args    ["fmt"]
                     :self    false}
-       :test        {:invoker :modules
+       :test       {:invoker :modules
                     :modules ["api" "cli" "tools"]
                     :args    ["test"]
                     :self    false}}]}

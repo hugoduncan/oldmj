@@ -1,9 +1,9 @@
 #mj {:project #project {:profile :jar}
      :targets
      #merge
-     [#default-targets [:pom :clean :jar :uberjar :compile :binary :install :deploy]
+     [#default-targets [:pom :clean :jar :install :deploy]
       #include "../mj-targets.edn"
-      {:tool-doc
+      {:doc-gen
        {:doc     "Generate tool documentation from sources."
         :invoker :clojure
         :aliases [:api-docs]
@@ -19,4 +19,7 @@
                        :version     #ref [:project :version]
                        :namespaces  [#regex "^makejack\\.tools\\.[a-z_]+$"]
                        :writer      'makejack.doc.tool-writer/write-docs
-                       }))}}]}
+                       }))}
+       :build      {:doc     "pom, jar and install"
+                    :invoker :chain
+                    :targets [:pom :jar :install]}}]}

@@ -13,7 +13,7 @@
                               'makejack.doc.api-writer)
                      (codox/generate-docs
                       {:metadata    {:doc/format :markdown}
-                       :output-path "site"
+                       :output-path "../site"
                        :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
                        :version     #ref [:project :version]
                        :namespaces  [#regex "^makejack\\.api\\."]
@@ -29,12 +29,15 @@
                               'makejack.doc.invoker-writer)
                      (codox/generate-docs
                       {:metadata    {:doc/format :markdown}
-                       :output-path "site"
+                       :output-path "../site"
                        :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
                        :version     #ref [:project :version]
                        :namespaces  [#regex "^makejack\\.invoke\\.[a-z_]+$"]
                        :writer      makejack.doc.invoker-writer/write-docs
                        }))}
-       :build {:doc     "pom, jar and install"
-               :invoker :chain
-               :targets [:pom :jar :install]}}]}
+       :doc-gen {:doc     "api and invoker doc gen "
+                 :invoker :chain
+                 :targets [:aoi-doc invoker-doc]}
+       :build   {:doc     "pom, jar and install"
+                 :invoker :chain
+                 :targets [:pom :jar :install]}}]}

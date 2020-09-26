@@ -6,10 +6,7 @@
  :script-name     "mj-script"
  :script-shebang? true
  :binary-name     "mj"
- :aliases #profile {:default []
-                    :compile [:compile]
-                    :uberjar [:uberjar :compile]
-                    :jar     [:jar]}
- :jar-type #profile {:default :jar
-                     :uberjar :uberjar
-                     :binary  :uberjar}}
+ :aliases         #profile {:default []
+                            :compile [:compile]
+                            :uberjar [:uberjar :compile]}
+ :jar-type        :uberjar}
