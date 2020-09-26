@@ -19,6 +19,7 @@
 (def debug (:debug bootstrap-options))
 
 
+
 (def API-POM "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>
   <project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\" >
   <modelVersion>4.0.0</modelVersion>
@@ -107,20 +108,6 @@
     (println "Bootstrapping makejack version" version))
 
 
-  (println "building version source namespace")
-  (let [res (sh (-> ["clojure"]
-                   (into (main-switches))
-                   (into ["makejack.impl.build-version"])
-                   (into verbose-args)))]
-    (when debug
-      (println (:out res))
-      (println (:err res)))
-    (when (pos? (:exit res))
-      (binding [*out* *err*]
-        (println "failed")
-        (println (:err res)))
-      (System/exit (:exit res))))
-
 ;;;  Build and install API jar
 
   (println "building pom")
@@ -131,8 +118,7 @@
   ;;       (println "failed")
   ;;       (println (:err res)))
   ;;     (System/exit (:exit res))))
-  (spit "pom.xml" (format API-POM version))
-
+  (spit "api/pom.xml" (format API-POM version))
 
   (println "building API jar")
   (let [res (sh (-> ["clojure"]
@@ -142,7 +128,8 @@
                    (into (main-switches ":jar"))
                    (into ["hf.depstar.jar"])
                    (into verbose-args)
-                   (conj (str "target/makejack-" version ".jar"))))]
+                   (conj (str "target/makejack-" version ".jar"))
+                   (into [:dir "api"])))]
     (when debug
       (println (:out res))
       (println (:err res)))
@@ -159,7 +146,8 @@
                  "-DgroupId=org.hugoduncan"
                  "-DartifactId=makejack"
                  (str "-Dversion=" version)
-                 "-Dpackaging=jar"])]
+                 "-Dpackaging=jar"
+                 :dir "api"])]
     (when debug
       (println (:out res)))
     (when (pos? (:exit res))
@@ -170,8 +158,24 @@
 
 ;;; Build mj-script
 
+  (println "building version source namespace")
+  (let [res (sh (-> ["clojure"]
+                   (into (main-switches))
+                   (into ["makejack.impl.build-version"])
+                   (into verbose-args)
+                   (into [:dir "cli"])))]
+    (when debug
+      (println (:out res))
+      (println (:err res)))
+    (when (pos? (:exit res))
+      (binding [*out* *err*]
+        (println "failed")
+        (println (:err res)))
+      (System/exit (:exit res))))
+
+
   (println "Get main classpath")
-  (let [res     (sh ["clojure" "-Srepro" "-Spath"])
+  (let [res     (sh ["clojure" "-Srepro" "-Spath" :dir "cli"])
         main-cp (str/trim (:out res))]
     (when (pos? (:exit res))
       (binding [*out* *err*]
@@ -179,12 +183,13 @@
         (println (:err res)))
       (System/exit (:exit res)))
 
-
     (println "building mj-script")
+    (.mkdirs (java.io.File. "cli/target"))
     (let [res (sh ["bb"
                    "-cp" main-cp
                    "-m" "makejack.main"
-                   "--uberscript" "target/mj-script"])]
+                   "--uberscript" "target/mj-script"
+                   :dir "cli"])]
       (when debug
         (println (:out res)))
       (when (pos? (:exit res))
@@ -244,7 +249,8 @@
     (let [res (sh (concat
                     ["bb" "target/mj-script"]
                     verbose-args
-                    ["uberscript"]))]
+                    ["uberscript"
+                     :dir "cli"]))]
       (when debug
         (println (:out res))
         (println (:err res)))

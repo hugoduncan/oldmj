@@ -2,4 +2,5 @@
 
 hash bb || ( printf "Please install babashka\n"; exit 1 )
 
-bb -cp $(clojure -Spath) bin/bootstrap-script.bb "$@"
+CP=$( ( cd api && clojure -Spath) )
+bb -cp $CP bin/bootstrap-script.bb "$@"

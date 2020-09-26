@@ -16,8 +16,8 @@
 
 ;; Change default client for your whole application:
 (alter-var-root
-  #'org.httpkit.client/*default-client*
-  (fn [_] sni-client/default-client))
+ #'org.httpkit.client/*default-client*
+ (fn [_] sni-client/default-client))
 
 (defn paths-to-deploy
   [mj project]
@@ -62,7 +62,7 @@
 
 (defn url-credentials
   [^URL url]
-  (let [user-info (some-> url (.getUserInfo))
+  (let [user-info           (some-> url (.getUserInfo))
         [username password] (some-> user-info (.split ":"))]
     (if username
       {:username username :password password})))
@@ -112,9 +112,9 @@
 (defn gpg-credentials-path
   []
   (path/path
-    (System/getProperty "user.home")
-    ".makejack"
-    "credentials.edn.gpg"))
+   (System/getProperty "user.home")
+   ".makejack"
+   "credentials.edn.gpg"))
 
 (defn gpg-credentials
   [repo-name]
@@ -159,31 +159,31 @@
 
 (defn url-path [project]
   (str (path/path
-         (group-path project)
-         (:artifact-id project)
-         (:version project))))
+        (group-path project)
+        (:artifact-id project)
+        (:version project))))
 
 (defn metadata-url-path [project]
   (str (path/path
-         (group-path project)
-         (:artifact-id project)
-         "maven-metadata.xml")))
+        (group-path project)
+        (:artifact-id project)
+        "maven-metadata.xml")))
 
 (defn deploy-dir [project dir repository request]
   (let [url            (:url repository)
         url-path       (url-path project)
         [path & paths] (filterv filesystem/file? (filesystem/list-paths dir))
         response       (check-response
-                         @(put!
-                            (assoc request :body (path/as-file path))
-                            url
-                            (path/path url-path (path/filename path))))
+                        @(put!
+                          (assoc request :body (path/as-file path))
+                          url
+                          (path/path url-path (path/filename path))))
         request        (request-with-cookie request response)
         uploads        (for [path paths]
                          (put!
-                           (assoc request :body (path/as-file path))
-                           url
-                           (path/path url-path (path/filename path))))]
+                          (assoc request :body (path/as-file path))
+                          url
+                          (path/path url-path (path/filename path))))]
     (doseq [upload uploads]
       (check-response @upload))
     request))
@@ -191,41 +191,41 @@
 (defn generate-metadata-model
   [project dir]
   (let [metadata (Metadata.)
-        writer (MetadataXpp3Writer.)]
+        writer   (MetadataXpp3Writer.)]
     (.setGroupId metadata (:group-id project))
     (.setArtifactId metadata (:artifact-id project))
     (.setVersion metadata (:version project))
     (.setFileComment writer "Written by Makejack")
     (with-open [^java.io.OutputStream out (io/output-stream
-                                            (path/as-file
-                                              (path/path dir "maven-metadata.xml")))]
-      (.write writer out metadata ))))
+                                           (path/as-file
+                                            (path/path dir "maven-metadata.xml")))]
+      (.write writer out metadata))))
 
 (defn deploy-metadata [project dir repository request]
   (check-response
-    @(put!
-       (merge
-         request
-         {:body (.toFile (path/path dir "maven-metadata.xml"))})
-       (:url repository)
-       (metadata-url-path project))))
+   @(put!
+     (merge
+      request
+      {:body (.toFile (path/path dir "maven-metadata.xml"))})
+     (:url repository)
+     (metadata-url-path project))))
 
 (def default-repos
   {"clojars" {:url "https://clojars.org/repo"}
    "central" {:url "https://repo1.maven.org/maven2/"}})
 
 (defn repository [repo-name]
-  (let [deps-edn (makejack/load-deps)
-        repos    (merge default-repos
-                        (:mvn/repos deps-edn))
+  (let [deps-edn  (makejack/load-deps)
+        repos     (merge default-repos
+                         (:mvn/repos deps-edn))
         repo-name (or repo-name "clojars")]
     (assoc
-      (or (get repos repo-name)
-          (throw (ex-info "Could not find repository"
-                          {:repository repo-name
-                           :repos      repos
-                           :deps-edn   deps-edn})))
-      :name repo-name)))
+     (or (get repos repo-name)
+         (throw (ex-info "Could not find repository"
+                         {:repository repo-name
+                          :repos      repos
+                          :deps-edn   deps-edn})))
+     :name repo-name)))
 
 (defn deploy
   "Deploy a project to a maven repository."
@@ -236,21 +236,20 @@
     (filesystem/with-temp-dir [dir "mj-deploy"]
       (doseq [path paths]
         (prepare-path-deploy! path dir))
-      (let [request  (base-request credentials)
-            request  (deploy-dir project dir repository request)]
+      (let [request (base-request credentials)
+            request (deploy-dir project dir repository request)]
         (generate-metadata-model project dir)
         (deploy-metadata project dir repository request))))
   nil)
 
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."
-    :parse-fn tool-options/parse-kw-stringlist]
-   ])
+    :parse-fn tool-options/parse-kw-stringlist]])
 
 (defn -main [& args]
   (let [{:keys [arguments options] {:keys [project] :as config} :config}
         (tool-options/parse-options-and-apply-to-config
-          args extra-options "pom [options]")]
+         args extra-options "pom [options]")]
     (makejack/with-makejack-tool ["deploy" options project]
       (deploy arguments config options))
     (shutdown-agents)))

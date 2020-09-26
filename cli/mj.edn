@@ -1,0 +1,15 @@
+#mj {:project #project {:profile :jar} ; helper for install target
+     :doc     "Use `mj uberscript` to build an babashka uberscript.
+          TODO - make this appear in `mj --help` output"
+     :targets
+     #merge
+     [#default-targets [:pom :clean :uberjar :compile :binary :uberscript
+                        :install :deploy]
+      #include "../mj-targets.edn"
+      {:build      {:doc     "pom, compile, uberjar and binary"
+                    :invoker :chain
+                    :targets [:pom :compile :uberjar :binary]}
+       :version-ns {:doc     "Write the version info namespace"
+                    :invoker :clojure
+                    :main    makejack.impl.build-version
+                    :options {:forward-options false}}}]}

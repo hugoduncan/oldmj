@@ -10,14 +10,14 @@
   If `:jar-type` is `:uberjar`, then build an uberjar, else a thin jar."
   [_args {:keys [mj project] :as _config} options]
   (let [aliases         (-> []
-                           (into (:aliases project))
-                           (into (:aliases options)))
+                            (into (:aliases project))
+                            (into (:aliases options)))
         deps            '{:deps {seancorfield/depstar {:mvn/version "1.1.104"}}}
         main            (:main project)
         target-path     (:target-path mj)
         jar-name        (or (:jar-name project)
                             (makejack/default-jar-name project))
-        jar-path        (str (path/path target-path jar-name ))
+        jar-path        (str (path/path target-path jar-name))
         uberjar?        (= :uberjar (:jar-type project))
         depstar-main-ns (if uberjar?
                           "hf.depstar.uberjar"
@@ -27,13 +27,13 @@
                           true                (conj jar-path)
                           (:verbose options)  (conj "--verbose"))]
     (clojure-cli/process
-      (concat
-        (clojure-cli/args {:repro true
-                           :deps  deps})
-        (clojure-cli/main-args {:aliases   aliases
-                                :main      depstar-main-ns
-                                :main-args depstar-args}))
-      options)))
+     (concat
+      (clojure-cli/args {:repro true
+                         :deps  deps})
+      (clojure-cli/main-args {:aliases   aliases
+                              :main      depstar-main-ns
+                              :main-args depstar-args}))
+     options)))
 
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."
@@ -42,7 +42,7 @@
 (defn -main [& args]
   (let [{:keys [arguments options] {:keys [project] :as config} :config}
         (tool-options/parse-options-and-apply-to-config
-          args extra-options "jar [options]")]
+         args extra-options "jar [options]")]
     (makejack/with-makejack-tool ["Jar" options project]
       (depstar arguments config options))
     (shutdown-agents)))
