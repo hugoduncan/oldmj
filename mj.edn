@@ -58,9 +58,9 @@
                     :invoker :shell
                     :args    ["hugo"]
                     :options {:out :inherit}}
-       :build-site {:doc     "api-doc, invoker-doc, tool-doc and site "
+       :build-site {:doc     "doc-gen and site "
                     :invoker :chain
-                    :targets [:api-doc :invoker-doc :tool-doc :site]}
+                    :targets [:doc-gen :site]}
        :submodule  {:invoker :shell
                     :args    ["git" "submodule" "update" "--recursive"]}
        :modules    {:invoker :modules

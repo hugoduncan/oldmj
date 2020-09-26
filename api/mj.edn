@@ -33,11 +33,11 @@
                        :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
                        :version     #ref [:project :version]
                        :namespaces  [#regex "^makejack\\.invoke\\.[a-z_]+$"]
-                       :writer      makejack.doc.invoker-writer/write-docs
+                       :writer      'makejack.doc.invoker-writer/write-docs
                        }))}
        :doc-gen {:doc     "api and invoker doc gen "
                  :invoker :chain
-                 :targets [:aoi-doc invoker-doc]}
+                 :targets [:api-doc :invoker-doc]}
        :build   {:doc     "pom, jar and install"
                  :invoker :chain
                  :targets [:pom :jar :install]}}]}
