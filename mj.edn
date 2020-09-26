@@ -1,87 +1,43 @@
 #mj {:project #project {:profile :jar} ; helper for install target
      :doc     "Use `mj uberscript` to build an babashka uberscript.
-          TODO - make this appear in `mj --help` output"
+               TODO - make this appear in `mj --help` output"
      :targets
      #merge
-     [#default-targets [:pom :clean :jar :uberjar :compile :binary :uberscript
-                        :install :deploy]
-      {:api-doc
-       {:doc     "Generate API documentation from sources."
-        :invoker :clojure
-        :aliases [:api-docs]
-        :deps    {codox {:mvn/version "0.10.6"}}
-        :options {:forward-options false}
-        :expr    (do (require '[codox.main :as codox]
-                              'makejack.doc.api-writer)
-                     (codox/generate-docs
-                      {:metadata    {:doc/format :markdown}
-                       :output-path "site"
-                       :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
-                       :version     #ref [:project :version]
-                       :namespaces  [#regex "^makejack\\.api\\."]
-                       :writer      'makejack.doc.api-writer/write-docs
-                       }))}
-       :invoker-doc
-       {:doc     "Generate invoker documentation from sources."
-        :invoker :clojure
-        :aliases [:api-docs]
-        :deps    {codox {:mvn/version "0.10.6"}}
-        :options {:forward-options false}
-        :expr    (do (require '[codox.main :as codox]
-                              'makejack.doc.invoker-writer)
-                     (codox/generate-docs
-                      {:metadata    {:doc/format :markdown}
-                       :output-path "site"
-                       :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
-                       :version     #ref [:project :version]
-                       :namespaces  [#regex "^makejack\\.invoke\\.[a-z_]+$"]
-                       :writer      'makejack.doc.invoker-writer/write-docs
-                       }))}
-       :tool-doc
-       {:doc     "Generate tool documentation from sources."
-        :invoker :clojure
-        :aliases [:api-docs]
-        :deps    {codox {:mvn/version "0.10.6"}}
-        :options {:forward-options false
-                  :dir             "tools"}
-        :expr    (do (require '[codox.main :as codox]
-                              'makejack.doc.tool-writer)
-                     (codox/generate-docs
-                      {:metadata    {:doc/format :markdown}
-                       :output-path "../site"
-                       :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
-                       :version     #ref [:project :version]
-                       :namespaces  [#regex "^makejack\\.tools\\.[a-z_]+$"]
-                       :writer      'makejack.doc.tool-writer/write-docs
-                       }))}
-       :site       {:doc     "Build the static site for github pages"
+     [#default-targets []
+      {:site       {:doc     "Build the static site for github pages"
                     :invoker :shell
                     :args    ["hugo"]
                     :options {:out :inherit}}
        :build-site {:doc     "doc-gen and site "
                     :invoker :chain
                     :targets [:doc-gen :site]}
-       :submodule  {:invoker :shell
+       :submodule  {:doc     "Update submodules"
+                    :invoker :shell
                     :args    ["git" "submodule" "update" "--recursive"]}
        :modules    {:invoker :modules
                     :modules ["tools"]}
-       :build      {:invoker :modules
+       :build      {:doc     "Build all"
+                    :invoker :modules
                     :modules ["api" "cli" "tools"]
                     :args    ["build"]
                     :self    false}
-       :doc-gen    {:invoker :modules
+       :doc-gen    {:doc     "Generate namespace docs"
+                    :invoker :modules
                     :modules ["api" "tools"]
                     :args    ["doc-gen"]
                     :self    false}
-       :lint       {:invoker :modules
+       :lint       {:doc     "Lint source"
+                    :invoker :modules
                     :modules ["api" "cli" "tools"]
                     :args    ["lint"]
                     :self    false}
-       :fmt        {:invoker :modules
+       :fmt        {:doc     "Check source formatting"
+                    :invoker :modules
                     :modules ["api" "cli" "tools"]
                     :args    ["fmt"]
                     :self    false}
-       :test       {:invoker :modules
+       :test       {:doc     "Run tests"
+                    :invoker :modules
                     :modules ["api" "cli" "tools"]
                     :args    ["test"]
                     :self    false}}]}
