@@ -1,0 +1,40 @@
+#mj {:project #project {:profile :jar} ; helper for install target
+     :targets
+     #merge
+     [#default-targets [:pom :clean :jar :install :deploy]
+      #include "../mj-targets.edn"
+      {:api-doc
+       {:doc     "Generate API documentation from sources."
+        :invoker :clojure
+        :aliases [:api-docs]
+        :deps    {codox {:mvn/version "0.10.6"}}
+        :options {:forward-options false}
+        :expr    (do (require '[codox.main :as codox]
+                              'makejack.doc.api-writer)
+                     (codox/generate-docs
+                      {:metadata    {:doc/format :markdown}
+                       :output-path "site"
+                       :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                       :version     #ref [:project :version]
+                       :namespaces  [#regex "^makejack\\.api\\."]
+                       :writer      'makejack.doc.api-writer/write-docs
+                       }))}
+       :invoker-doc
+       {:doc     "Generate invoker documentation from sources."
+        :invoker :clojure
+        :aliases [:api-docs]
+        :deps    {codox {:mvn/version "0.10.6"}}
+        :options {:forward-options false}
+        :expr    (do (require '[codox.main :as codox]
+                              'makejack.doc.invoker-writer)
+                     (codox/generate-docs
+                      {:metadata    {:doc/format :markdown}
+                       :output-path "site"
+                       :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                       :version     #ref [:project :version]
+                       :namespaces  [#regex "^makejack\\.invoke\\.[a-z_]+$"]
+                       :writer      makejack.doc.invoker-writer/write-docs
+                       }))}
+       :build {:doc     "pom, jar and install"
+               :invoker :chain
+               :targets [:pom :jar :install]}}]}

@@ -4,9 +4,10 @@
              http-kit/http-kit                          {:mvn/version "2.4.0"}
              javax.xml.bind/jaxb-api                    {:mvn/version "2.3.1"}}
  :paths     ["src"]
- :aliases   {:dev      {:override-deps {org.hugoduncan/makejack {:local/root ".."}}}
+ :aliases   {:dev      {:override-deps {org.hugoduncan/makejack {:local/root "../api"}}}
              :api-docs {:extra-paths ["src-dev"]
                         :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
-             :test     {:extra-deps
+             :test     {:extra-paths ["test-resources"]
+                        :extra-deps
                         {lambdaisland/kaocha           {:mvn/version "1.0.672"}
                          lambdaisland/kaocha-cloverage {:mvn/version "1.0.63"}}}}}

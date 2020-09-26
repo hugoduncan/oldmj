@@ -1,0 +1,6 @@
+{:name     "a-project"
+ :version  "0.0.1"
+ :aliases  #profile {:default []
+                     :uberjar [:uberjar]}
+ :jar-type #profile {:default :jar
+                     :uberjar :uberjar}}

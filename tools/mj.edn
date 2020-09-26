@@ -2,9 +2,21 @@
      :targets
      #merge
      [#default-targets [:pom :clean :jar :uberjar :compile :binary :install :deploy]
-      {:test {:doc     "Run tests"
-              :invoker :clojure
-              :main    kaocha.runner
-              :aliases [:dev :test]
-              :options {:out             :inherit
-                        :forward-options false}}}]}
+      #include "../mj-targets.edn"
+      {:tool-doc
+       {:doc     "Generate tool documentation from sources."
+        :invoker :clojure
+        :aliases [:api-docs]
+        :deps    {codox {:mvn/version "0.10.6"}}
+        :options {:forward-options false
+                  :dir             "tools"}
+        :expr    (do (require '[codox.main :as codox]
+                              'makejack.doc.tool-writer)
+                     (codox/generate-docs
+                      {:metadata    {:doc/format :markdown}
+                       :output-path "../site"
+                       :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                       :version     #ref [:project :version]
+                       :namespaces  [#regex "^makejack\\.tools\\.[a-z_]+$"]
+                       :writer      'makejack.doc.tool-writer/write-docs
+                       }))}}]}

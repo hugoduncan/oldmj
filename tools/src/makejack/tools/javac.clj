@@ -12,32 +12,31 @@
   (let [java-paths    (:java-paths project)
         javac-options (:javac-options project)
         source-files  (->> java-paths
-                         (mapcat
-                           (partial util/project-source-files util/java-source-file?))
-                         (mapv str))
+                           (mapcat
+                            (partial util/project-source-files util/java-source-file?))
+                           (mapv str))
         aliases       (-> []
-                         (into (:aliases project))
-                         (into (:aliases options)))
+                          (into (:aliases project))
+                          (into (:aliases options)))
         deps          (:deps options)
         classpath     (clojure-cli/classpath aliases deps options)
         args          (-> ["javac"
-                          "-classpath" classpath
-                          "-sourcepath" (str/join ":" java-paths)
-                          "-d" (:classes-path mj)]
-                         (into javac-options)
-                         (into source-files))]
+                           "-classpath" classpath
+                           "-sourcepath" (str/join ":" java-paths)
+                           "-d" (:classes-path mj)]
+                          (into javac-options)
+                          (into source-files))]
     (filesystem/mkdirs (:classes-path mj))
     (makejack/process args {})))
 
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."
-    :parse-fn tool-options/parse-kw-stringlist]
-   ])
+    :parse-fn tool-options/parse-kw-stringlist]])
 
 (defn -main [& args]
   (let [{:keys [arguments options] {:keys [project] :as config} :config}
         (tool-options/parse-options-and-apply-to-config
-          args extra-options "javac [options]")]
+         args extra-options "javac [options]")]
     (makejack/with-makejack-tool ["javac" options project]
       (try
         (javac arguments config options)

@@ -1,0 +1,19 @@
+;; common targets
+#mj {:test {:doc     "Run tests with kaocha"
+            :invoker :clojure
+            :main    kaocha.runner
+            :aliases [:dev :test]
+            :options {:out             :inherit
+                      :forward-options false}}
+     :lint {:doc     "Lint source with clj-kondo"
+            :invoker :shell
+            :args    ["clj-kondo" "--lint" "src" "test"]}
+     :fmt  {:doc       "Check source formatting with cljfmt"
+            :invoker   :clojure
+            :deps      {cljfmt {:mvn/version "0.6.4"}}
+            :main      cljfmt.main
+            :main-args ["check"
+                        "--indents" #join [#ref [:project-root]
+                                           "/.cljfmt/indents.edn"]
+                        "src" "test"]
+            :options   {:forward-options false}}}

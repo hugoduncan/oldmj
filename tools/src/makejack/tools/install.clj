@@ -7,8 +7,7 @@
             [makejack.api.path :as path]
             [makejack.api.tool-options :as tool-options]
             [makejack.api.util :as util])
-  (:import [java.net URL]
-           [org.apache.maven.artifact.repository.metadata Metadata Versioning]
+  (:import [org.apache.maven.artifact.repository.metadata Metadata Versioning]
            [org.apache.maven.artifact.repository.metadata.io.xpp3
             MetadataXpp3Reader MetadataXpp3Writer]))
 
@@ -37,22 +36,23 @@
 (defn generate-metadata-model
   [project dir]
   (filesystem/mkdirs dir)
-  (let [path     (path/path dir "maven-metadata-local.xml")
-        metadata (if (filesystem/file-exists? path)
-                   (with-open [in (io/input-stream (path/as-file path))]
-                     (.read (MetadataXpp3Reader.) in))
-                   (Metadata.))
-        writer   (MetadataXpp3Writer.)]
+  (let [path               (path/path dir "maven-metadata-local.xml")
+        ^Metadata metadata (if (filesystem/file-exists? path)
+                             (with-open [^java.io.InputStream in (io/input-stream
+                                                                  (path/as-file path))]
+                               (.read (MetadataXpp3Reader.) in))
+                             (Metadata.))
+        writer             (MetadataXpp3Writer.)]
     (.setGroupId metadata (:group-id project))
     (.setArtifactId metadata (:artifact-id project))
     (.setFileComment writer "Written by Makejack")
-    (let [versioning (or (.getVersioning metadata) (Versioning.))]
+    (let [^Versioning versioning (or (.getVersioning metadata) (Versioning.))]
       (.addVersion versioning (:version project))
       (.updateTimestamp versioning))
     (with-open [^java.io.OutputStream out (io/output-stream
-                                            (path/as-file
-                                              (path/path dir "maven-metadata.xml")))]
-      (.write writer out metadata ))))
+                                           (path/as-file
+                                            (path/path dir "maven-metadata.xml")))]
+      (.write writer out metadata))))
 
 (defn install
   "Install a project to a maven repository."
@@ -68,13 +68,12 @@
 
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."
-    :parse-fn tool-options/parse-kw-stringlist]
-   ])
+    :parse-fn tool-options/parse-kw-stringlist]])
 
 (defn -main [& args]
   (let [{:keys [arguments options] {:keys [project] :as config} :config}
         (tool-options/parse-options-and-apply-to-config
-          args extra-options "pom [options]")]
+         args extra-options "pom [options]")]
     (makejack/with-makejack-tool ["Install" options project]
       (install arguments config options))
     (shutdown-agents)))

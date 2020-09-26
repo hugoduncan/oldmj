@@ -14,13 +14,13 @@
         :expr    (do (require '[codox.main :as codox]
                               'makejack.doc.api-writer)
                      (codox/generate-docs
-                       {:metadata    {:doc/format :markdown}
-                        :output-path "site"
-                        :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
-                        :version     #ref [:project :version]
-                        :namespaces  [#regex "^makejack\\.api\\."]
-                        :writer      'makejack.doc.api-writer/write-docs
-                        }))}
+                      {:metadata    {:doc/format :markdown}
+                       :output-path "site"
+                       :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                       :version     #ref [:project :version]
+                       :namespaces  [#regex "^makejack\\.api\\."]
+                       :writer      'makejack.doc.api-writer/write-docs
+                       }))}
        :invoker-doc
        {:doc     "Generate invoker documentation from sources."
         :invoker :clojure
@@ -30,13 +30,13 @@
         :expr    (do (require '[codox.main :as codox]
                               'makejack.doc.invoker-writer)
                      (codox/generate-docs
-                       {:metadata    {:doc/format :markdown}
-                        :output-path "site"
-                        :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
-                        :version     #ref [:project :version]
-                        :namespaces  [#regex "^makejack\\.invoke\\.[a-z_]+$"]
-                        :writer      'makejack.doc.invoker-writer/write-docs
-                        }))}
+                      {:metadata    {:doc/format :markdown}
+                       :output-path "site"
+                       :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                       :version     #ref [:project :version]
+                       :namespaces  [#regex "^makejack\\.invoke\\.[a-z_]+$"]
+                       :writer      'makejack.doc.invoker-writer/write-docs
+                       }))}
        :tool-doc
        {:doc     "Generate tool documentation from sources."
         :invoker :clojure
@@ -47,13 +47,13 @@
         :expr    (do (require '[codox.main :as codox]
                               'makejack.doc.tool-writer)
                      (codox/generate-docs
-                       {:metadata    {:doc/format :markdown}
-                        :output-path "../site"
-                        :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
-                        :version     #ref [:project :version]
-                        :namespaces  [#regex "^makejack\\.tools\\.[a-z_]+$"]
-                        :writer      'makejack.doc.tool-writer/write-docs
-                        }))}
+                      {:metadata    {:doc/format :markdown}
+                       :output-path "../site"
+                       :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                       :version     #ref [:project :version]
+                       :namespaces  [#regex "^makejack\\.tools\\.[a-z_]+$"]
+                       :writer      'makejack.doc.tool-writer/write-docs
+                       }))}
        :build      {:doc     "pom, compile, uberjar and binary"
                     :invoker :chain
                     :targets [:pom :compile :uberjar :binary]}
@@ -67,27 +67,19 @@
        :build-site {:doc     "api-doc, invoker-doc, tool-doc and site "
                     :invoker :chain
                     :targets [:api-doc :invoker-doc :tool-doc :site]}
-       :test       {:doc     "Run tests"
-                    :invoker :clojure
-                    :main    kaocha.runner
-                    :aliases [:dev :test]
-                    :options {:out             :inherit
-                              :forward-options false}}
-       :version-ns {:doc     "Write the version info namespace"
-                    :invoker :clojure
-                    :main    makejack.impl.build-version
-                    :options {:forward-options false}}
        :submodule  {:invoker :shell
                     :args    ["git" "submodule" "update" "--recursive"]}
        :modules    {:invoker :modules
                     :modules ["tools"]}
-       :lint       {:invoker :shell
-                    :args    ["clj-kondo" "--lint" "src"]}
-       :fmt        {:invoker   :clojure
-                    :deps      {cljfmt {:mvn/version "0.6.4"}}
-                    :main      cljfmt.main
-                    :main-args ["check"
-                                "--indents" ".cljfmt/indents.edn"
-                                "src"]
-                    :options   {:out             :inherit
-                                :forward-options false}}}]}
+       :lint       {:invoker :modules
+                    :modules ["api" "cli" "tools"]
+                    :args    ["lint"]
+                    :self    false}
+       :fmt        {:invoker :modules
+                    :modules ["api" "cli" "tools"]
+                    :args    ["fmt"]
+                    :self    false}
+       :test        {:invoker :modules
+                    :modules ["api" "cli" "tools"]
+                    :args    ["test"]
+                    :self    false}}]}

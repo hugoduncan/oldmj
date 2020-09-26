@@ -1,6 +1,6 @@
 /bin/mj
 /makejack
-/target
+target
 /tools/target
 *.jar
 .envrc
