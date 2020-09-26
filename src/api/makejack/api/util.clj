@@ -4,30 +4,22 @@
             [clojure.java.io :as io]
             [clojure.string :as str]
             [makejack.api.path :as path])
-  (:import [java.io File]
-           [java.nio.file
-            CopyOption
-            Files
-            LinkOption Path Paths
-            StandardCopyOption]
-           [java.nio.file.attribute FileAttribute PosixFilePermission];
-           [java.security #_DigestInputStream MessageDigest]))
-
+  (:import [java.security #_DigestInputStream MessageDigest]))
 
 (defn source-files
   "Return all source files under path-like.
   Return a sequence of File objects."
   [filter-fn path-like]
   (->> (file-seq (io/file (str path-like)))
-     (filter filter-fn)
-     (mapv (path/relative-to path-like))))
+       (filter filter-fn)
+       (mapv (path/relative-to path-like))))
 
 (defn project-source-files
   "Return all source files under path-like.
   Return a sequence of File objects relative to the current directory."
   [filter-fn path-like]
   (->> (file-seq (io/file (str path-like)))
-     (filterv filter-fn)))
+       (filterv filter-fn)))
 
 (defn clj-source-file?
   "Predicate for the given path being a clojure source file."
@@ -39,16 +31,15 @@
   [p]
   (str/ends-with? (str (path/path p)) ".java"))
 
-
 (defn path->namespace
   "Return namespaces found under the given root path."
   [path-like]
   (-> (path/path path-like)
-     str
-     (str/replace ".clj" "")
-     (str/replace "_" "-")
-     (str/replace "/" ".")
-     symbol))
+      str
+      (str/replace ".clj" "")
+      (str/replace "_" "-")
+      (str/replace "/" ".")
+      symbol))
 
 (defn deep-merge
   "Merge maps recursively."
@@ -63,30 +54,30 @@
   "Merge maps recursively, using f to merge non-map keys"
   [f & ms]
   (apply
-    (fn m [& ms]
-      (if (every? map? ms)
-        (apply merge-with m ms)
-        (apply f ms)))
-    ms))
+   (fn m [& ms]
+     (if (every? map? ms)
+       (apply merge-with m ms)
+       (apply f ms)))
+   ms))
 
 (defn format-version-map
   "Format a version map as a string."
   [{:keys [major minor incremental qualifier]}]
   (cond-> (str major)
-    minor (str "." minor)
+    minor       (str "." minor)
     incremental (str "." incremental)
-    qualifier (str "-" qualifier)))
+    qualifier   (str "-" qualifier)))
 
 (defn git-sha
   "Return the current git sha as a string."
   []
   (-> ["git" "rev-parse" "--verify" "HEAD"]
-     (process/process
-        {:err   :inherit
-         :wait  true
-         :throw true})
-     :out
-     str/trim))
+      (process/process
+       {:err   :inherit
+        :wait  true
+        :throw true})
+      :out
+      str/trim))
 
 (defn- digest-string
   [^MessageDigest algorithm]
@@ -104,7 +95,7 @@
 (defn- read-bytes
   ^bytes [^java.io.InputStream stream]
   (let [^bytes buffer (byte-buffer)
-        num-bytes (.read stream buffer)]
+        num-bytes     (.read stream buffer)]
     (if (pos? num-bytes)
       (if (= buffer-size num-bytes)
         buffer

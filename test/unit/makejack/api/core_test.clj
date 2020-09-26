@@ -39,7 +39,7 @@
   (let [dir      (str (.getPath (io/resource "test_project_basic")))
         resolver (makejack/relative-to-resolver dir)]
     (let [config (makejack/load-config*
-                   {:resolver resolver})]
+                  {:resolver resolver})]
       (is (= {:name        "basic"
               :version     "0.0.1"
               :artifact-id "basic"
@@ -52,7 +52,7 @@
               :classes-path "target/classes"
               :project-root (System/getProperty "user.dir")
               :tp           "target"}
-             (dissoc(:mj config) :targets)))
+             (dissoc (:mj config) :targets)))
       (is (= (keys default-config/default-targets)
              (keys (-> config :mj :targets)))))
     (is (= {:name        "basic"
@@ -63,5 +63,5 @@
             :jar-name    "basic-0.0.1-standalone.jar"
             :aliases     [:uberjar]}
            (:project (makejack/load-config*
-                       {:resolver resolver
-                        :profile  :uberjar}))))))
+                      {:resolver resolver
+                       :profile  :uberjar}))))))

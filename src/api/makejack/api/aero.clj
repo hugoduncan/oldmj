@@ -25,11 +25,11 @@
     (if (or incomplete? (and (not (contains? env value))
                              (not (contains? env (pop value)))))
       (-> expansion
-         (assoc :aero.core/incomplete? true)
-         (update :aero.core/value (rewrap tl))
-         (assoc :aero.core/incomplete (or incomplete
-                                          {:aero.core/path  (pop ks)
-                                           :aero.core/value tl})))
+          (assoc :aero.core/incomplete? true)
+          (update :aero.core/value (rewrap tl))
+          (assoc :aero.core/incomplete (or incomplete
+                                           {:aero.core/path  (pop ks)
+                                            :aero.core/value tl})))
       (let [v (get env value ::none)
             v (if (= ::none v)
                 (let [p (get env (pop value))]
@@ -45,9 +45,9 @@
         (aero-alpha/expand (:form tl) opts env ks)]
     (if incomplete?
       (-> expansion
-         (assoc :aero.core/incomplete? true)
-         (update :aero.core/value (rewrap tl))
-         (assoc :aero.core/incomplete incomplete))
+          (assoc :aero.core/incomplete? true)
+          (update :aero.core/value (rewrap tl))
+          (assoc :aero.core/incomplete incomplete))
       (assoc expansion :aero.core/value (re-pattern value)))))
 
 (defmethod aero-alpha/eval-tagged-literal 'version-string
@@ -57,9 +57,9 @@
         (aero-alpha/expand (:form tl) opts env ks)]
     (if incomplete?
       (-> expansion
-         (assoc :aero.core/incomplete? true)
-         (update :aero.core/value (rewrap tl))
-         (assoc :aero.core/incomplete incomplete))
+          (assoc :aero.core/incomplete? true)
+          (update :aero.core/value (rewrap tl))
+          (assoc :aero.core/incomplete incomplete))
       (assoc expansion :aero.core/value (util/format-version-map value)))))
 
 ;; internal, to inject the default jar name depending on the :jar-type
@@ -73,28 +73,27 @@
 (defmethod aero-alpha/eval-tagged-literal 'mj
   [tl opts env ks]
   (aero-alpha/expand
-    (merge (default-config/default-mj-config) (:form tl))
-    opts
-    env
-    ks))
+   (merge (default-config/default-mj-config) (:form tl))
+   opts
+   env
+   ks))
 
 ;; target to inject the default targets
 ;; Use :all, or a vector of keywords to select targets.
 (defmethod aero-alpha/eval-tagged-literal 'default-targets
-  [tl opts env ks]
+  [tl _opts _env _ks]
   {:aero.core/value
    (if (= :all (:form tl))
      default-config/default-targets
      (select-keys default-config/default-targets (:form tl)))})
-
 
 ;; include project with given read-config options
 (defmethod aero-alpha/eval-tagged-literal 'project
   [tl opts env ks]
   (let [value (:project
                (aero.core/read-config
-                 (java.io.StringReader.
-                   (pr-str default-config/project-with-defaults))
-                 (merge opts (:form tl))))]
+                (java.io.StringReader.
+                 (pr-str default-config/project-with-defaults))
+                (merge opts (:form tl))))]
     {:aero.core/value value
-     :aero.core/env (assoc env ks value)}))
+     :aero.core/env   (assoc env ks value)}))

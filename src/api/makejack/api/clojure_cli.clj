@@ -1,6 +1,7 @@
 (ns makejack.api.clojure-cli
   "Helpers for working with Clojure CLI"
   (:require [babashka.process :as process]
+            [clojure.edn :as edn]
             [clojure.string :as str]
             [makejack.api.core :as makejack]))
 
@@ -43,11 +44,11 @@
   ([] (features* (version)))
   ([version]
    (set
-     (filterv
-       #(in-version-range? version (feature-ranges %))
-       (keys feature-ranges)))))
+    (filterv
+     #(in-version-range? version (feature-ranges %))
+     (keys feature-ranges)))))
 
-(def ^{:doc (:doc (meta #'features*))
+(def ^{:doc      (:doc (meta #'features*))
        :arglists (:arglists (meta #'features*))}
   features
   (memoize features*))
@@ -72,16 +73,16 @@
   (if (or (not (map? m))
           (empty? m))
     '(())
-    (for [[k v] m
+    (for [[k v]  m
           subkey (keypaths-in v)]
       (cons k subkey))))
 
 (defn ^:no-doc keypath-values [m]
   (let [keypaths (mapv vec (keypaths-in m))]
     (vec (mapcat
-           vector
-           keypaths
-           (map (partial get-in m) keypaths)))))
+          vector
+          keypaths
+          (map (partial get-in m) keypaths)))))
 
 (defn exec-args
   "Return a cli arguments vector given an exec function to execute."
@@ -99,7 +100,7 @@
        exec-fn   (conj (str exec-fn))
        exec-args (into (map str (keypath-values exec-args))))
 
-     :elae
+     :else
      (throw (ex-info "exec-fn not supported in clojure cli version"
                      {:version (version)})))))
 
@@ -110,31 +111,31 @@
   ([{:keys [aliases expr main main-args report]} features]
    (cond-> []
      (or
-       (seq aliases)
-       (:explicit-main features)) (conj (aliases-arg
-                                          (if (:explicit-main features)
-                                            "-M"
-                                            "-A")
-                                          aliases
-                                          {:elide-when-no-aliases
-                                           (not (:explicit-main features))}))
-     report                       (into ["--report" report])
-     expr                         (into ["-e" (str expr)])
-     main                         (into ["-m" (str main)])
-     main-args                    (into main-args))))
+      (seq aliases)
+      (:explicit-main features)) (conj (aliases-arg
+                                        (if (:explicit-main features)
+                                          "-M"
+                                          "-A")
+                                        aliases
+                                        {:elide-when-no-aliases
+                                         (not (:explicit-main features))}))
+     report                      (into ["--report" report])
+     expr                        (into ["-e" (str expr)])
+     main                        (into ["-m" (str main)])
+     main-args                   (into main-args))))
 
 (defn read-clojure-basis
   []
   (some-> (System/getProperty "clojure.basis")
           slurp
-          clojure.edn/read-string))
+          edn/read-string))
 
 (defn clojure-basis-form
   []
   `(-> (System/getProperty "clojure.basis")
-      slurp
-      clojure.edn/read-string
-      prn))
+       slurp
+       edn/read-string
+       prn))
 
 (defn process
   "Execute clojure process.
@@ -159,10 +160,10 @@
   [aliases deps options]
   (let [args (cond-> []
                (not-empty aliases) (conj (aliases-arg
-                                           "-A" aliases
-                                           {:elide-when-no-aliases true}))
+                                          "-A" aliases
+                                          {:elide-when-no-aliases true}))
                deps                (into ["-Sdeps" (str {:deps deps})])
                true                (conj "-Spath"))
         res  (process args (merge options {:err :inherit :out :string}))]
     (-> (:out res)
-       (str/replace "\n" ""))))
+        (str/replace "\n" ""))))

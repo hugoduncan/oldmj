@@ -27,7 +27,6 @@
    (shutdown-agents)
    (System/exit exit-code)))
 
-
 (defn- load-deps* []
   (try
     (aero/read-config "deps.edn")
@@ -71,11 +70,11 @@
 (defn load-project* [& [{:keys [dir] :as options}]]
   (:project
    (aero/read-config
-     (java.io.StringReader.
-       (pr-str default-config/project-with-defaults))
-     (merge
-       {:resolver (relative-to-resolver dir)}
-       options))))
+    (java.io.StringReader.
+     (pr-str default-config/project-with-defaults))
+    (merge
+     {:resolver (relative-to-resolver dir)}
+     options))))
 
 (defn resolve-source [{:keys [resolver] :as _options} value]
   (cond
@@ -90,12 +89,12 @@
 
 (defn load-mj* [& [{:keys [dir] :as options}]]
   (aero/read-config
-    (if (filesystem/file-exists? (mj-path nil))
-      (resolve-source options (path/as-file (mj-path dir)))
-      (java.io.StringReader. (pr-str default-config/default-mj)))
-    (merge
-      {:resolver (relative-to-resolver dir)}
-      options)))
+   (if (filesystem/file-exists? (mj-path nil))
+     (resolve-source options (path/as-file (mj-path dir)))
+     (java.io.StringReader. (pr-str default-config/default-mj)))
+   (merge
+    {:resolver (relative-to-resolver dir)}
+    options)))
 
 (def load-mj
   "Load the mj.edn file."
@@ -128,11 +127,11 @@
   (when *debug*
     (apply println (into args (when-let [dir (:dir options)] ["in" dir]))))
   (process/process
-    (map str args)
-    (merge
-      {:err :inherit}
-      (when *debug* {:out :inherit})
-      (select-keys options process-option-keys))))
+   (map str args)
+   (merge
+    {:err :inherit}
+    (when *debug* {:out :inherit})
+    (select-keys options process-option-keys))))
 
 (defn default-jar-name
   "Helper to return the default jar file name.
@@ -153,8 +152,8 @@
   Returns the :paths value, with :extra-paths from the specified aliases."
   [deps aliases]
   (mapcat
-    #(some-> deps :aliases % :extra-paths)
-    aliases))
+   #(some-> deps :aliases % :extra-paths)
+   aliases))
 
 (def ^:dynamic *print-edn-tagged-literals* nil)
 
@@ -167,11 +166,10 @@
     (.write writer ^String (pr-str (tagged-literal 'regex (.pattern value))))
     (orgininal-pattern-print-method value writer)))
 
-
 (defmacro with-output-bindings [[options] & body]
   `(binding [*verbose* (:verbose ~options)
-             *debug* (:debug ~options)]
-      ~@body))
+             *debug*   (:debug ~options)]
+     ~@body))
 
 (defn project-description
   [{:keys [group-id name version] :as _project}]

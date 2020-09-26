@@ -2,7 +2,7 @@
 
 (defn default-mj-config
   []
-  {:target-path "target"
+  {:target-path  "target"
    :classes-path "target/classes"
    :project-root (System/getProperty "user.dir")})
 
@@ -11,39 +11,38 @@
 (def project-with-defaults
   ;; project-project is the project's project.edn, as is
   (array-map
-    :project-project (tagged-literal 'include "project.edn")
-    ;; project is the project's project.edn, with some defaults
-    :project-p1      (tagged-literal
-                       'merge
-                       [(tagged-literal 'ref [:project-project])
-                        {:group-id
+   :project-project (tagged-literal 'include "project.edn")
+   ;; project is the project's project.edn, with some defaults
+   :project-p1      (tagged-literal
+                     'merge
+                     [(tagged-literal 'ref [:project-project])
+                      {:group-id
+                       (tagged-literal
+                        'or
+                        [(tagged-literal 'opt-ref [:project-project :group-id])
+                         (tagged-literal 'ref [:project-project :name])])
+                       :artifact-id
+                       (tagged-literal
+                        'or
+                        [(tagged-literal 'opt-ref [:project-project :artifact-id])
+                         (tagged-literal 'ref [:project-project :name])])
+                       :jar-type
+                       (tagged-literal
+                        'or
+                        [(tagged-literal 'opt-ref [:project-project :jar-type])
+                         :jar])}])
+   :project         (tagged-literal
+                     'merge
+                     [(tagged-literal 'ref [:project-p1])
+                      {:jar-name
+                       (tagged-literal
+                        'or
+                        [(tagged-literal 'opt-ref [:project-p1 :jar-name])
                          (tagged-literal
-                           'or
-                           [(tagged-literal 'opt-ref [:project-project :group-id])
-                            (tagged-literal 'ref [:project-project :name])])
-                         :artifact-id
-                         (tagged-literal
-                           'or
-                           [(tagged-literal 'opt-ref [:project-project :artifact-id])
-                            (tagged-literal 'ref [:project-project :name])])
-                         :jar-type
-                         (tagged-literal
-                           'or
-                           [(tagged-literal 'opt-ref [:project-project :jar-type])
-                            :jar])}])
-    :project         (tagged-literal
-                       'merge
-                       [(tagged-literal 'ref [:project-p1])
-                        {:jar-name
-                         (tagged-literal
-                           'or
-                           [(tagged-literal 'opt-ref [:project-p1 :jar-name])
-                            (tagged-literal
-                              'default-jar-name
-                              [(tagged-literal 'ref [:project-p1 :artifact-id])
-                               (tagged-literal 'ref [:project-p1 :version])
-                               (tagged-literal 'ref [:project-p1 :jar-type])])])}])))
-
+                          'default-jar-name
+                          [(tagged-literal 'ref [:project-p1 :artifact-id])
+                           (tagged-literal 'ref [:project-p1 :version])
+                           (tagged-literal 'ref [:project-p1 :jar-type])])])}])))
 
 (def default-targets
   {:compile {:doc       "AOT compilation of clojure sources."
@@ -53,17 +52,17 @@
              :main-args ["--profile" ":compile"]}
 
    :clean {:doc     (tagged-literal
-                      'join ["Remove the "
-                             (tagged-literal 'ref [:target-path])
-                             " directory"])
+                     'join ["Remove the "
+                            (tagged-literal 'ref [:target-path])
+                            " directory"])
            :invoker :shell
            :args    ["rm" "-rf" (tagged-literal 'ref [:target-path])]}
 
-   :init {:doc       "Initialise a   project for   use with makejack.
+   :init {:doc     "Initialise a   project for   use with makejack.
                 Creates    project.edn  and mj.edn  files if  they do not exist."
-          :invoker   :babashka
-          :deps      mj-tools
-          :main      'makejack.tools.init}
+          :invoker :babashka
+          :deps    mj-tools
+          :main    'makejack.tools.init}
 
    :pom {:doc       "Pom file creation or update."
          :invoker   :clojure
@@ -94,16 +93,16 @@
                 :deps      mj-tools
                 :main      'makejack.tools.uberscript
                 :main-args ["--profile" ":uberscript"]}
-   :install {:doc       "Install jar to local repository."
-             :invoker   :clojure
-             :deps      mj-tools
-             :main      'makejack.tools.install
-             :main-args ["--profile" ":deploy"]}
-   :deploy {:doc       "Deploy a jar to a remote repository, "
-            :invoker   :clojure
-            :deps      mj-tools
-            :main      'makejack.tools.deploy
-            :main-args ["--profile" ":deploy"]}
+   :install    {:doc       "Install jar to local repository."
+                :invoker   :clojure
+                :deps      mj-tools
+                :main      'makejack.tools.install
+                :main-args ["--profile" ":deploy"]}
+   :deploy     {:doc       "Deploy a jar to a remote repository, "
+                :invoker   :clojure
+                :deps      mj-tools
+                :main      'makejack.tools.deploy
+                :main-args ["--profile" ":deploy"]}
 
    :binary
    {:doc       "GraalVM native-image compilation of jar file.

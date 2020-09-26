@@ -1,26 +1,17 @@
 (ns makejack.api.path
   "Path manipulation functions"
-  (:require [babashka.process :as process]
-            [clojure.java.io :as io]
-            [clojure.string :as str])
   (:import [java.io File]
-           [java.nio.file
-            CopyOption
-            Files
-            LinkOption Path Paths
-            StandardCopyOption]
-           [java.nio.file.attribute FileAttribute PosixFilePermission];
-           [java.security #_DigestInputStream MessageDigest]))
+           [java.nio.file Path Paths]))
 
 ;; bb doesn't allow this
 ;; (extend-protocol io/Coercions
 ;;   Path
 ;;   (as-file [p] (.toFile p)))
 
+;; "Coerce between various 'resource-namish' things."
 (defprotocol Coercions
-  ;; "Coerce between various 'resource-namish' things."
-  (^{:tag java.nio.file.Path} as-path [x]
-   "Coerce argument to a Path."))
+  (as-path ^{:tag java.nio.file.Path} [x]
+    "Coerce argument to a Path."))
 
 (def ^:private ^"[Ljava.lang.String;" empty-strings (make-array String 0))
 
@@ -77,8 +68,8 @@
   The extension is a string, including any required dot."
   ^Path [path-like extension]
   (let [^Path base-path (path path-like)
-        parent-path (.getParent base-path)
-        filename (str (.getFileName base-path) extension)]
+        parent-path     (.getParent base-path)
+        filename        (str (.getFileName base-path) extension)]
     (if parent-path
       (path parent-path filename)
       (path filename))))

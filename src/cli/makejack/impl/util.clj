@@ -10,9 +10,9 @@
   (let [data (ex-data e)]
     (if (= :babashka.process/error (:type data))
       (makejack/error
-        (or
-          (maybe-string (:err data))
-          (maybe-string (:out data))
-          "Failed")
-        (:exit data 1))
+       (or
+        (maybe-string (:err data))
+        (maybe-string (:out data))
+        "Failed")
+       (:exit data 1))
       (throw e))))

@@ -4,7 +4,7 @@ on: [push, pull_request]
 name: Run tests
 
 jobs:
-  build-site:
+  tests:
     name: Tests
     runs-on: macos-latest
     strategy:
@@ -15,10 +15,20 @@ jobs:
       run: brew install ${{ matrix.cli-version }}
     - name: Install babashka
       run: brew install borkdude/brew/babashka
+    - name: Install clj-kondo
+      run: brew install borkdude/brew/clj-kondo
     - uses: actions/checkout@v2
-    - name: tests
+    - name: build
       run: |
         bin/bootstrap-script --debug --verbose
-        target/mj-script test
+    - name: tests
+      run: |
+        bb ./target/mj-script test
         cd tools
-        ../target/mj-script test
+        bb ../target/mj-script test
+    - name: lint
+      run: |
+        bb ./target/mj-script lint
+    - name: fmt
+      run: |
+        bb ./target/mj-script fmt

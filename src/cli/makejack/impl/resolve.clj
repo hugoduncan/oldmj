@@ -6,22 +6,6 @@
   [invoker-kw]
   (invokers/invokers invoker-kw))
 
-;; (defn resolve-target [kw config]
-;;   (let [target (get-in config [:targets kw])
-;;         invoker (:invoker target (str "makejack." (name kw)))]
-;;     (when-not target
-;;       (makejack/error
-;;         (str "No target specified in mj.edn for " kw)))
-;;     (resolve-invoker (str invoker))))
-
-;; (defn target-invoker [target-kw config]
-;;   (let [target (get-in config [:targets target-kw])
-;;         invoker (:invoker target (str "makejack." (subs (name target-kw) 1)))]
-;;     (when-not target
-;;       (makejack/error
-;;         (str "No target specified in mj.edn for " target-kw)))
-;;     invoker))
-
 (defn resolve-target [target-kw config]
   (get-in config [:mj :targets target-kw]))
 

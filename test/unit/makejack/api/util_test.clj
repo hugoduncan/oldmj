@@ -1,25 +1,13 @@
 (ns makejack.api.util-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [clojure.test :refer [deftest is]]
             [makejack.api.filesystem :as filesystem]
             [makejack.api.path :as path]
-            [makejack.api.util :as util])
-  (:import [java.io File]
-           [java.nio.file
-            Files
-            LinkOption Path Paths];
-           [java.nio.file.attribute FileAttribute PosixFilePermission]))
-
+            [makejack.api.util :as util]))
 
 (deftest clojure-source-file?-test
   (is (util/clj-source-file? "abc.clj"))
   (is (not (util/clj-source-file? "abc.clja")))
   (is (not (util/clj-source-file? "abcclj"))))
-
-(deftest clojure-source-file?-test
-  (is (util/clj-source-file? "abc.clj"))
-  (is (not (util/clj-source-file? "abc.clja")))
-  (is (not (util/clj-source-file? "abcclj"))))
-
 
 (deftest file-hashes-test
   (filesystem/with-temp-path [p "file-hashes-test"]
