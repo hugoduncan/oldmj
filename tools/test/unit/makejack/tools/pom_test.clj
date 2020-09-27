@@ -2,5 +2,5 @@
   (:require [clojure.test :refer [deftest is]]
             [makejack.tools.pom :as pom]))
 
-(deftest compile-test
+(deftest pom-test
   (is pom/pom))

@@ -70,7 +70,8 @@
          :main      'makejack.tools.pom
          :main-args ["--profile" ":pom"]}
 
-   :jar {:doc       "Build a jar, "
+   :jar {:doc       "Build a jar.
+If `:jar-type` is `:uberjar`, then build an uberjar, else a thin jar."
          :invoker   :babashka
          :deps      mj-tools
          :main      'makejack.tools.jar

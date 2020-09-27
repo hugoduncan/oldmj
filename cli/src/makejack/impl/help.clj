@@ -50,6 +50,8 @@
      ""
      summary
      ""
+     "Use mj help <target> for more detailed help on target."
+     ""
      "Project targets:"
      (target-doc)
      ""
