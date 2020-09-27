@@ -8,7 +8,7 @@ pom.xml
 _gen
 /public
 public
-src/cli/makejack/impl/version.clj
+cli/src/makejack/impl/version.clj
 site/content/docs/0.0/api-docs
 site/content/docs/0.0/invoker-docs
 site/content/docs/0.0/tool-docs
