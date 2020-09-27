@@ -29,7 +29,7 @@
 
 (defn filter-basis-dep
   [[coord spec]]
-  [coord (dissoc spec :paths :dependents :deps/manifest :deps/root)])
+  [coord (dissoc spec :paths :dependents :deps/manifest :deps/root :parents)])
 
 (defn resolved-deps-with-clojure-basis
   []

@@ -9,7 +9,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        cli-version: ["clojure", "clojure/tools/clojure@1.10.1.681"]
+        cli-version: ["clojure", "clojure/tools/clojure@1.10.1.697"]
     steps:
     - name: Install clojure
       run: brew install ${{ matrix.cli-version }}
