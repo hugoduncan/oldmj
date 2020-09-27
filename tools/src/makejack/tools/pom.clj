@@ -2,9 +2,8 @@
   "Create a pom file"
   (:require [clojure.java.io :as io]
             [makejack.api.clojure-cli :as clojure-cli]
-            [makejack.api.core :as makejack]
             [makejack.api.filesystem :as filesystem]
-            [makejack.api.tool-options :as tool-options])
+            [makejack.api.tool :as tool])
   (:import [org.apache.maven.model
             Build Model #_Scm]
            [org.apache.maven.model.io.xpp3
@@ -42,7 +41,7 @@
 
 (defn pom
   "Pom file creation or update."
-  [_args {:keys [mj project] :as _config} options]
+  [options _args {:keys [mj project] :as _config}]
   (let [aliases     (-> []
                         (into (:aliases project))
                         (into (:aliases options)))
@@ -64,12 +63,8 @@
 
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."
-    :parse-fn tool-options/parse-kw-stringlist]])
+    :parse-fn tool/parse-kw-stringlist]])
 
 (defn -main [& args]
-  (let [{:keys [arguments options] {:keys [project] :as config} :config}
-        (tool-options/parse-options-and-apply-to-config
-         args extra-options "pom [options]")]
-    (makejack/with-makejack-tool ["pom" options project]
-      (pom arguments config options))
-    (shutdown-agents)))
+  (tool/with-shutdown-agents
+    (tool/dispatch-main "pom" "[options]" pom extra-options args)))

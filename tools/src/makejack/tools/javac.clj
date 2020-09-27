@@ -3,12 +3,12 @@
             [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.core :as makejack]
             [makejack.api.filesystem :as filesystem]
-            [makejack.api.tool-options :as tool-options]
+            [makejack.api.tool :as tool]
             [makejack.api.util :as util]))
 
 (defn javac
   "Compile java sources."
-  [_args {:keys [mj project]} options]
+  [options _args {:keys [mj project]}]
   (let [java-paths    (:java-paths project)
         javac-options (:javac-options project)
         source-files  (->> java-paths
@@ -31,14 +31,8 @@
 
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."
-    :parse-fn tool-options/parse-kw-stringlist]])
+    :parse-fn tool/parse-kw-stringlist]])
 
 (defn -main [& args]
-  (let [{:keys [arguments options] {:keys [project] :as config} :config}
-        (tool-options/parse-options-and-apply-to-config
-         args extra-options "javac [options]")]
-    (makejack/with-makejack-tool ["javac" options project]
-      (try
-        (javac arguments config options)
-        (finally
-          (shutdown-agents))))))
+  (tool/with-shutdown-agents
+    (tool/dispatch-main "javac" "[options]" javac extra-options args)))

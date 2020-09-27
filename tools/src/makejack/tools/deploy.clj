@@ -6,7 +6,7 @@
             [makejack.api.core :as makejack]
             [makejack.api.filesystem :as filesystem]
             [makejack.api.path :as path]
-            [makejack.api.tool-options :as tool-options]
+            [makejack.api.tool :as tool]
             [makejack.api.util :as util]
             [org.httpkit.client :as client]
             [org.httpkit.sni-client :as sni-client])
@@ -229,7 +229,7 @@
 
 (defn deploy
   "Deploy a project to a maven repository."
-  [[repo-name] {:keys [mj project] :as _config} _options]
+  [_options [repo-name] {:keys [mj project] :as _config}]
   (let [repository  (repository repo-name)
         credentials (credentials repository)
         paths       (paths-to-deploy mj project)]
@@ -244,12 +244,8 @@
 
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."
-    :parse-fn tool-options/parse-kw-stringlist]])
+    :parse-fn tool/parse-kw-stringlist]])
 
 (defn -main [& args]
-  (let [{:keys [arguments options] {:keys [project] :as config} :config}
-        (tool-options/parse-options-and-apply-to-config
-         args extra-options "pom [options]")]
-    (makejack/with-makejack-tool ["deploy" options project]
-      (deploy arguments config options))
-    (shutdown-agents)))
+  (tool/with-shutdown-agents
+    (tool/dispatch-main "deploy" "[options] [repo-name]" deploy extra-options args)))

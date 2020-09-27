@@ -3,11 +3,11 @@
             [makejack.api.core :as makejack]
             [makejack.api.filesystem :as filesystem]
             [makejack.api.path :as path]
-            [makejack.api.tool-options :as tool-options]))
+            [makejack.api.tool :as tool]))
 
 (defn uberscript
   "Output a babashka uberscript."
-  [_args {:keys [mj project] :as _config} options]
+  [options _args {:keys [mj project] :as _config}]
   (let [aliases     (-> []
                         (into (:aliases project))
                         (into (:aliases options)))
@@ -37,12 +37,8 @@
 
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."
-    :parse-fn tool-options/parse-kw-stringlist]])
+    :parse-fn tool/parse-kw-stringlist]])
 
 (defn -main [& args]
-  (let [{:keys [arguments options] {:keys [project] :as config} :config}
-        (tool-options/parse-options-and-apply-to-config
-         args extra-options "uberscript [options]")]
-    (makejack/with-makejack-tool ["uberscript" options project]
-      (uberscript arguments config options))
-    (shutdown-agents)))
+  (tool/with-shutdown-agents
+    (tool/dispatch-main "uberscript" "[options]" uberscript extra-options args)))

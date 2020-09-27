@@ -180,8 +180,3 @@
   [& args]
   (when *verbose*
     (apply println args)))
-
-(defmacro with-makejack-tool [[tool-name options project] & body]
-  `(with-output-bindings [~options]
-     (verbose-println ~tool-name (project-description ~project))
-     ~@body))

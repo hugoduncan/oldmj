@@ -1,4 +1,4 @@
-(ns makejack.api.tool-options
+(ns makejack.api.tool
   (:require [clojure.edn :as edn]
             [clojure.string :as str]
             [clojure.tools.cli :as cli]
@@ -42,7 +42,7 @@
 
 (defn parse-options-and-apply-to-config
   "Return a map with :arguments, :options, :errors, :config keys."
-  [args extra-options intro]
+  [args extra-options tool-name tool-syntax]
   (let [{:keys [arguments errors options summary]}
         (parse-options args extra-options)
         options (merge (:options options) (dissoc options :options))
@@ -53,7 +53,7 @@
        (str/join \newline errors))
 
       (:help options)
-      (usage summary intro)
+      (usage summary (str tool-name " " tool-syntax))
 
       :else
       {:arguments arguments
@@ -61,3 +61,37 @@
        :errors    errors
        :config    config
        :summary   summary})))
+
+(defmacro with-makejack-tool
+  "When verbose, output a message with the tool and the project co-ordinates."
+  [[tool-name options project] & body]
+  `(makejack/with-output-bindings [~options]
+     (makejack/verbose-println ~tool-name (makejack/project-description ~project))
+     ~@body))
+
+(defn dispatch-main
+  "Dispatch main to tool-fn, parsing command-line args with extra-options.
+
+  Uses cli-options/cli-options with extra-options to parse an options
+  map and args.  Loads the mj config file and the project.edn file with
+  the profile specified by any --profile option.
+
+  Executes tool-fn with *verbose* and *debug* nound according to the
+  parsed options.
+
+  The tool-fn should have the following signature:
+     (fn [options args {:keys [mj project] :as config}])"
+  [tool-name tool-syntax tool-fn extra-options args]
+  (let [{:keys [arguments options] {:keys [project] :as config} :config}
+        (parse-options-and-apply-to-config
+         args extra-options tool-name tool-syntax)]
+    (with-makejack-tool [tool-name options project]
+      (tool-fn options arguments config))))
+
+(defmacro with-shutdown-agents
+  "Ensure that (shutdown-agents) is called after the block."
+  [& body]
+  `(try
+     ~@body
+     (finally
+       (shutdown-agents))))

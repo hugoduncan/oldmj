@@ -2,10 +2,9 @@
   "Install to local repository"
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [makejack.api.core :as makejack]
             [makejack.api.filesystem :as filesystem]
             [makejack.api.path :as path]
-            [makejack.api.tool-options :as tool-options]
+            [makejack.api.tool :as tool]
             [makejack.api.util :as util])
   (:import [org.apache.maven.artifact.repository.metadata Metadata Versioning]
            [org.apache.maven.artifact.repository.metadata.io.xpp3
@@ -56,7 +55,7 @@
 
 (defn install
   "Install a project to a maven repository."
-  [_args {:keys [mj project] :as _config} _options]
+  [_options _args {:keys [mj project] :as _config}]
   (let [paths         (paths-to-install mj project)
         repo-home     (path/path (System/getProperty "user.home") ".m2" "repository")
         artifact-path (path/path repo-home (group-path project) (:name project))
@@ -68,12 +67,8 @@
 
 (def extra-options
   [["-a" "--aliases ALIASES" "Aliases to use."
-    :parse-fn tool-options/parse-kw-stringlist]])
+    :parse-fn tool/parse-kw-stringlist]])
 
 (defn -main [& args]
-  (let [{:keys [arguments options] {:keys [project] :as config} :config}
-        (tool-options/parse-options-and-apply-to-config
-         args extra-options "pom [options]")]
-    (makejack/with-makejack-tool ["Install" options project]
-      (install arguments config options))
-    (shutdown-agents)))
+  (tool/dispatch-main "install" "[options]" install extra-options args)
+  (shutdown-agents))
