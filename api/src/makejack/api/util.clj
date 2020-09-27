@@ -4,7 +4,7 @@
             [clojure.java.io :as io]
             [clojure.string :as str]
             [makejack.api.path :as path])
-  (:import [java.security #_DigestInputStream MessageDigest]))
+  (:import [java.security DigestInputStream MessageDigest]))
 
 (defn source-files
   "Return all source files under path-like.
@@ -86,45 +86,15 @@
         pad     (str/join (repeat (- length (count hex-str)) "0"))]
     (str pad hex-str)))
 
-(def ^:private buffer-size (* 1024 1024))
-
-(defn- byte-buffer
-  ^bytes []
-  (make-array Byte/TYPE buffer-size))
-
-(defn- read-bytes
-  ^bytes [^java.io.InputStream stream]
-  (let [^bytes buffer (byte-buffer)
-        num-bytes     (.read stream buffer)]
-    (if (pos? num-bytes)
-      (if (= buffer-size num-bytes)
-        buffer
-        (java.util.Arrays/copyOf buffer num-bytes)))))
-
-(defn- byte-seq
-  [^java.io.InputStream stream]
-  (take-while some? (repeatedly (partial read-bytes stream))))
-
-(defn- byte-seq-digest
-  [digests byte-seq]
-  (doseq [^MessageDigest digest digests]
-    (.reset digest))
-  (doseq [^bytes bytes byte-seq]
-    (doseq [^MessageDigest digest digests]
-      (.update digest bytes)))
-  digests)
-
 (defn file-hashes
   "Return a map with hash strings for the contents of the given path.
   The returned map has :md5 and :sha1 hash strings."
   [path]
   (let [md5  (MessageDigest/getInstance "MD5")
         sha1 (MessageDigest/getInstance "SHA1")]
-    ;; (with-open [md5-digest (DigestInputStream.
-    ;;                          (io/input-stream (.toFile (as-path path))) md5)
-    ;;             sha1-digest (DigestInputStream. md5-digest sha1)]
-    ;;   (while (> (.read sha1-digest) -1)))
-    (with-open [^java.io.InputStream stream (io/input-stream (path/as-file path))]
-      (byte-seq-digest [md5 sha1] (byte-seq stream))
+    (with-open [md5-digest  (DigestInputStream.
+                             (io/input-stream (.toFile (path/as-path path))) md5)
+                sha1-digest (DigestInputStream. md5-digest sha1)]
+      (while (> (.read sha1-digest) -1))
       {:md5  (digest-string md5)
        :sha1 (digest-string sha1)})))
