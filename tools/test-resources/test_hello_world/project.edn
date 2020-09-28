@@ -1,1 +1,2 @@
-{:name "test_hello_world", :version "0.1.0"}
+{ :name   "test_hello_world"
+ :version "0.1.0"}

@@ -43,6 +43,9 @@
   (^Path [parent child & more]
    (reduce path (path parent child) more)))
 
+(defn path-for [& path-components]
+  (apply path (filter some? path-components)))
+
 (defn path?
   "Predicate for x being a Path object."
   [x]
