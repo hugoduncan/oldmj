@@ -9,4 +9,7 @@
  :aliases         #profile {:default []
                             :compile [:compile]
                             :uberjar [:uberjar :compile]}
- :jar-type        :uberjar}
+ :jar-type        :uberjar
+ :jar-exclusions  ["makejack/impl/build_version.*"
+                   ".*.html"
+                   ".cpcache.*"]}
