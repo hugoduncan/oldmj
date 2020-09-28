@@ -19,13 +19,18 @@
                             (makejack/default-jar-name project))
         jar-path        (str (path/path target-path jar-name))
         uberjar?        (= :uberjar (:jar-type project))
+        exclusions      (:jar-exclusions project)
         depstar-main-ns (if uberjar?
                           "hf.depstar.uberjar"
                           "hf.depstar.jar")
         depstar-args    (cond-> []
                           (and uberjar? main) (into ["-m" (str main)])
                           true                (conj jar-path)
-                          (:verbose options)  (conj "--verbose"))]
+                          (:verbose options)  (conj "--verbose")
+                          exclusions          (into (mapcat
+                                                     vector
+                                                     (repeat "--exclude")
+                                                     exclusions)))]
     (clojure-cli/process
      (concat
       (clojure-cli/args {:repro true

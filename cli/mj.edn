@@ -3,10 +3,16 @@
           TODO - make this appear in `mj --help` output"
      :targets
      #merge
-     [#default-targets [:pom :clean :uberjar :compile :binary :uberscript
+     [#default-targets [:pom :clean :compile :binary :uberscript
                         :install :deploy]
       #include "../mj-targets.edn"
-      {:build      {:doc     "pom, compile, uberjar and binary"
+      {:uberjar    {:doc       "Build an uberjar, "
+                    :invoker   :clojure
+                    :deps      {org.hugoduncan/makejack.tools
+                                {:mvn/version "0.0.1-alpha2-SNAPSHOT"}}
+                    :main      makejack.tools.jar
+                    :main-args ["--profile" ":uberjar"]}
+       :build      {:doc     "pom, compile, uberjar and binary"
                     :invoker :chain
                     :targets [:pom :compile :uberjar :binary]}
        :version-ns {:doc     "Write the version info namespace"
