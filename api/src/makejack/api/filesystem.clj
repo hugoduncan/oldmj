@@ -5,8 +5,12 @@
   (:import [java.io File]
            [java.nio.file
             CopyOption
+            FileVisitOption
+            FileVisitResult
+            FileVisitor
             Files
-            LinkOption Path
+            LinkOption
+            Path
             StandardCopyOption]
            [java.nio.file.attribute FileAttribute PosixFilePermission]))
 
@@ -79,12 +83,50 @@
   (into-array
    CopyOption
    (reduce
-    (fn [vals [kw option-value]]
+    (fn [opts [kw option-value]]
       (if (kw options)
-        (conj vals option-value)
-        vals))
+        (conj opts option-value)
+        opts))
     []
     copy-option-values)))
+
+(def visit-option-values
+  {:follow-links FileVisitOption/FOLLOW_LINKS})
+
+(defn visit-options
+  ^"[Ljava.nio.file.FileVisitOption;" [{:keys [follow-links] :as options}]
+  (into-array
+   FileVisitOption
+   (reduce
+    (fn [opts [kw option-value]]
+      (if (kw options)
+        (conj opts option-value)
+        opts))
+    []
+    visit-option-values)))
+
+(defn visit-option-set
+  ^java.util.Set [{:keys [follow-links] :as options}]
+  (reduce
+   (fn [^java.util.Set opts [kw option-value]]
+     (if (kw options)
+       (.add opts option-value))
+     opts)
+   (java.util.HashSet.)
+   visit-option-values))
+
+(defn list-paths
+  "Return a lazy sequence of paths under path in depth first order."
+  ([path-like]
+   (list-paths path-like {}))
+  ([path-like {:keys [follow-links] :as options}]
+   (->> (Files/walk (path/path path-like) (visit-options options))
+        (.iterator)
+        iterator-seq))
+
+  ;; (->> (file-seq (.toFile (path/path path-like)))
+  ;;      (map path/path))
+  )
 
 (defn copy-file!
   ([source-path target-path]
@@ -95,14 +137,32 @@
     (path/path target-path)
     (copy-options options))))
 
-(defn list-paths
-  "Return a lazy sequence of paths under path in depth first order."
-  [path-like]
-  ;; (->> (Files/walk (as-path path) fvos)
-  ;;    (.iterator)
-  ;;    iterator-seq)
-  (->> (file-seq (.toFile (path/path path-like)))
-       (map path/path)))
+(defn copy-files!
+  ([source-path target-path]
+   (copy-files! source-path target-path {:copy-attributes true}))
+  ([source-path
+    target-path
+    {:keys [copy-attributes replace-existing follow-links] :as options}]
+   (let [source-path   (path/path source-path)
+         relative-path (path/relative-to source-path)
+         copy-options  (copy-options options)
+         visit-options (visit-option-set options)
+         visitor       (reify FileVisitor
+                         (visitFile [_ p attrs]
+                           (let [rel-p (relative-path p)                   ]
+                             (copy-file!
+                              p
+                              (path/path target-path rel-p)
+                              copy-options))
+                           FileVisitResult/CONTINUE)
+                         (preVisitDirectory [_ p attrs]
+                           (mkdirs (path/path target-path (relative-path p)))
+                           FileVisitResult/CONTINUE)
+                         (postVisitDirectory [_ p ioexc]
+                           (if ioexc (throw ioexc) FileVisitResult/CONTINUE))
+                         (visitFileFailed [_ p ioexc]
+                           (throw (ex-info "Copy File Failed" {:p p} ioexc))))]
+     (Files/walkFileTree source-path visit-options Integer/MAX_VALUE visitor))))
 
 (defn delete-file!
   "Delete the file at the specified path-like.
