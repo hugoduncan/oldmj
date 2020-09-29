@@ -47,6 +47,7 @@
           (spit project-file (str ";; comment\n" (pr-str {:version "0.1.0"})))
           (bump/update-version-source
            {:type :project-edn}
+           {:major 0 :minor 1 :incremental 0}
            {:major 1 :minor 2 :incremental 3}
            {:dir (str dir)})
           (is (= ";; comment\n{:version \"1.2.3\"}"
@@ -57,10 +58,36 @@
           (bump/update-version-source
            {:type :version-edn
             :path (str version-file)}
+           {:major 0 :minor 1 :incremental 0}
            {:major 1 :minor 2 :incremental 3}
            {})
           (is (= {:major 1 :minor 2 :incremental 3}
                  (edn/read-string (slurp version-file)))))))))
+
+(deftest update-version-test
+  (testing "update-version"
+    (filesystem/with-temp-dir [dir "update-version-test"]
+      (testing "for a path, updates the old version with the new version"
+        (let [path (path/path dir "project.edn")]
+          (spit
+           (path/as-file path)
+           (str ";; comment\n" (pr-str {:version "0.1.0"})))
+          (bump/update-version
+           path
+           {:major 0 :minor 1 :incremental 0}
+           {:major 1 :minor 2 :incremental 3})
+          (is (= ";; comment\n{:version \"1.2.3\"}"
+                 (slurp (path/as-file path))))))
+      (testing "for a map, updates the old version with the new version in a search"
+        (let [path    (path/path dir "version.edn")
+              filedef {:path path :search #":abc \"0.1.0\""}]
+          (spit (path/as-file path) "{:abc \"0.1.0\" :def \"0.1.0\"}")
+          (bump/update-version
+           filedef
+           {:major 0 :minor 1 :incremental 0}
+           {:major 1 :minor 2 :incremental 3})
+          (is (= "{:abc \"1.2.3\" :def \"0.1.0\"}"
+                 (slurp (path/as-file path)))))))))
 
 (deftest next-version-test
   (testing "next-version"

@@ -53,25 +53,56 @@
                                          :part        part-kw})))))
 
 
+(defn- update-file-with-regex
+  [path search-regex old-str new-str]
+  (let [path            (path/path path)
+        content-str     (slurp (path/as-file path))
+        found-str       (re-find search-regex content-str)
+        new-found-str   (str/replace found-str old-str new-str)
+        new-content-str (str/replace content-str found-str new-found-str)]
+    (spit (path/as-file path) new-content-str)))
+
 (defmulti update-version-source
-  (fn [version-source _new-version _options]
+  (fn [version-source _old-version-map _new-version-map _options]
     (:type version-source)))
 
 (defmethod update-version-source :project-edn
-  [_version-source version-map {:keys [dir]}]
-  (let [project-file    (path/path-for dir "project.edn")
-        project-str     (slurp (path/as-file project-file))
-        version-str     (re-find #":version\s+\".*\"" project-str)
-        new-version-str (str/replace
-                         version-str
-                         #"\".*\""
-                         (pr-str (util/format-version-map version-map)))
-        project-str     (str/replace project-str version-str new-version-str)]
-    (spit (path/as-file project-file) project-str)))
+  [_version-source old-version-map new-version-map {:keys [dir]}]
+  (let [project-file (path/path-for dir "project.edn")]
+    (update-file-with-regex
+     project-file
+     #":version\s+\".*\""
+     (util/format-version-map old-version-map)
+     (util/format-version-map new-version-map))))
 
 (defmethod update-version-source :version-edn
-  [{:keys [path]} version-map _options]
-  (spit path (pr-str version-map)))
+  [{:keys [path]} _old-version-map new-version-map _options]
+  (spit path (pr-str new-version-map)))
+
+(defmulti update-version
+  (fn [filedef _old-version-map _new-version-map]
+    (cond
+      (string? filedef)    :file-literal
+      (path/path? filedef) :file-literal
+      {:search filedef}    :file-search)))
+
+(defmethod update-version :file-literal
+  [filedef old-version-map new-version-map]
+  (let [path            (path/path-for filedef)
+        content-str     (slurp (path/as-file path))
+        new-version-str (str/replace
+                         content-str
+                         (util/format-version-map old-version-map)
+                         (util/format-version-map new-version-map))]
+    (spit (path/as-file path) new-version-str)))
+
+(defmethod update-version :file-search
+  [{:keys [search path]} old-version-map new-version-map]
+  (update-file-with-regex
+   path
+   search
+   (util/format-version-map old-version-map)
+   (util/format-version-map new-version-map)))
 
 (defn bump
   "Bump project version"
@@ -80,9 +111,8 @@
         version-map    (current-version version-source project)
         new-version    (next-version version-map args)]
     (update-version-source version-source new-version options)
-    ;; (doseq [update (:updates options)]
-    ;;   (update-version update new-version))
-    ))
+    (doseq [update (:updates options)]
+      (update-version update new-version))))
 
 (def extra-options
   [])
