@@ -1,0 +1,3 @@
+{:name        "bump-version-edn"
+ :version-map #include "version.edn"
+ :version     #version-string [:version-map]}
