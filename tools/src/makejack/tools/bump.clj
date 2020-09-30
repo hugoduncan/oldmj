@@ -63,7 +63,6 @@
   [path search-regex old-str new-str]
   (let [path            (path/path path)
         content-str     (slurp (path/as-file path))
-        _               (prn :search-regex search-regex :content-str content-str)
         found-str       (re-find search-regex content-str)
         new-found-str   (str/replace found-str old-str new-str)
         new-content-str (str/replace content-str found-str new-found-str)]
