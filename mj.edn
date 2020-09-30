@@ -3,7 +3,7 @@
                TODO - make this appear in `mj --help` output"
      :targets
      #merge
-     [#default-targets []
+     [#default-targets [:bump]
       {:site       {:doc     "Build the static site for github pages"
                     :invoker :shell
                     :args    ["hugo"]

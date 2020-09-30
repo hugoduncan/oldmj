@@ -112,7 +112,13 @@ If `:jar-type` is `:uberjar`, then build an uberjar, else a thin jar."
     :invoker   :clojure
     :deps      mj-tools
     :main      'makejack.tools.graal-compile
-    :main-args ["--profile" ":binary"]}})
+    :main-args ["--profile" ":binary"]}
+
+   :bump {:doc       "bump project version"
+          :invoker   :babashka
+          :deps      mj-tools
+          :main      'makejack.tools.bump
+          :main-args []}})
 
 (def default-mj
   {:targets (dissoc default-targets :clean)})

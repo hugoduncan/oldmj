@@ -150,9 +150,7 @@
          (.getPath (io/resource "test_bump_version_edn"))
          dir)
         (bump/bump
-         {:dir     dir
-          :updates ["README.md"
-                    {:path "deps.edn" :search #"/related\s+\{.*\}"}]}
+         {:dir dir}
          ["minor"]
          (makejack/load-config {:dir dir}))
         (let [version-edn-path (path/path dir "version.edn")
@@ -180,10 +178,8 @@
            (.getPath (io/resource "test_bump_project_edn"))
            dir)
           (bump/bump-xfun
-           {:dir     dir
-            :updates ["README.md"
-                      {:path "deps.edn" :search #"/related\s+\{.*\}"}]
-            :args    ["minor"]})
+           {:dir  dir
+            :args ["minor"]})
           (let [project-edn-path (path/path dir "project.edn")
                 readme-path      (path/path dir "README.md")
                 deps-edn-path    (path/path dir "deps.edn")]
@@ -203,10 +199,8 @@
            (.getPath (io/resource "test_bump_version_edn"))
            dir)
           (bump/bump-xfun
-           {:dir     dir
-            :updates ["README.md"
-                      {:path "deps.edn" :search #"/related\s+\{.*\}"}]
-            :args    ["minor"]})
+           {:dir  dir
+            :args ["minor"]})
           (let [version-edn-path (path/path dir "version.edn")
                 project-edn-path (path/path dir "project.edn")
                 readme-path      (path/path dir "README.md")
