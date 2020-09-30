@@ -1,4 +1,4 @@
 {:name            "bump-project-edn"
  :version         "0.1.0"
  :versioned-files ["README.md"
-                   {:path "deps.edn" :search #"/related\s+\{.*\}"}]}
+                   {:path "deps.edn" :search #regex "/related\\s+\\{.*\\}"}]}

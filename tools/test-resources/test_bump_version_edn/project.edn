@@ -2,4 +2,4 @@
  :version-map     #include "version.edn"
  :version         #version-string [:version-map]
  :versioned-files ["README.md"
-                   {:path "deps.edn" :search #"/related\s+\{.*\}"}]}
+                   {:path "deps.edn" :search #regex "/related\\s+\\{.*\\}"}]}

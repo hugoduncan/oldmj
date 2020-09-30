@@ -120,7 +120,7 @@
         version-map    (current-version version-source project options)
         new-version    (next-version version-map args)]
     (update-version-source version-source version-map new-version options)
-    (doseq [update (:updates options)]
+    (doseq [update (:versioned-files project)]
       (update-version update version-map new-version options))))
 
 (def extra-options

@@ -127,16 +127,13 @@
          (.getPath (io/resource "test_bump_project_edn"))
          dir)
         (bump/bump
-         {:dir     dir
-          :updates ["README.md"
-                    {:path "deps.edn" :search #"/related\s+\{.*\}"}]}
+         {:dir dir}
          ["minor"]
          (makejack/load-config {:dir dir}))
-        (let [project-edn-path (path/path dir "project.edn")
-              readme-path      (path/path dir "README.md")
-              deps-edn-path    (path/path dir "deps.edn")]
+        (let [readme-path   (path/path dir "README.md")
+              deps-edn-path (path/path dir "deps.edn")]
           (is (= "0.2.0"
-                 (:version (edn/read-string (slurp (path/as-file project-edn-path))))))
+                 (:version (makejack/load-project* {:dir dir}))))
           (is (= "current \"0.2.0\"\n"
                  (slurp (path/as-file readme-path))))
           (let [deps-edn (edn/read-string (slurp (path/as-file deps-edn-path)))]
@@ -180,12 +177,10 @@
           (bump/bump-xfun
            {:dir  dir
             :args ["minor"]})
-          (let [project-edn-path (path/path dir "project.edn")
-                readme-path      (path/path dir "README.md")
-                deps-edn-path    (path/path dir "deps.edn")]
+          (let [readme-path   (path/path dir "README.md")
+                deps-edn-path (path/path dir "deps.edn")]
             (is (= "0.2.0"
-                   (:version (edn/read-string
-                              (slurp (path/as-file project-edn-path))))))
+                   (:version (makejack/load-project* {:dir dir}))))
             (is (= "current \"0.2.0\"\n"
                    (slurp (path/as-file readme-path))))
             (let [deps-edn (edn/read-string (slurp (path/as-file deps-edn-path)))]
