@@ -2,7 +2,6 @@
   "Bump version"
   (:require [clojure.edn :as edn]
             [clojure.string :as str]
-            [makejack.api.clojure-cli :as clojure-cli]
             [makejack.api.core :as makejack]
             [makejack.api.filesystem :as filesystem]
             [makejack.api.path :as path]
@@ -10,7 +9,7 @@
             [makejack.api.util :as util]))
 
 (defn infer-source
-  [{:keys [dir] :as options}]
+  [{:keys [dir]}]
   (if (filesystem/file-exists?
        (path/path-for dir "version.edn"))
     {:type :version-edn
@@ -57,7 +56,6 @@
         "Must supply a value for non-numeric part"
         {:version-map version-map
          :part        part-kw})))))
-
 
 (defn- update-file-with-regex
   [path search-regex old-str new-str]
@@ -131,7 +129,7 @@
   [])
 
 (defn bump-xfun [{:keys [updates dir profiles verbpse debug args] :as options}]
-  (let [{:keys [mj project] :as config} (makejack/load-config options)]
+  (let [{:keys [project] :as config} (makejack/load-config options)]
     (tool/with-shutdown-agents
       (tool/with-makejack-tool ["bump" "[options]" project]
         (bump
