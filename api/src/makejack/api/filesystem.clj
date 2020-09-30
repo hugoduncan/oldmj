@@ -6,8 +6,8 @@
            [java.nio.file
             CopyOption
             FileVisitOption
-            FileVisitResult
-            FileVisitor
+            ;; filevisitresult
+            ;; filevisitor
             Files
             LinkOption
             Path
@@ -73,6 +73,11 @@
   [path-like]
   (.isFile (.toFile (path/path path-like))))
 
+(defn directory?
+  "Predicate for path referring to a directory."
+  [path-like]
+  (.isDirectory (.toFile (path/path path-like))))
+
 (def copy-option-values
   {:copy-attributes  StandardCopyOption/COPY_ATTRIBUTES
    :replace-existing StandardCopyOption/REPLACE_EXISTING})
@@ -105,15 +110,15 @@
     []
     visit-option-values)))
 
-(defn visit-option-set
-  ^java.util.Set [{:keys [follow-links] :as options}]
-  (reduce
-   (fn [^java.util.Set opts [kw option-value]]
-     (if (kw options)
-       (.add opts option-value))
-     opts)
-   (java.util.HashSet.)
-   visit-option-values))
+;; (defn visit-option-set
+;;   ^java.util.Set [{:keys [follow-links] :as options}]
+;;   (reduce
+;;    (fn [^java.util.Set opts [kw option-value]]
+;;      (if (kw options)
+;;        (.add opts option-value))
+;;      opts)
+;;    (java.util.HashSet.)
+;;    visit-option-values))
 
 (defn list-paths
   "Return a lazy sequence of paths under path in depth first order."
@@ -123,7 +128,7 @@
    (->> (Files/walk (path/path path-like) (visit-options options))
         (.iterator)
         iterator-seq))
-
+  ;; [path-like]
   ;; (->> (file-seq (.toFile (path/path path-like)))
   ;;      (map path/path))
   )
@@ -145,24 +150,38 @@
     {:keys [copy-attributes replace-existing follow-links] :as options}]
    (let [source-path   (path/path source-path)
          relative-path (path/relative-to source-path)
-         copy-options  (copy-options options)
-         visit-options (visit-option-set options)
-         visitor       (reify FileVisitor
-                         (visitFile [_ p attrs]
-                           (let [rel-p (relative-path p)                   ]
-                             (copy-file!
-                              p
-                              (path/path target-path rel-p)
-                              copy-options))
-                           FileVisitResult/CONTINUE)
-                         (preVisitDirectory [_ p attrs]
-                           (mkdirs (path/path target-path (relative-path p)))
-                           FileVisitResult/CONTINUE)
-                         (postVisitDirectory [_ p ioexc]
-                           (if ioexc (throw ioexc) FileVisitResult/CONTINUE))
-                         (visitFileFailed [_ p ioexc]
-                           (throw (ex-info "Copy File Failed" {:p p} ioexc))))]
-     (Files/walkFileTree source-path visit-options Integer/MAX_VALUE visitor))))
+         copy-options  (copy-options options)]
+     (doseq [p (list-paths source-path)]
+       (if (directory? p)
+         (mkdirs (path/path target-path (relative-path p)))
+         (copy-file!
+          p
+          (path/path target-path (relative-path p))
+          copy-options)))))
+  ;; ([source-path
+  ;;   target-path
+  ;;   {:keys [copy-attributes replace-existing follow-links] :as options}]
+  ;;  (let [source-path   (path/path source-path)
+  ;;        relative-path (path/relative-to source-path)
+  ;;        copy-options  (copy-options options)
+  ;;        visit-options (visit-option-set options)
+  ;;        visitor       (reify FileVisitor
+  ;;                        (visitFile [_ p attrs]
+  ;;                          (let [rel-p (relative-path p)                   ]
+  ;;                            (copy-file!
+  ;;                             p
+  ;;                             (path/path target-path rel-p)
+  ;;                             copy-options))
+  ;;                          FileVisitResult/CONTINUE)
+  ;;                        (preVisitDirectory [_ p attrs]
+  ;;                          (mkdirs (path/path target-path (relative-path p)))
+  ;;                          FileVisitResult/CONTINUE)
+  ;;                        (postVisitDirectory [_ p ioexc]
+  ;;                          (if ioexc (throw ioexc) FileVisitResult/CONTINUE))
+  ;;                        (visitFileFailed [_ p ioexc]
+  ;;                          (throw (ex-info "Copy File Failed" {:p p} ioexc))))]
+  ;;    (Files/walkFileTree source-path visit-options Integer/MAX_VALUE visitor)))
+  )
 
 (defn delete-file!
   "Delete the file at the specified path-like.
