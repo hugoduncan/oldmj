@@ -45,13 +45,18 @@
 (defn next-version [version-map [part value]]
   (let [part-kw (keyword part)]
     (cond
-      value                           (assoc version-map part-kw (maybe-long value))
-      (number? (part-kw version-map)) (update version-map part-kw inc)
-      :else                           (throw
-                                       (ex-info
-                                        "Must supply a value for non-numeric part"
-                                        {:version-map version-map
-                                         :part        part-kw})))))
+      value
+      (assoc version-map part-kw (maybe-long value))
+
+      (number? (part-kw version-map))
+      (update version-map part-kw inc)
+
+      :else
+      (throw
+       (ex-info
+        "Must supply a value for non-numeric part"
+        {:version-map version-map
+         :part        part-kw})))))
 
 
 (defn- update-file-with-regex

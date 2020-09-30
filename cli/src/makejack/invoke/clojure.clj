@@ -47,8 +47,6 @@
                                          (into ["-o" (dissoc options :dir)])
                                          true (into
                                                (:main-args target-config)))})
-                          (clojure-cli/exec-args
-                           {:exec-fn (:exec-fn target-config)})
                           args)]
     (try
       (clojure-cli/process args options)
