@@ -11,10 +11,12 @@
   (testing "infer-source with no options uses version.edn if it exists"
     (is (= {:type :version-edn
             :path "version.edn"}
-           (bump/infer-source {}))))
-  (testing "infer-source with no options uses project.edn if version.edn doesnt exist"
-    (is (= {:type :project-edn            }
-           (bump/infer-source {:dir "test-resources/test-hello-world"})))))
+           (bump/infer-source
+            {:dir (.getPath (io/resource "test_bump_version_edn"))}))))
+  (testing "infer-source with no options uses project.edn if version.edn doesn't exist"
+    (is (= {:type :project-edn}
+           (bump/infer-source
+            {:dir (.getPath (io/resource "test_bump_project_edn"))})))))
 
 (deftest read-version-map-test
   (is (= {:major       0
@@ -168,3 +170,59 @@
                    (-> deps-edn :deps (get 'related/related) :mvn/version)))
             (is (= "1.2.3"
                    (-> deps-edn :deps (get 'unrelated/unrelated) :mvn/version)))))))))
+
+(deftest bump-xfun-test
+  (with-redefs [clojure.core/shutdown-agents (fn [])]
+    (testing "bump"
+      (testing "for a :project-edn type, updates the version in the project file"
+        (filesystem/with-temp-dir [dir "bump-test"]
+          (filesystem/copy-files!
+           (.getPath (io/resource "test_bump_project_edn"))
+           dir)
+          (bump/bump-xfun
+           {:dir     dir
+            :updates ["README.md"
+                      {:path "deps.edn" :search #"/related\s+\{.*\}"}]
+            :args    ["minor"]})
+          (let [project-edn-path (path/path dir "project.edn")
+                readme-path      (path/path dir "README.md")
+                deps-edn-path    (path/path dir "deps.edn")]
+            (is (= "0.2.0"
+                   (:version (edn/read-string
+                              (slurp (path/as-file project-edn-path))))))
+            (is (= "current \"0.2.0\"\n"
+                   (slurp (path/as-file readme-path))))
+            (let [deps-edn (edn/read-string (slurp (path/as-file deps-edn-path)))]
+              (is (= "0.2.0"
+                     (-> deps-edn :deps (get 'related/related) :mvn/version)))
+              (is (= "0.1.0"
+                     (-> deps-edn :deps (get 'unrelated/unrelated) :mvn/version)))))))
+      (testing "for a :version-edn type, writes the version to the version.edn file"
+        (filesystem/with-temp-dir [dir "bump-test"]
+          (filesystem/copy-files!
+           (.getPath (io/resource "test_bump_version_edn"))
+           dir)
+          (bump/bump-xfun
+           {:dir     dir
+            :updates ["README.md"
+                      {:path "deps.edn" :search #"/related\s+\{.*\}"}]
+            :args    ["minor"]})
+          (let [version-edn-path (path/path dir "version.edn")
+                project-edn-path (path/path dir "project.edn")
+                readme-path      (path/path dir "README.md")
+                deps-edn-path    (path/path dir "deps.edn")]
+            (is (= {:major 1 :minor 3 :incremental 3}
+                   (edn/read-string (slurp (path/as-file version-edn-path)))))
+            (is (re-find #":version\s+#version-string"
+                         (slurp (path/as-file project-edn-path))))
+            (is (= "current \"1.3.3\"\n"
+                   (slurp (path/as-file readme-path))))
+            (let [deps-edn (edn/read-string (slurp (path/as-file deps-edn-path)))]
+              (is (= "1.3.3"
+                     (-> deps-edn
+                         :deps
+                         (get 'related/related) :mvn/version)))
+              (is (= "1.2.3"
+                     (-> deps-edn
+                         :deps
+                         (get 'unrelated/unrelated) :mvn/version))))))))))

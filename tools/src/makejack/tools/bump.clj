@@ -121,6 +121,15 @@
 (def extra-options
   [])
 
+(defn bump-xfun [{:keys [updates dir profiles verbpse debug args] :as options}]
+  (let [{:keys [mj project] :as config} (makejack/load-config options)]
+    (tool/with-shutdown-agents
+      (tool/with-makejack-tool ["bump" "[options]" project]
+        (bump
+         (dissoc options :args)
+         args
+         config)))))
+
 (defn -main [& args]
   (tool/with-shutdown-agents
     (tool/dispatch-main
