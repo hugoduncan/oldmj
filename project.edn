@@ -4,6 +4,6 @@
  :group-id        "org.hugoduncan"
  :versioned-files ["README.md"
                    {:path   "cli/deps.edn"
-                    :search #regex "makejack\\s\\{.*\\}"}
+                    :search #regex "makejack\\s+\\{.*\\}"}
                    {:path   "tools/deps.edn"
-                    :search #regex "makejack\\s\\{.*\\}"}]}
+                    :search #regex "makejack\\s+\\{.*\\}"}]}
