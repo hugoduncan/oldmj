@@ -40,4 +40,9 @@
                     :invoker :modules
                     :modules ["api" "cli" "tools"]
                     :args    ["test"]
+                    :self    false}
+       :clean      {:doc     "Clean generated files"
+                    :invoker :modules
+                    :modules ["api" "cli" "tools"]
+                    :args    ["clean"]
                     :self    false}}]}
