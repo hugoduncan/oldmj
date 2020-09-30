@@ -118,6 +118,11 @@
   (let [version-source (infer-source options)
         version-map    (current-version version-source project options)
         new-version    (next-version version-map args)]
+    (makejack/verbose-println
+     "Updating from"
+     (util/format-version-map version-map)
+     "to"
+     (util/format-version-map new-version))
     (update-version-source version-source version-map new-version options)
     (doseq [update (:versioned-files project)]
       (update-version update version-map new-version options))))
