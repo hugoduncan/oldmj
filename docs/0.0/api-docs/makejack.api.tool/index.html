@@ -10,9 +10,9 @@
 <meta name="docsearch:language" content="en">
 <meta name="docsearch:version" content="0.0">
 
-<title>Install · Makejack v0.0</title>
+<title>makejack.api.tool · Makejack v0.0</title>
 
-<link rel="canonical" href="http://makejack.hugoduncan.org/docs/0.0/reference/project-edn/">
+<link rel="canonical" href="http://makejack.hugoduncan.org/docs/0.0/api-docs/makejack.api.tool/">
 
 
 
@@ -24,6 +24,10 @@
 <link rel="stylesheet" href="/css/docs.css">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        
+
+<link rel="stylesheet" href="/css/api-docs.css">
 
     </head>
     <body>
@@ -123,7 +127,7 @@
             <div class="" id="reference-collapse">
                 <ul class="pure-menu-list">
 
-                    <li class="pure-menu-item pure-menu-selected">
+                    <li class="pure-menu-item">
                         <a href="/docs/0.0/reference/project-edn/"
                            class="pure-menu-link">
                             project edn
@@ -276,7 +280,7 @@
                         </a>
                     </li>
 
-                    <li class="pure-menu-item">
+                    <li class="pure-menu-item pure-menu-selected">
                         <a href="/docs/0.0/api-docs/makejack.api.tool/"
                            class="pure-menu-link">
                             makejack.api.tool
@@ -308,39 +312,10 @@
     <p>Note: no explicit windowa support.</p>
 </div>
 
-                        <p>The sample <code>project.edn</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-clj" data-lang="clj">{<span style="color:#e6db74">:version</span>         <span style="color:#e6db74">&#34;0.0.1&#34;</span>
- <span style="color:#e6db74">:name</span>            <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the groupId for maven artifacts.  Defaults to the project name.</span>
- <span style="color:#e6db74">:group-id</span>        <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the artifactId for maven artifacts.  Defaults to the project name.</span>
- <span style="color:#e6db74">:artifact-id</span>     <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the main namespace</span>
- <span style="color:#e6db74">:main</span>            makejack.main
- <span style="color:#75715e">;; The jar name</span>
- <span style="color:#e6db74">:jar-name</span>        <span style="color:#f92672">#</span>join [<span style="color:#e6db74">&#34;makejack-&#34;</span> <span style="color:#f92672">#</span>ref [<span style="color:#e6db74">:version</span>] <span style="color:#e6db74">&#34;.jar&#34;</span>]
- <span style="color:#75715e">;; The jar type, either :jar or :uberjar</span>
- <span style="color:#e6db74">:jar-type</span>        <span style="color:#e6db74">:jar</span>
- <span style="color:#75715e">;; specify the name for a generated script</span>
- <span style="color:#e6db74">:script-name</span>     <span style="color:#e6db74">&#34;mj1&#34;</span>
- <span style="color:#75715e">;; specify whether to add a shebang for the generated script</span>
- <span style="color:#e6db74">:script-shebang?</span> true
- <span style="color:#75715e">;; specify the mode for a generated script</span>
- <span style="color:#e6db74">:script-mode</span>     <span style="color:#e6db74">&#34;755&#34;</span>
- <span style="color:#75715e">;; specify the name for a generated binary</span>
- <span style="color:#e6db74">:binary-name</span>     <span style="color:#e6db74">&#34;mj&#34;</span>
- <span style="color:#75715e">;; paths for java source files</span>
- <span style="color:#e6db74">:java-paths</span>      []
- <span style="color:#75715e">;; compilation options for java source files</span>
- <span style="color:#e6db74">:javac-options</span>   [<span style="color:#e6db74">&#34;-target&#34;</span> <span style="color:#e6db74">&#34;1.7&#34;</span>
-                   <span style="color:#e6db74">&#34;-source&#34;</span> <span style="color:#e6db74">&#34;1.7&#34;</span>
-                   <span style="color:#e6db74">&#34;-Xlint:-options&#34;</span>]
-
- <span style="color:#75715e">;; deps.edn aliases, usually specified via makejack (aero) profiles</span>
- <span style="color:#e6db74">:aliases</span> <span style="color:#f92672">#</span>profile {<span style="color:#e6db74">:default</span> []
-                    <span style="color:#e6db74">:compile</span> [<span style="color:#e6db74">:compile</span>]}}
-
-</code></pre></div>
+                        <div class="namespace-docs" id="content"><h1 class="anchor" id="top">makejack.api.tool</h1><div class="doc"><div class="markdown"></div></div><div class="public anchor" id="var-cli-options"><h3>cli-options</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Recommended CLI options for tools.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool.clj#L14">view source</a></div></div><div class="public anchor" id="var-dispatch-main"><h3>dispatch-main</h3><div class="usage"><code>(dispatch-main tool-name tool-syntax tool-fn extra-options args)</code></div><div class="doc"><div class="markdown"><p>Dispatch main to tool-fn, parsing command-line args with extra-options.</p>
+<p>Uses cli-options/cli-options with extra-options to parse an options map and args. Loads the mj config file and the project.edn file with the profile specified by any &ndash;profile option.</p>
+<p>Executes tool-fn with <em>verbose</em> and <em>debug</em> nound according to the parsed options.</p>
+<p>The tool-fn should have the following signature:  (fn [options args {:keys [mj project] :as config}])</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool.clj#L72">view source</a></div></div><div class="public anchor" id="var-parse-kw-stringlist"><h3>parse-kw-stringlist</h3><div class="usage"><code>(parse-kw-stringlist kwlist-str)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool.clj#L9">view source</a></div></div><div class="public anchor" id="var-parse-options"><h3>parse-options</h3><div class="usage"><code>(parse-options args extra-options)</code></div><div class="doc"><div class="markdown"><p>Parse the cli options, with the given extra options.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool.clj#L28">view source</a></div></div><div class="public anchor" id="var-parse-options-and-apply-to-config"><h3>parse-options-and-apply-to-config</h3><div class="usage"><code>(parse-options-and-apply-to-config args extra-options tool-name tool-syntax)</code></div><div class="doc"><div class="markdown"><p>Return a map with :arguments, :options, :errors, :config keys.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool.clj#L43">view source</a></div></div><div class="public anchor" id="var-usage"><h3>usage</h3><div class="usage"><code>(usage intro summary)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool.clj#L34">view source</a></div></div><div class="public anchor" id="var-with-makejack-tool"><h3>with-makejack-tool</h3><h4 class="type">macro</h4><div class="usage"><code>(with-makejack-tool [tool-name options project] &amp; body)</code></div><div class="doc"><div class="markdown"><p>When verbose, output a message with the tool and the project co-ordinates.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool.clj#L65">view source</a></div></div><div class="public anchor" id="var-with-shutdown-agents"><h3>with-shutdown-agents</h3><h4 class="type">macro</h4><div class="usage"><code>(with-shutdown-agents &amp; body)</code></div><div class="doc"><div class="markdown"><p>Ensure that (shutdown-agents) is called after the block.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool.clj#L91">view source</a></div></div></div>
                     </div>
                 </div>
             </main>
@@ -356,8 +331,7 @@
     </div>
 </footer>
 
-            <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
-<script src="/js/ui.js"></script>
+            
 
 
         </div>

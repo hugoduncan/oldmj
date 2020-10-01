@@ -153,34 +153,6 @@
 
             <div class="">
                 <ul class="pure-menu-list">
-
-                    <li class="pure-menu-item">
-                        <a href="/docs/0.0/invoker-docs/makejack.invoke.babashka/"
-                           class="pure-menu-link">
-                            makejack.invoke.babashka
-                        </a>
-                    </li>
-
-                    <li class="pure-menu-item">
-                        <a href="/docs/0.0/invoker-docs/makejack.invoke.chain/"
-                           class="pure-menu-link">
-                            makejack.invoke.chain
-                        </a>
-                    </li>
-
-                    <li class="pure-menu-item">
-                        <a href="/docs/0.0/invoker-docs/makejack.invoke.clojure/"
-                           class="pure-menu-link">
-                            makejack.invoke.clojure
-                        </a>
-                    </li>
-
-                    <li class="pure-menu-item">
-                        <a href="/docs/0.0/invoker-docs/makejack.invoke.shell/"
-                           class="pure-menu-link">
-                            makejack.invoke.shell
-                        </a>
-                    </li>
                 </ul>
             </div>
         </li>
@@ -194,6 +166,13 @@
 
             <div class="">
                 <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.bump/"
+                           class="pure-menu-link">
+                            makejack.tools.bump
+                        </a>
+                    </li>
 
                     <li class="pure-menu-item">
                         <a href="/docs/0.0/tool-docs/makejack.tools.compile/"
@@ -213,6 +192,13 @@
                         <a href="/docs/0.0/tool-docs/makejack.tools.init/"
                            class="pure-menu-link">
                             makejack.tools.init
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.install/"
+                           class="pure-menu-link">
+                            makejack.tools.install
                         </a>
                     </li>
 
@@ -260,6 +246,13 @@
                 <ul class="pure-menu-list">
 
                     <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.babashka/"
+                           class="pure-menu-link">
+                            makejack.api.babashka
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
                         <a href="/docs/0.0/api-docs/makejack.api.clojure-cli/"
                            class="pure-menu-link">
                             makejack.api.clojure-cli
@@ -273,10 +266,24 @@
                         </a>
                     </li>
 
-                    <li class="pure-menu-item pure-menu-selected">
-                        <a href="/docs/0.0/api-docs/makejack.api.tool-options/"
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.filesystem/"
                            class="pure-menu-link">
-                            makejack.api.tool-options
+                            makejack.api.filesystem
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.path/"
+                           class="pure-menu-link">
+                            makejack.api.path
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.tool/"
+                           class="pure-menu-link">
+                            makejack.api.tool
                         </a>
                     </li>
 
@@ -305,7 +312,7 @@
     <p>Note: no explicit windowa support.</p>
 </div>
 
-                        <div class="namespace-docs" id="content"><h1 class="anchor" id="top">makejack.api.tool-options</h1><div class="doc"><div class="markdown"></div></div><div class="public anchor" id="var-cli-options"><h3>cli-options</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Recommended CLI options for tools.</p></div></div></div><div class="public anchor" id="var-parse-kw-stringlist"><h3>parse-kw-stringlist</h3><div class="usage"><code>(parse-kw-stringlist kwlist-str)</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-parse-options"><h3>parse-options</h3><div class="usage"><code>(parse-options args extra-options)</code></div><div class="doc"><div class="markdown"><p>Parse the cli options, with the given extra options.</p></div></div></div><div class="public anchor" id="var-parse-options-and-apply-to-config"><h3>parse-options-and-apply-to-config</h3><div class="usage"><code>(parse-options-and-apply-to-config args extra-options intro)</code></div><div class="doc"><div class="markdown"><p>Return a map with :arguments, :options, :errors, :config keys.</p></div></div></div><div class="public anchor" id="var-usage"><h3>usage</h3><div class="usage"><code>(usage intro summary)</code></div><div class="doc"><div class="markdown"></div></div></div></div>
+                        <div class="namespace-docs" id="content"><h1 class="anchor" id="top">makejack.api.tool-options</h1><div class="doc"><div class="markdown"></div></div><div class="public anchor" id="var-cli-options"><h3>cli-options</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Recommended CLI options for tools.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool_options.clj#L14">view source</a></div></div><div class="public anchor" id="var-parse-kw-stringlist"><h3>parse-kw-stringlist</h3><div class="usage"><code>(parse-kw-stringlist kwlist-str)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool_options.clj#L9">view source</a></div></div><div class="public anchor" id="var-parse-options"><h3>parse-options</h3><div class="usage"><code>(parse-options args extra-options)</code></div><div class="doc"><div class="markdown"><p>Parse the cli options, with the given extra options.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool_options.clj#L28">view source</a></div></div><div class="public anchor" id="var-parse-options-and-apply-to-config"><h3>parse-options-and-apply-to-config</h3><div class="usage"><code>(parse-options-and-apply-to-config args extra-options intro)</code></div><div class="doc"><div class="markdown"><p>Return a map with :arguments, :options, :errors, :config keys.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool_options.clj#L43">view source</a></div></div><div class="public anchor" id="var-usage"><h3>usage</h3><div class="usage"><code>(usage intro summary)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/tool_options.clj#L34">view source</a></div></div></div>
                     </div>
                 </div>
             </main>

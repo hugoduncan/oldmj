@@ -10,9 +10,9 @@
 <meta name="docsearch:language" content="en">
 <meta name="docsearch:version" content="0.0">
 
-<title>Install · Makejack v0.0</title>
+<title>makejack.tools.install · Makejack v0.0</title>
 
-<link rel="canonical" href="http://makejack.hugoduncan.org/docs/0.0/reference/project-edn/">
+<link rel="canonical" href="http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.install/">
 
 
 
@@ -24,6 +24,10 @@
 <link rel="stylesheet" href="/css/docs.css">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        
+
+<link rel="stylesheet" href="/css/tool-docs.css">
 
     </head>
     <body>
@@ -123,7 +127,7 @@
             <div class="" id="reference-collapse">
                 <ul class="pure-menu-list">
 
-                    <li class="pure-menu-item pure-menu-selected">
+                    <li class="pure-menu-item">
                         <a href="/docs/0.0/reference/project-edn/"
                            class="pure-menu-link">
                             project edn
@@ -191,7 +195,7 @@
                         </a>
                     </li>
 
-                    <li class="pure-menu-item">
+                    <li class="pure-menu-item pure-menu-selected">
                         <a href="/docs/0.0/tool-docs/makejack.tools.install/"
                            class="pure-menu-link">
                             makejack.tools.install
@@ -308,39 +312,7 @@
     <p>Note: no explicit windowa support.</p>
 </div>
 
-                        <p>The sample <code>project.edn</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-clj" data-lang="clj">{<span style="color:#e6db74">:version</span>         <span style="color:#e6db74">&#34;0.0.1&#34;</span>
- <span style="color:#e6db74">:name</span>            <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the groupId for maven artifacts.  Defaults to the project name.</span>
- <span style="color:#e6db74">:group-id</span>        <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the artifactId for maven artifacts.  Defaults to the project name.</span>
- <span style="color:#e6db74">:artifact-id</span>     <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the main namespace</span>
- <span style="color:#e6db74">:main</span>            makejack.main
- <span style="color:#75715e">;; The jar name</span>
- <span style="color:#e6db74">:jar-name</span>        <span style="color:#f92672">#</span>join [<span style="color:#e6db74">&#34;makejack-&#34;</span> <span style="color:#f92672">#</span>ref [<span style="color:#e6db74">:version</span>] <span style="color:#e6db74">&#34;.jar&#34;</span>]
- <span style="color:#75715e">;; The jar type, either :jar or :uberjar</span>
- <span style="color:#e6db74">:jar-type</span>        <span style="color:#e6db74">:jar</span>
- <span style="color:#75715e">;; specify the name for a generated script</span>
- <span style="color:#e6db74">:script-name</span>     <span style="color:#e6db74">&#34;mj1&#34;</span>
- <span style="color:#75715e">;; specify whether to add a shebang for the generated script</span>
- <span style="color:#e6db74">:script-shebang?</span> true
- <span style="color:#75715e">;; specify the mode for a generated script</span>
- <span style="color:#e6db74">:script-mode</span>     <span style="color:#e6db74">&#34;755&#34;</span>
- <span style="color:#75715e">;; specify the name for a generated binary</span>
- <span style="color:#e6db74">:binary-name</span>     <span style="color:#e6db74">&#34;mj&#34;</span>
- <span style="color:#75715e">;; paths for java source files</span>
- <span style="color:#e6db74">:java-paths</span>      []
- <span style="color:#75715e">;; compilation options for java source files</span>
- <span style="color:#e6db74">:javac-options</span>   [<span style="color:#e6db74">&#34;-target&#34;</span> <span style="color:#e6db74">&#34;1.7&#34;</span>
-                   <span style="color:#e6db74">&#34;-source&#34;</span> <span style="color:#e6db74">&#34;1.7&#34;</span>
-                   <span style="color:#e6db74">&#34;-Xlint:-options&#34;</span>]
-
- <span style="color:#75715e">;; deps.edn aliases, usually specified via makejack (aero) profiles</span>
- <span style="color:#e6db74">:aliases</span> <span style="color:#f92672">#</span>profile {<span style="color:#e6db74">:default</span> []
-                    <span style="color:#e6db74">:compile</span> [<span style="color:#e6db74">:compile</span>]}}
-
-</code></pre></div>
+                        <div class="namespace-docs" id="content"><div class="public anchor" id="var--main"><h3>makejack.tools.install/-main</h3><div class="usage"><code>(-main &amp; args)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/install.clj#L72">view source</a></div></div><div class="public anchor" id="var-extra-options"><h3>makejack.tools.install/extra-options</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/install.clj#L68">view source</a></div></div><div class="public anchor" id="var-generate-metadata-model"><h3>makejack.tools.install/generate-metadata-model</h3><div class="usage"><code>(generate-metadata-model project dir)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/install.clj#L35">view source</a></div></div><div class="public anchor" id="var-group-path"><h3>makejack.tools.install/group-path</h3><div class="usage"><code>(group-path project)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/install.clj#L32">view source</a></div></div><div class="public anchor" id="var-install"><h3>makejack.tools.install/install</h3><div class="usage"><code>(install _options _args {:keys [mj project], :as _config})</code></div><div class="doc"><div class="markdown"><p>Install a project to a maven repository.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/install.clj#L56">view source</a></div></div><div class="public anchor" id="var-paths-to-install"><h3>makejack.tools.install/paths-to-install</h3><div class="usage"><code>(paths-to-install mj project)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/install.clj#L13">view source</a></div></div><div class="public anchor" id="var-prepare-path-install.21"><h3>makejack.tools.install/prepare-path-install!</h3><div class="usage"><code>(prepare-path-install! path-map dir)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/install.clj#L23">view source</a></div></div></div>
                     </div>
                 </div>
             </main>
@@ -356,8 +328,7 @@
     </div>
 </footer>
 
-            <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
-<script src="/js/ui.js"></script>
+            
 
 
         </div>

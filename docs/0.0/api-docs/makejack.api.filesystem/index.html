@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A clojure build tool invoker.">
+<meta name="author" content="Hugo Duncan contributors">
+<meta name="generator" content="Hugo 0.74.3">
+
+<meta name="docsearch:language" content="en">
+<meta name="docsearch:version" content="0.0">
+
+<title>makejack.api.filesystem · Makejack v0.0</title>
+
+<link rel="canonical" href="http://makejack.hugoduncan.org/docs/0.0/api-docs/makejack.api.filesystem/">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css">
+
+<link rel="stylesheet" href="/css/docs.css">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+        
+
+<link rel="stylesheet" href="/css/api-docs.css">
+
+    </head>
+    <body>
+
+        <div id="layout">
+            
+            <a href="#menu" id="menuLink" class="menu-link">
+                
+                <span></span>
+            </a>
+
+
+            <div id="menu">
+                <nav class="pure-menu"  aria-label="Docs navigation"><a class="pure-menu-heading" href="#">Docs</a>
+
+    <ul class="pure-menu-list">
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Getting started
+            </a>
+            <div class="" id="getting-started-collapse">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/getting-started/install/"
+                           class="pure-menu-link">
+                            Install
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/getting-started/project-initilisation/"
+                           class="pure-menu-link">
+                            Project Initilisation
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Guide
+            </a>
+            <div class="" id="guide-collapse">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/guide/config-files/"
+                           class="pure-menu-link">
+                            Config Files
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/guide/targets/"
+                           class="pure-menu-link">
+                            Targets
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/guide/invokers/"
+                           class="pure-menu-link">
+                            Invokers
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/guide/tools/"
+                           class="pure-menu-link">
+                            Tools
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/guide/writing-tools/"
+                           class="pure-menu-link">
+                            Writing Tools
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Reference
+            </a>
+            <div class="" id="reference-collapse">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/reference/project-edn/"
+                           class="pure-menu-link">
+                            project edn
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/reference/mj-edn/"
+                           class="pure-menu-link">
+                            mj edn
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Built-in Invokers
+            </a>
+
+            <div class="">
+                <ul class="pure-menu-list">
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Built in Tool Docs
+            </a>
+
+            <div class="">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.bump/"
+                           class="pure-menu-link">
+                            makejack.tools.bump
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.compile/"
+                           class="pure-menu-link">
+                            makejack.tools.compile
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.deploy/"
+                           class="pure-menu-link">
+                            makejack.tools.deploy
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.init/"
+                           class="pure-menu-link">
+                            makejack.tools.init
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.install/"
+                           class="pure-menu-link">
+                            makejack.tools.install
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.jar/"
+                           class="pure-menu-link">
+                            makejack.tools.jar
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.javac/"
+                           class="pure-menu-link">
+                            makejack.tools.javac
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.pom/"
+                           class="pure-menu-link">
+                            makejack.tools.pom
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.uberscript/"
+                           class="pure-menu-link">
+                            makejack.tools.uberscript
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                API Docs
+            </a>
+
+            <div class="">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.babashka/"
+                           class="pure-menu-link">
+                            makejack.api.babashka
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.clojure-cli/"
+                           class="pure-menu-link">
+                            makejack.api.clojure-cli
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.core/"
+                           class="pure-menu-link">
+                            makejack.api.core
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item pure-menu-selected">
+                        <a href="/docs/0.0/api-docs/makejack.api.filesystem/"
+                           class="pure-menu-link">
+                            makejack.api.filesystem
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.path/"
+                           class="pure-menu-link">
+                            makejack.api.path
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.tool/"
+                           class="pure-menu-link">
+                            makejack.api.tool
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.util/"
+                           class="pure-menu-link">
+                            makejack.api.util
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+
+    </ul>
+</nav>
+
+            </div>
+
+            <main>
+                <div id="main">
+                    <div class="content">
+                        <div class="alpha">
+    <p>ALPHA - Not yet released</p>
+    <p>Note: currently only supports <code>.clj</code> files.</p>
+    <p>Note: no explicit windowa support.</p>
+</div>
+
+                        <div class="namespace-docs" id="content"><h1 class="anchor" id="top">makejack.api.filesystem</h1><div class="doc"><div class="markdown"><p>File system manipulation functions.</p></div></div><div class="public anchor" id="var-chmod"><h3>chmod</h3><div class="usage"><code>(chmod path-like mode)</code></div><div class="doc"><div class="markdown"><p>Change file mode, given octal mode specification as string.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L38">view source</a></div></div><div class="public anchor" id="var-copy-file.21"><h3>copy-file!</h3><div class="usage"><code>(copy-file! source-path target-path)</code><code>(copy-file! source-path target-path {:keys [copy-attributes replace-existing], :as options})</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L136">view source</a></div></div><div class="public anchor" id="var-copy-files.21"><h3>copy-files!</h3><div class="usage"><code>(copy-files! source-path target-path)</code><code>(copy-files! source-path target-path {:keys [copy-attributes replace-existing follow-links], :as options})</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L145">view source</a></div></div><div class="public anchor" id="var-copy-option-values"><h3>copy-option-values</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L81">view source</a></div></div><div class="public anchor" id="var-copy-options"><h3>copy-options</h3><div class="usage"><code>(copy-options {:keys [copy-attributes replace-existing], :as options})</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L85">view source</a></div></div><div class="public anchor" id="var-cwd"><h3>cwd</h3><div class="usage"><code>(cwd)</code></div><div class="doc"><div class="markdown"><p>Rturn the current working directory as a Path.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L59">view source</a></div></div><div class="public anchor" id="var-delete-file.21"><h3>delete-file!</h3><div class="usage"><code>(delete-file! path-like)</code></div><div class="doc"><div class="markdown"><p>Delete the file at the specified path-like. Semantics as for java.nio.file.Files/delete.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L186">view source</a></div></div><div class="public anchor" id="var-delete-on-exit-if-exists.21"><h3>delete-on-exit-if-exists!</h3><div class="usage"><code>(delete-on-exit-if-exists! path-like)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L200">view source</a></div></div><div class="public anchor" id="var-delete-recursively.21"><h3>delete-recursively!</h3><div class="usage"><code>(delete-recursively! path-like)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L192">view source</a></div></div><div class="public anchor" id="var-directory.3F"><h3>directory?</h3><div class="usage"><code>(directory? path-like)</code></div><div class="doc"><div class="markdown"><p>Predicate for path referring to a directory.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L76">view source</a></div></div><div class="public anchor" id="var-empty-file-attributes"><h3>empty-file-attributes</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L210">view source</a></div></div><div class="public anchor" id="var-file-exists.3F"><h3>file-exists?</h3><div class="usage"><code>(file-exists? path-like)</code></div><div class="doc"><div class="markdown"><p>Predicate for the given path existing.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L66">view source</a></div></div><div class="public anchor" id="var-file.3F"><h3>file?</h3><div class="usage"><code>(file? path-like)</code></div><div class="doc"><div class="markdown"><p>Predicate for path referring to a file.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L71">view source</a></div></div><div class="public anchor" id="var-list-paths"><h3>list-paths</h3><div class="usage"><code>(list-paths path-like)</code><code>(list-paths path-like {:keys [follow-links], :as options})</code></div><div class="doc"><div class="markdown"><p>Return a lazy sequence of paths under path in depth first order.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L123">view source</a></div></div><div class="public anchor" id="var-make-temp-dir"><h3>make-temp-dir</h3><div class="usage"><code>(make-temp-dir prefix-or-options)</code></div><div class="doc"><div class="markdown"><p>Return a newly created temporary directory. Prefix is an arbitary string that is used to name the directory. Options is a map with the keys: :delete-on-exit - delete the dir on JVM exit (default true). :dir - directory to create the dir in (default is the system temp dir).  Must be of type that can be passed to clojure.java.io/dir. :prefix - a string that is used to name the directory.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L289">view source</a></div></div><div class="public anchor" id="var-make-temp-path"><h3>make-temp-path</h3><div class="usage"><code>(make-temp-path options-or-prefix)</code></div><div class="doc"><div class="markdown"><p>Return a temporary file path.</p>
+<p>The options map can pass the keys:</p>
+<p>:delete-on-exit - delete the file on JVM exit (default false) :dir - the directory in which to create the file (defaults to the system temp dir).  Must be a path-like. :prefix - prefix for the file name (default &ldquo;tmp&rdquo;).  Must be at elast three characters long. :suffix - suffix for the file name (default &ldquo;.tmp&rdquo;)</p>
+<p>As a shortcut, a prefix string can be passed instead of the options mao.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L227">view source</a></div></div><div class="public anchor" id="var-mkdirs"><h3>mkdirs</h3><div class="usage"><code>(mkdirs path-like)</code></div><div class="doc"><div class="markdown"><p>Ensure the given path exists.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L54">view source</a></div></div><div class="public anchor" id="var-real-path"><h3>real-path</h3><div class="usage"><code>(real-path path-like)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L19">view source</a></div></div><div class="public anchor" id="var-visit-option-values"><h3>visit-option-values</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L98">view source</a></div></div><div class="public anchor" id="var-visit-options"><h3>visit-options</h3><div class="usage"><code>(visit-options {:keys [follow-links], :as options})</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L101">view source</a></div></div><div class="public anchor" id="var-with-temp-dir"><h3>with-temp-dir</h3><h4 class="type">macro</h4><div class="usage"><code>(with-temp-dir bindings &amp; body)</code></div><div class="doc"><div class="markdown"><p>bindings =&gt; [name prefix-or-options &hellip;]</p>
+<p>Evaluate body with names bound to java.io.File objects of newly created temporary directories, and a finally clause that deletes them recursively in reverse order.</p>
+<p>Prefix is a string that is used to name the directory. Options is a map with the keys: :delete-on-exit - delete the dir on JVM exit (default true) :dir - directory to create the dir in (default is the system temp dir).  Must be of type that can be passed to clojure.java.io/dir. :prefix - a string that is used to name the directory.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L333">view source</a></div></div><div class="public anchor" id="var-with-temp-path"><h3>with-temp-path</h3><h4 class="type">macro</h4><div class="usage"><code>(with-temp-path bindings &amp; body)</code></div><div class="doc"><div class="markdown"><p>A scope with sym bound to a java.io.File object for a temporary file in the system&rsquo;s temporary directory.</p>
+<p>Options is a map with the keys:</p>
+<p>:delete - delete file when leaving scope (default true) :delete-on-exit - delete the file on JVM exit (default false) :dir - directory to create the file in (default is the system temp dir).  Must be of type that can be passed to clojure.java.io/file. :prefix - prefix for the file name (default &ldquo;tmp&rdquo;)  Must be at elast three characters long. :suffix - suffix for the file name (default &ldquo;.tmp&rdquo;)</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/filesystem.clj#L273">view source</a></div></div></div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="">
+    <div class="">
+        <ul class="pure-menu">
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="https://github.com/hugoduncan/makejack">GitHub</a>
+            </li>
+        </ul>
+        <p class="mb-0">Currently v0.0.1-alpha1. </p>
+    </div>
+</footer>
+
+            
+
+
+        </div>
+    </body>
+</html>

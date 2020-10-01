@@ -10,9 +10,9 @@
 <meta name="docsearch:language" content="en">
 <meta name="docsearch:version" content="0.0">
 
-<title>Install · Makejack v0.0</title>
+<title>makejack.api.clojure-cli · Makejack v0.0</title>
 
-<link rel="canonical" href="http://makejack.hugoduncan.org/docs/0.0/reference/project-edn/">
+<link rel="canonical" href="http://makejack.hugoduncan.org/docs/0.0/api-docs/makejack.api.clojure-cli/">
 
 
 
@@ -24,6 +24,10 @@
 <link rel="stylesheet" href="/css/docs.css">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        
+
+<link rel="stylesheet" href="/css/api-docs.css">
 
     </head>
     <body>
@@ -123,7 +127,7 @@
             <div class="" id="reference-collapse">
                 <ul class="pure-menu-list">
 
-                    <li class="pure-menu-item pure-menu-selected">
+                    <li class="pure-menu-item">
                         <a href="/docs/0.0/reference/project-edn/"
                            class="pure-menu-link">
                             project edn
@@ -248,7 +252,7 @@
                         </a>
                     </li>
 
-                    <li class="pure-menu-item">
+                    <li class="pure-menu-item pure-menu-selected">
                         <a href="/docs/0.0/api-docs/makejack.api.clojure-cli/"
                            class="pure-menu-link">
                             makejack.api.clojure-cli
@@ -308,39 +312,12 @@
     <p>Note: no explicit windowa support.</p>
 </div>
 
-                        <p>The sample <code>project.edn</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-clj" data-lang="clj">{<span style="color:#e6db74">:version</span>         <span style="color:#e6db74">&#34;0.0.1&#34;</span>
- <span style="color:#e6db74">:name</span>            <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the groupId for maven artifacts.  Defaults to the project name.</span>
- <span style="color:#e6db74">:group-id</span>        <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the artifactId for maven artifacts.  Defaults to the project name.</span>
- <span style="color:#e6db74">:artifact-id</span>     <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the main namespace</span>
- <span style="color:#e6db74">:main</span>            makejack.main
- <span style="color:#75715e">;; The jar name</span>
- <span style="color:#e6db74">:jar-name</span>        <span style="color:#f92672">#</span>join [<span style="color:#e6db74">&#34;makejack-&#34;</span> <span style="color:#f92672">#</span>ref [<span style="color:#e6db74">:version</span>] <span style="color:#e6db74">&#34;.jar&#34;</span>]
- <span style="color:#75715e">;; The jar type, either :jar or :uberjar</span>
- <span style="color:#e6db74">:jar-type</span>        <span style="color:#e6db74">:jar</span>
- <span style="color:#75715e">;; specify the name for a generated script</span>
- <span style="color:#e6db74">:script-name</span>     <span style="color:#e6db74">&#34;mj1&#34;</span>
- <span style="color:#75715e">;; specify whether to add a shebang for the generated script</span>
- <span style="color:#e6db74">:script-shebang?</span> true
- <span style="color:#75715e">;; specify the mode for a generated script</span>
- <span style="color:#e6db74">:script-mode</span>     <span style="color:#e6db74">&#34;755&#34;</span>
- <span style="color:#75715e">;; specify the name for a generated binary</span>
- <span style="color:#e6db74">:binary-name</span>     <span style="color:#e6db74">&#34;mj&#34;</span>
- <span style="color:#75715e">;; paths for java source files</span>
- <span style="color:#e6db74">:java-paths</span>      []
- <span style="color:#75715e">;; compilation options for java source files</span>
- <span style="color:#e6db74">:javac-options</span>   [<span style="color:#e6db74">&#34;-target&#34;</span> <span style="color:#e6db74">&#34;1.7&#34;</span>
-                   <span style="color:#e6db74">&#34;-source&#34;</span> <span style="color:#e6db74">&#34;1.7&#34;</span>
-                   <span style="color:#e6db74">&#34;-Xlint:-options&#34;</span>]
-
- <span style="color:#75715e">;; deps.edn aliases, usually specified via makejack (aero) profiles</span>
- <span style="color:#e6db74">:aliases</span> <span style="color:#f92672">#</span>profile {<span style="color:#e6db74">:default</span> []
-                    <span style="color:#e6db74">:compile</span> [<span style="color:#e6db74">:compile</span>]}}
-
-</code></pre></div>
+                        <div class="namespace-docs" id="content"><h1 class="anchor" id="top">makejack.api.clojure-cli</h1><div class="doc"><div class="markdown"><p>Helpers for working with Clojure CLI</p></div></div><div class="public anchor" id="var-aliases-arg"><h3>aliases-arg</h3><div class="usage"><code>(aliases-arg option aliases {:keys [elide-when-no-aliases], :or {elide-when-no-aliases false}})</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L67">view source</a></div></div><div class="public anchor" id="var-args"><h3>args</h3><div class="usage"><code>(args {:keys [cp deps force repro threads verbose]})</code></div><div class="doc"><div class="markdown"><p>Return a cli arguments vector given a map of cli options.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L56">view source</a></div></div><div class="public anchor" id="var-classpath"><h3>classpath</h3><div class="usage"><code>(classpath aliases deps options)</code></div><div class="doc"><div class="markdown"><p>Returns the project classpath, with the given extra deps map.</p>
+<p>aliases is a vector of keywords with deps.edn aliases to use.</p>
+<p>deps ia s map with external dependencies, as specifed on the :deps key of deps.edn.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L153">view source</a></div></div><div class="public anchor" id="var-clojure-basis-form"><h3>clojure-basis-form</h3><div class="usage"><code>(clojure-basis-form)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L133">view source</a></div></div><div class="public anchor" id="var-exec-args"><h3>exec-args</h3><div class="usage"><code>(exec-args options)</code><code>(exec-args {:keys [aliases exec-fn exec-args]} features)</code></div><div class="doc"><div class="markdown"><p>Return a cli arguments vector given an exec function to execute.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L87">view source</a></div></div><div class="public anchor" id="var-feature-ranges"><h3>feature-ranges</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Version ranges for features, min inclusive, max exclusive.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L36">view source</a></div></div><div class="public anchor" id="var-features"><h3>features</h3><div class="usage"><code>(features)</code><code>(features version)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L51">view source</a></div></div><div class="public anchor" id="var-features*"><h3>features*</h3><div class="usage"><code>(features*)</code><code>(features* version)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L43">view source</a></div></div><div class="public anchor" id="var-main-args"><h3>main-args</h3><div class="usage"><code>(main-args options)</code><code>(main-args {:keys [aliases expr main main-args report]} features)</code></div><div class="doc"><div class="markdown"><p>Return a cli arguments vector given an main function to execute.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L107">view source</a></div></div><div class="public anchor" id="var-process"><h3>process</h3><div class="usage"><code>(process args options)</code></div><div class="doc"><div class="markdown"><p>Execute clojure process.</p>
+<p>deps ia s map with external dependencies, as specifed on the :deps key of deps.edn.</p>
+<p>args is a vector of arguments to pass.</p>
+<p>options is a map of options, as specifed in babashka.process/process. Defaults to {:err :inherit}.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L140">view source</a></div></div><div class="public anchor" id="var-read-clojure-basis"><h3>read-clojure-basis</h3><div class="usage"><code>(read-clojure-basis)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L127">view source</a></div></div><div class="public anchor" id="var-version"><h3>version</h3><div class="usage"><code>(version)</code></div><div class="doc"><div class="markdown"><p>Return the clojure cli version string</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/clojure_cli.clj#L8">view source</a></div></div></div>
                     </div>
                 </div>
             </main>
@@ -356,8 +333,7 @@
     </div>
 </footer>
 
-            <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
-<script src="/js/ui.js"></script>
+            
 
 
         </div>

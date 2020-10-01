@@ -10,9 +10,9 @@
 <meta name="docsearch:language" content="en">
 <meta name="docsearch:version" content="0.0">
 
-<title>Install · Makejack v0.0</title>
+<title>makejack.tools.bump · Makejack v0.0</title>
 
-<link rel="canonical" href="http://makejack.hugoduncan.org/docs/0.0/reference/project-edn/">
+<link rel="canonical" href="http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.bump/">
 
 
 
@@ -24,6 +24,10 @@
 <link rel="stylesheet" href="/css/docs.css">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        
+
+<link rel="stylesheet" href="/css/tool-docs.css">
 
     </head>
     <body>
@@ -123,7 +127,7 @@
             <div class="" id="reference-collapse">
                 <ul class="pure-menu-list">
 
-                    <li class="pure-menu-item pure-menu-selected">
+                    <li class="pure-menu-item">
                         <a href="/docs/0.0/reference/project-edn/"
                            class="pure-menu-link">
                             project edn
@@ -163,7 +167,7 @@
             <div class="">
                 <ul class="pure-menu-list">
 
-                    <li class="pure-menu-item">
+                    <li class="pure-menu-item pure-menu-selected">
                         <a href="/docs/0.0/tool-docs/makejack.tools.bump/"
                            class="pure-menu-link">
                             makejack.tools.bump
@@ -308,39 +312,7 @@
     <p>Note: no explicit windowa support.</p>
 </div>
 
-                        <p>The sample <code>project.edn</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-clj" data-lang="clj">{<span style="color:#e6db74">:version</span>         <span style="color:#e6db74">&#34;0.0.1&#34;</span>
- <span style="color:#e6db74">:name</span>            <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the groupId for maven artifacts.  Defaults to the project name.</span>
- <span style="color:#e6db74">:group-id</span>        <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the artifactId for maven artifacts.  Defaults to the project name.</span>
- <span style="color:#e6db74">:artifact-id</span>     <span style="color:#e6db74">&#34;makejack&#34;</span>
- <span style="color:#75715e">;; the main namespace</span>
- <span style="color:#e6db74">:main</span>            makejack.main
- <span style="color:#75715e">;; The jar name</span>
- <span style="color:#e6db74">:jar-name</span>        <span style="color:#f92672">#</span>join [<span style="color:#e6db74">&#34;makejack-&#34;</span> <span style="color:#f92672">#</span>ref [<span style="color:#e6db74">:version</span>] <span style="color:#e6db74">&#34;.jar&#34;</span>]
- <span style="color:#75715e">;; The jar type, either :jar or :uberjar</span>
- <span style="color:#e6db74">:jar-type</span>        <span style="color:#e6db74">:jar</span>
- <span style="color:#75715e">;; specify the name for a generated script</span>
- <span style="color:#e6db74">:script-name</span>     <span style="color:#e6db74">&#34;mj1&#34;</span>
- <span style="color:#75715e">;; specify whether to add a shebang for the generated script</span>
- <span style="color:#e6db74">:script-shebang?</span> true
- <span style="color:#75715e">;; specify the mode for a generated script</span>
- <span style="color:#e6db74">:script-mode</span>     <span style="color:#e6db74">&#34;755&#34;</span>
- <span style="color:#75715e">;; specify the name for a generated binary</span>
- <span style="color:#e6db74">:binary-name</span>     <span style="color:#e6db74">&#34;mj&#34;</span>
- <span style="color:#75715e">;; paths for java source files</span>
- <span style="color:#e6db74">:java-paths</span>      []
- <span style="color:#75715e">;; compilation options for java source files</span>
- <span style="color:#e6db74">:javac-options</span>   [<span style="color:#e6db74">&#34;-target&#34;</span> <span style="color:#e6db74">&#34;1.7&#34;</span>
-                   <span style="color:#e6db74">&#34;-source&#34;</span> <span style="color:#e6db74">&#34;1.7&#34;</span>
-                   <span style="color:#e6db74">&#34;-Xlint:-options&#34;</span>]
-
- <span style="color:#75715e">;; deps.edn aliases, usually specified via makejack (aero) profiles</span>
- <span style="color:#e6db74">:aliases</span> <span style="color:#f92672">#</span>profile {<span style="color:#e6db74">:default</span> []
-                    <span style="color:#e6db74">:compile</span> [<span style="color:#e6db74">:compile</span>]}}
-
-</code></pre></div>
+                        <div class="namespace-docs" id="content"><div class="public anchor" id="var--main"><h3>makejack.tools.bump/-main</h3><div class="usage"><code>(-main &amp; args)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/bump.clj#L140">view source</a></div></div><div class="public anchor" id="var-bump"><h3>makejack.tools.bump/bump</h3><div class="usage"><code>(bump options args {:keys [mj project]})</code></div><div class="doc"><div class="markdown"><p>Bump project version</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/bump.clj#L113">view source</a></div></div><div class="public anchor" id="var-bump-xfun"><h3>makejack.tools.bump/bump-xfun</h3><div class="usage"><code>(bump-xfun {:keys [updates dir profiles verbpse debug args], :as options})</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/bump.clj#L131">view source</a></div></div><div class="public anchor" id="var-current-version"><h3>makejack.tools.bump/current-version</h3><h4 class="type">multimethod</h4><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/bump.clj#L33">view source</a></div></div><div class="public anchor" id="var-extra-options"><h3>makejack.tools.bump/extra-options</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/bump.clj#L128">view source</a></div></div><div class="public anchor" id="var-infer-source"><h3>makejack.tools.bump/infer-source</h3><div class="usage"><code>(infer-source {:keys [dir]})</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/bump.clj#L11">view source</a></div></div><div class="public anchor" id="var-maybe-long"><h3>makejack.tools.bump/maybe-long</h3><div class="usage"><code>(maybe-long x)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/bump.clj#L19">view source</a></div></div><div class="public anchor" id="var-next-version"><h3>makejack.tools.bump/next-version</h3><div class="usage"><code>(next-version version-map [part value])</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/bump.clj#L44">view source</a></div></div><div class="public anchor" id="var-read-version-map"><h3>makejack.tools.bump/read-version-map</h3><div class="usage"><code>(read-version-map version)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/bump.clj#L25">view source</a></div></div><div class="public anchor" id="var-update-version"><h3>makejack.tools.bump/update-version</h3><h4 class="type">multimethod</h4><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/bump.clj#L88">view source</a></div></div><div class="public anchor" id="var-update-version-source"><h3>makejack.tools.bump/update-version-source</h3><h4 class="type">multimethod</h4><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/bump.clj#L69">view source</a></div></div></div>
                     </div>
                 </div>
             </main>
@@ -356,8 +328,7 @@
     </div>
 </footer>
 
-            <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
-<script src="/js/ui.js"></script>
+            
 
 
         </div>

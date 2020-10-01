@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A clojure build tool invoker.">
+<meta name="author" content="Hugo Duncan contributors">
+<meta name="generator" content="Hugo 0.74.3">
+
+<meta name="docsearch:language" content="en">
+<meta name="docsearch:version" content="0.0">
+
+<title>makejack.tools.deploy · Makejack v0.0</title>
+
+<link rel="canonical" href="http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.deploy/">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css">
+
+<link rel="stylesheet" href="/css/docs.css">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+        
+
+<link rel="stylesheet" href="/css/tool-docs.css">
+
+    </head>
+    <body>
+
+        <div id="layout">
+            
+            <a href="#menu" id="menuLink" class="menu-link">
+                
+                <span></span>
+            </a>
+
+
+            <div id="menu">
+                <nav class="pure-menu"  aria-label="Docs navigation"><a class="pure-menu-heading" href="#">Docs</a>
+
+    <ul class="pure-menu-list">
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Getting started
+            </a>
+            <div class="" id="getting-started-collapse">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/getting-started/install/"
+                           class="pure-menu-link">
+                            Install
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/getting-started/project-initilisation/"
+                           class="pure-menu-link">
+                            Project Initilisation
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Guide
+            </a>
+            <div class="" id="guide-collapse">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/guide/config-files/"
+                           class="pure-menu-link">
+                            Config Files
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/guide/targets/"
+                           class="pure-menu-link">
+                            Targets
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/guide/invokers/"
+                           class="pure-menu-link">
+                            Invokers
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/guide/tools/"
+                           class="pure-menu-link">
+                            Tools
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/guide/writing-tools/"
+                           class="pure-menu-link">
+                            Writing Tools
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Reference
+            </a>
+            <div class="" id="reference-collapse">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/reference/project-edn/"
+                           class="pure-menu-link">
+                            project edn
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/reference/mj-edn/"
+                           class="pure-menu-link">
+                            mj edn
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Built-in Invokers
+            </a>
+
+            <div class="">
+                <ul class="pure-menu-list">
+                </ul>
+            </div>
+        </li>
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                Built in Tool Docs
+            </a>
+
+            <div class="">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.bump/"
+                           class="pure-menu-link">
+                            makejack.tools.bump
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.compile/"
+                           class="pure-menu-link">
+                            makejack.tools.compile
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item pure-menu-selected">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.deploy/"
+                           class="pure-menu-link">
+                            makejack.tools.deploy
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.init/"
+                           class="pure-menu-link">
+                            makejack.tools.init
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.install/"
+                           class="pure-menu-link">
+                            makejack.tools.install
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.jar/"
+                           class="pure-menu-link">
+                            makejack.tools.jar
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.javac/"
+                           class="pure-menu-link">
+                            makejack.tools.javac
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.pom/"
+                           class="pure-menu-link">
+                            makejack.tools.pom
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.uberscript/"
+                           class="pure-menu-link">
+                            makejack.tools.uberscript
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        
+
+        <li class="pure-menu-item menu-item-divided">
+            <a class="pure-menu-link"
+               href="#"
+               role="button">
+                API Docs
+            </a>
+
+            <div class="">
+                <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.babashka/"
+                           class="pure-menu-link">
+                            makejack.api.babashka
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.clojure-cli/"
+                           class="pure-menu-link">
+                            makejack.api.clojure-cli
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.core/"
+                           class="pure-menu-link">
+                            makejack.api.core
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.filesystem/"
+                           class="pure-menu-link">
+                            makejack.api.filesystem
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.path/"
+                           class="pure-menu-link">
+                            makejack.api.path
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.tool/"
+                           class="pure-menu-link">
+                            makejack.api.tool
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.util/"
+                           class="pure-menu-link">
+                            makejack.api.util
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+
+    </ul>
+</nav>
+
+            </div>
+
+            <main>
+                <div id="main">
+                    <div class="content">
+                        <div class="alpha">
+    <p>ALPHA - Not yet released</p>
+    <p>Note: currently only supports <code>.clj</code> files.</p>
+    <p>Note: no explicit windowa support.</p>
+</div>
+
+                        <div class="namespace-docs" id="content"><div class="public anchor" id="var--main"><h3>makejack.tools.deploy/-main</h3><div class="usage"><code>(-main &amp; args)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L249">view source</a></div></div><div class="public anchor" id="var-base-request"><h3>makejack.tools.deploy/base-request</h3><div class="usage"><code>(base-request credentials)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L137">view source</a></div></div><div class="public anchor" id="var-check-response"><h3>makejack.tools.deploy/check-response</h3><div class="usage"><code>(check-response response)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L150">view source</a></div></div><div class="public anchor" id="var-credentials"><h3>makejack.tools.deploy/credentials</h3><div class="usage"><code>(credentials repository)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L126">view source</a></div></div><div class="public anchor" id="var-default-repos"><h3>makejack.tools.deploy/default-repos</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L213">view source</a></div></div><div class="public anchor" id="var-deploy"><h3>makejack.tools.deploy/deploy</h3><div class="usage"><code>(deploy _options [repo-name] {:keys [mj project], :as _config})</code></div><div class="doc"><div class="markdown"><p>Deploy a project to a maven repository.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L230">view source</a></div></div><div class="public anchor" id="var-deploy-dir"><h3>makejack.tools.deploy/deploy-dir</h3><div class="usage"><code>(deploy-dir project dir repository request)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L172">view source</a></div></div><div class="public anchor" id="var-deploy-metadata"><h3>makejack.tools.deploy/deploy-metadata</h3><div class="usage"><code>(deploy-metadata project dir repository request)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L204">view source</a></div></div><div class="public anchor" id="var-env-credentials"><h3>makejack.tools.deploy/env-credentials</h3><div class="usage"><code>(env-credentials repo-name)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L84">view source</a></div></div><div class="public anchor" id="var-extra-options"><h3>makejack.tools.deploy/extra-options</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L245">view source</a></div></div><div class="public anchor" id="var-generate-metadata-model"><h3>makejack.tools.deploy/generate-metadata-model</h3><div class="usage"><code>(generate-metadata-model project dir)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L191">view source</a></div></div><div class="public anchor" id="var-gpg"><h3>makejack.tools.deploy/gpg</h3><div class="usage"><code>(gpg args)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L101">view source</a></div></div><div class="public anchor" id="var-gpg-credentials"><h3>makejack.tools.deploy/gpg-credentials</h3><div class="usage"><code>(gpg-credentials repo-name)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L119">view source</a></div></div><div class="public anchor" id="var-gpg-credentials-path"><h3>makejack.tools.deploy/gpg-credentials-path</h3><div class="usage"><code>(gpg-credentials-path)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L112">view source</a></div></div><div class="public anchor" id="var-gpg-decrypt"><h3>makejack.tools.deploy/gpg-decrypt</h3><div class="usage"><code>(gpg-decrypt path-like)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L106">view source</a></div></div><div class="public anchor" id="var-gpg-program"><h3>makejack.tools.deploy/gpg-program</h3><div class="usage"><code>(gpg-program)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L97">view source</a></div></div><div class="public anchor" id="var-group-path"><h3>makejack.tools.deploy/group-path</h3><div class="usage"><code>(group-path project)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L157">view source</a></div></div><div class="public anchor" id="var-interactive-credentials"><h3>makejack.tools.deploy/interactive-credentials</h3><div class="usage"><code>(interactive-credentials)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L92">view source</a></div></div><div class="public anchor" id="var-metadata-url-path"><h3>makejack.tools.deploy/metadata-url-path</h3><div class="usage"><code>(metadata-url-path project)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L166">view source</a></div></div><div class="public anchor" id="var-multipart-map"><h3>makejack.tools.deploy/multipart-map</h3><div class="usage"><code>(multipart-map path-like)</code></div><div class="doc"><div class="markdown"><p>Return a multipart map for the given paths</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L40">view source</a></div></div><div class="public anchor" id="var-new-url"><h3>makejack.tools.deploy/new-url</h3><div class="usage"><code>(new-url url)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L59">view source</a></div></div><div class="public anchor" id="var-paths-to-deploy"><h3>makejack.tools.deploy/paths-to-deploy</h3><div class="usage"><code>(paths-to-deploy mj project)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L22">view source</a></div></div><div class="public anchor" id="var-prepare-path-deploy.21"><h3>makejack.tools.deploy/prepare-path-deploy!</h3><div class="usage"><code>(prepare-path-deploy! path-map dir)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L32">view source</a></div></div><div class="public anchor" id="var-put.21"><h3>makejack.tools.deploy/put!</h3><div class="usage"><code>(put! request url url-path)</code></div><div class="doc"><div class="markdown"><p>Put the multiparts to the specified url. Return a promise.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L52">view source</a></div></div><div class="public anchor" id="var-read-gpg-file"><h3>makejack.tools.deploy/read-gpg-file</h3><div class="usage"><code>(read-gpg-file path-like)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L109">view source</a></div></div><div class="public anchor" id="var-read-password"><h3>makejack.tools.deploy/read-password</h3><div class="usage"><code>(read-password)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L75">view source</a></div></div><div class="public anchor" id="var-read-with-prompt"><h3>makejack.tools.deploy/read-with-prompt</h3><div class="usage"><code>(read-with-prompt prompt)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L70">view source</a></div></div><div class="public anchor" id="var-repository"><h3>makejack.tools.deploy/repository</h3><div class="usage"><code>(repository repo-name)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L217">view source</a></div></div><div class="public anchor" id="var-request-with-cookie"><h3>makejack.tools.deploy/request-with-cookie</h3><div class="usage"><code>(request-with-cookie request response)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L143">view source</a></div></div><div class="public anchor" id="var-url-credentials"><h3>makejack.tools.deploy/url-credentials</h3><div class="usage"><code>(url-credentials url)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L63">view source</a></div></div><div class="public anchor" id="var-url-path"><h3>makejack.tools.deploy/url-path</h3><div class="usage"><code>(url-path project)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L160">view source</a></div></div><div class="public anchor" id="var-url-with-path"><h3>makejack.tools.deploy/url-with-path</h3><div class="usage"><code>(url-with-path url url-path)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/tools/deploy.clj#L47">view source</a></div></div></div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="">
+    <div class="">
+        <ul class="pure-menu">
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="https://github.com/hugoduncan/makejack">GitHub</a>
+            </li>
+        </ul>
+        <p class="mb-0">Currently v0.0.1-alpha1. </p>
+    </div>
+</footer>
+
+            
+
+
+        </div>
+    </body>
+</html>

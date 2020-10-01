@@ -153,34 +153,6 @@
 
             <div class="">
                 <ul class="pure-menu-list">
-
-                    <li class="pure-menu-item">
-                        <a href="/docs/0.0/invoker-docs/makejack.invoke.babashka/"
-                           class="pure-menu-link">
-                            makejack.invoke.babashka
-                        </a>
-                    </li>
-
-                    <li class="pure-menu-item">
-                        <a href="/docs/0.0/invoker-docs/makejack.invoke.chain/"
-                           class="pure-menu-link">
-                            makejack.invoke.chain
-                        </a>
-                    </li>
-
-                    <li class="pure-menu-item">
-                        <a href="/docs/0.0/invoker-docs/makejack.invoke.clojure/"
-                           class="pure-menu-link">
-                            makejack.invoke.clojure
-                        </a>
-                    </li>
-
-                    <li class="pure-menu-item">
-                        <a href="/docs/0.0/invoker-docs/makejack.invoke.shell/"
-                           class="pure-menu-link">
-                            makejack.invoke.shell
-                        </a>
-                    </li>
                 </ul>
             </div>
         </li>
@@ -194,6 +166,13 @@
 
             <div class="">
                 <ul class="pure-menu-list">
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.bump/"
+                           class="pure-menu-link">
+                            makejack.tools.bump
+                        </a>
+                    </li>
 
                     <li class="pure-menu-item">
                         <a href="/docs/0.0/tool-docs/makejack.tools.compile/"
@@ -213,6 +192,13 @@
                         <a href="/docs/0.0/tool-docs/makejack.tools.init/"
                            class="pure-menu-link">
                             makejack.tools.init
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/tool-docs/makejack.tools.install/"
+                           class="pure-menu-link">
+                            makejack.tools.install
                         </a>
                     </li>
 
@@ -260,6 +246,13 @@
                 <ul class="pure-menu-list">
 
                     <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.babashka/"
+                           class="pure-menu-link">
+                            makejack.api.babashka
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
                         <a href="/docs/0.0/api-docs/makejack.api.clojure-cli/"
                            class="pure-menu-link">
                             makejack.api.clojure-cli
@@ -274,9 +267,23 @@
                     </li>
 
                     <li class="pure-menu-item">
-                        <a href="/docs/0.0/api-docs/makejack.api.tool-options/"
+                        <a href="/docs/0.0/api-docs/makejack.api.filesystem/"
                            class="pure-menu-link">
-                            makejack.api.tool-options
+                            makejack.api.filesystem
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.path/"
+                           class="pure-menu-link">
+                            makejack.api.path
+                        </a>
+                    </li>
+
+                    <li class="pure-menu-item">
+                        <a href="/docs/0.0/api-docs/makejack.api.tool/"
+                           class="pure-menu-link">
+                            makejack.api.tool
                         </a>
                     </li>
 
@@ -305,19 +312,12 @@
     <p>Note: no explicit windowa support.</p>
 </div>
 
-                        <div class="namespace-docs" id="content"><h1 class="anchor" id="top">makejack.api.core</h1><div class="doc"><div class="markdown"><p>Main API namespace for tools designed to work with project.edn and mj.edn</p></div></div><div class="public anchor" id="var-*print-edn-tagged-literals*"><h3>*print-edn-tagged-literals*</h3><h4 class="dynamic">dynamic</h4><div class="usage"></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-*verbose*"><h3>*verbose*</h3><h4 class="dynamic">dynamic</h4><div class="usage"></div><div class="doc"><div class="markdown"><p>Bound to true when <code>--verbose</code> is specified.</p></div></div></div><div class="public anchor" id="var-babashka"><h3>babashka</h3><div class="usage"><code>(babashka aliases deps args options)</code></div><div class="doc"><div class="markdown"><p>Execute babashka process.</p>
-<p>args is a vector of arguments to pass.</p>
-<p>options is a map of options, as specifed in babashka.process/process. Defaults to {:err :inherit}.</p></div></div></div><div class="public anchor" id="var-classpath"><h3>classpath</h3><div class="usage"><code>(classpath aliases deps)</code></div><div class="doc"><div class="markdown"><p>Returns the project classpath, with the given extra deps map.</p>
+                        <div class="namespace-docs" id="content"><h1 class="anchor" id="top">makejack.api.core</h1><div class="doc"><div class="markdown"><p>Main API namespace for tools designed to work with project.edn and mj.edn</p></div></div><div class="public anchor" id="var-*debug*"><h3>*debug*</h3><h4 class="dynamic">dynamic</h4><div class="usage"></div><div class="doc"><div class="markdown"><p>Bound to true when <code>--debug</code> is specified.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L16">view source</a></div></div><div class="public anchor" id="var-*print-edn-tagged-literals*"><h3>*print-edn-tagged-literals*</h3><h4 class="dynamic">dynamic</h4><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L168">view source</a></div></div><div class="public anchor" id="var-*verbose*"><h3>*verbose*</h3><h4 class="dynamic">dynamic</h4><div class="usage"></div><div class="doc"><div class="markdown"><p>Bound to true when <code>--verbose</code> is specified.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L12">view source</a></div></div><div class="public anchor" id="var-default-jar-name"><h3>default-jar-name</h3><div class="usage"><code>(default-jar-name {:keys [jar-type], :as project})</code></div><div class="doc"><div class="markdown"><p>Helper to return the default jar file name.</p>
+<p>When the :jar-type key of the project map specifies :uberjar, then the name will be for an uberjar.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L146">view source</a></div></div><div class="public anchor" id="var-deps-paths"><h3>deps-paths</h3><div class="usage"><code>(deps-paths deps aliases)</code></div><div class="doc"><div class="markdown"><p>Helper to return the paths for deps with the given aliases applied.</p>
 <p>aliases is a vector of keywords with deps.edn aliases to use.</p>
-<p>deps ia s map with external dependencies, as specifed on the :deps key of deps.edn.</p></div></div></div><div class="public anchor" id="var-clojure"><h3>clojure</h3><div class="usage"><code>(clojure args options)</code></div><div class="doc"><div class="markdown"><p>Execute clojure process.</p>
-<p>deps ia s map with external dependencies, as specifed on the :deps key of deps.edn.</p>
-<p>args is a vector of arguments to pass.</p>
-<p>options is a map of options, as specifed in babashka.process/process. Defaults to {:err :inherit}.</p></div></div></div><div class="public anchor" id="var-default-jar-name"><h3>default-jar-name</h3><div class="usage"><code>(default-jar-name {:keys [jar-type], :as project})</code></div><div class="doc"><div class="markdown"><p>Helper to return the default jar file name.</p>
-<p>When the :jar-type key of the project map specifies :uberjar, then the name will be for an uberjar.</p></div></div></div><div class="public anchor" id="var-deps-paths"><h3>deps-paths</h3><div class="usage"><code>(deps-paths deps aliases)</code></div><div class="doc"><div class="markdown"><p>Helper to return the paths for deps with the given aliases applied.</p>
-<p>aliases is a vector of keywords with deps.edn aliases to use.</p>
-<p>Returns the :paths value, with :extra-paths from the specified aliases.</p></div></div></div><div class="public anchor" id="var-error"><h3>error</h3><div class="usage"><code>(error s)</code></div><div class="doc"><div class="markdown"><p>Exit with the given error message. Exits with error code 1,</p></div></div></div><div class="public anchor" id="var-load-config"><h3>load-config</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Load a map containing the project and the mj config.</p></div></div></div><div class="public anchor" id="var-load-config*"><h3>load-config*</h3><div class="usage"><code>(load-config* &amp; [options])</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-load-deps"><h3>load-deps</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Load the deps.edn file.</p></div></div></div><div class="public anchor" id="var-load-mj"><h3>load-mj</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Load the mj.edn file.</p></div></div></div><div class="public anchor" id="var-load-mj*"><h3>load-mj*</h3><div class="usage"><code>(load-mj* &amp; [options])</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-load-project*"><h3>load-project*</h3><div class="usage"><code>(load-project* &amp; [options])</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-orgininal-pattern-print-method"><h3>orgininal-pattern-print-method</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-process-option-keys"><h3>process-option-keys</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-resolve-source"><h3>resolve-source</h3><div class="usage"><code>(resolve-source {:keys [resolver], :as _options} value)</code></div><div class="doc"><div class="markdown"></div></div></div><div class="public anchor" id="var-sh"><h3>sh</h3><div class="usage"><code>(sh args options)</code></div><div class="doc"><div class="markdown"><p>Execute a shell process.</p>
-<p>args is a vector of shell arguments.</p>
-<p>options is a map of options, as specifed in babashka.process/process. Defaults to {:err :inherit}.</p></div></div></div></div>
+<p>Returns the :paths value, with :extra-paths from the specified aliases.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L157">view source</a></div></div><div class="public anchor" id="var-error"><h3>error</h3><div class="usage"><code>(error message)</code><code>(error message exit-code)</code></div><div class="doc"><div class="markdown"><p>Exit with the given error message and exit code. The default exit-code is 1,</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L20">view source</a></div></div><div class="public anchor" id="var-load-config"><h3>load-config</h3><div class="usage"><code>(load-config &amp; [{:keys [dir], :as options}])</code></div><div class="doc"><div class="markdown"><p>Load a map containing the project and the mj config.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L118">view source</a></div></div><div class="public anchor" id="var-load-config*"><h3>load-config*</h3><div class="usage"><code>(load-config* &amp; [{:keys [dir], :as options}])</code></div><div class="doc"><div class="markdown"><p>Load a map containing the project and the mj config.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L108">view source</a></div></div><div class="public anchor" id="var-load-deps"><h3>load-deps</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>Load the deps.edn file.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L37">view source</a></div></div><div class="public anchor" id="var-load-mj"><h3>load-mj</h3><div class="usage"><code>(load-mj &amp; [{:keys [dir], :as options}])</code></div><div class="doc"><div class="markdown"><p>Load the mj.edn file.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L100">view source</a></div></div><div class="public anchor" id="var-load-mj*"><h3>load-mj*</h3><div class="usage"><code>(load-mj* &amp; [{:keys [dir], :as options}])</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L90">view source</a></div></div><div class="public anchor" id="var-load-project*"><h3>load-project*</h3><div class="usage"><code>(load-project* &amp; [{:keys [dir], :as options}])</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L70">view source</a></div></div><div class="public anchor" id="var-mj-path"><h3>mj-path</h3><div class="usage"><code>(mj-path dir)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L85">view source</a></div></div><div class="public anchor" id="var-orgininal-pattern-print-method"><h3>orgininal-pattern-print-method</h3><div class="usage"></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L170">view source</a></div></div><div class="public anchor" id="var-process"><h3>process</h3><div class="usage"><code>(process args options)</code></div><div class="doc"><div class="markdown"><p>Execute a process.</p>
+<p>args is a vector of arguments, the first of which is the program to execute. The arguments are used as strings.</p>
+<p>options is a map of options, as specifed in babashka.process/process. Defaults to {:err :inherit}.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L128">view source</a></div></div><div class="public anchor" id="var-project-description"><h3>project-description</h3><div class="usage"><code>(project-description {:keys [group-id name version], :as _project})</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L184">view source</a></div></div><div class="public anchor" id="var-project-path"><h3>project-path</h3><div class="usage"><code>(project-path dir)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L65">view source</a></div></div><div class="public anchor" id="var-relative-to-resolver"><h3>relative-to-resolver</h3><div class="usage"><code>(relative-to-resolver dir)</code></div><div class="doc"><div class="markdown"><p>Resolves relative to the source file, or to the given directory.</p></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L48">view source</a></div></div><div class="public anchor" id="var-resolve-source"><h3>resolve-source</h3><div class="usage"><code>(resolve-source {:keys [resolver], :as _options} value)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L79">view source</a></div></div><div class="public anchor" id="var-verbose-println"><h3>verbose-println</h3><div class="usage"><code>(verbose-println &amp; args)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L188">view source</a></div></div><div class="public anchor" id="var-with-output-bindings"><h3>with-output-bindings</h3><h4 class="type">macro</h4><div class="usage"><code>(with-output-bindings [options] &amp; body)</code></div><div class="doc"><div class="markdown"></div></div><div class="src-link"><a href="https://github.com/hugoduncan/makejack/blob/v0.0.1-alpha2-SNAPSHOT/src/makejack/api/core.clj#L179">view source</a></div></div></div>
                     </div>
                 </div>
             </main>
