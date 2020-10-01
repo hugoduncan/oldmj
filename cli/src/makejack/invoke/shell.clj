@@ -5,9 +5,9 @@
 
 (defn shell
   "Invoke shell command."
-  [_args target-kw config options]
+  [args target-kw config options]
   (let [target-config (get-in config [:mj :targets target-kw])
-        args          (:args target-config)]
+        args          (into (:args target-config) args)]
     (try
       (makejack/process args (merge options (:options target-config)))
       nil

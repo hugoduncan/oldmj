@@ -1,5 +1,6 @@
 (ns makejack.api.filesystem-test
-  (:require [clojure.string :as str]
+  (:require [clojure.java.io :as io]
+            [clojure.string :as str]
             [clojure.test :refer [deftest is testing]]
             [makejack.api.filesystem :as filesystem]
             [makejack.api.path :as path])
@@ -53,6 +54,23 @@
       (is (str/starts-with? (str (path/filename path2)) "pref")))
     (is (not (filesystem/file-exists? (first @paths))))
     (is (not (filesystem/file-exists? (second @paths))))))
+
+(deftest list-paths-test
+  (let [source (.getPath (io/resource "project"))]
+    (is (=
+         ["" "sub" "sub/mj.edn" "sub/project.edn" "mj.edn" "project.edn"]
+         (->> (filesystem/list-paths source)
+              (mapv (path/relative-to source))
+              (mapv str))))))
+
+(deftest copy-files-test
+  (let [file-attributes (into-array FileAttribute [])
+        dir             (Files/createTempDirectory
+                         "delete-recursive-test" file-attributes)
+        source          (.getPath (io/resource "project"))]
+    (filesystem/copy-files! source dir)
+    (is (= (mapv (path/relative-to source) (filesystem/list-paths source))
+           (mapv (path/relative-to dir) (filesystem/list-paths dir))))))
 
 (deftest delete-recursive-test
   (let [file-attributes (into-array FileAttribute [])

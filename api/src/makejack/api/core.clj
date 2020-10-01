@@ -101,7 +101,13 @@
   "Load the mj.edn file."
   (memoize load-mj*))
 
-(defn load-config* [& [{:keys [dir] :as options}]]
+(alter-meta!
+ #'load-mj
+ merge (select-keys (meta #'load-mj*) [:doc :arglists]))
+
+(defn load-config*
+  "Load a map containing the project and the mj config."
+  [& [{:keys [dir] :as options}]]
   (let [mj      (load-mj* options)
         project (if (filesystem/file-exists? (project-path dir))
                   (load-project* options)
@@ -110,8 +116,11 @@
      :project project}))
 
 (def load-config
-  "Load a map containing the project and the mj config."
   (memoize load-config*))
+
+(alter-meta!
+ #'load-config
+ merge (select-keys (meta #'load-config*) [:doc :arglists]))
 
 (def ^:no-doc process-option-keys
   [:dir :err :in :throw :out :wait])

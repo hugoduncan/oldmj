@@ -41,7 +41,7 @@
                        :dir "test-resources/test_hello_world"})
     (let [target (path/path "test-resources" "test_hello_world" "target")]
       (testing "target doesn't exist"
-        (is (<= (count (filesystem/list-paths target)) 2)))))
+        (is (not (filesystem/file-exists? target))))))
   (testing "mj jar"
     (makejack/process [mj-script "--verbose" "jar"]
                       {:err :inherit

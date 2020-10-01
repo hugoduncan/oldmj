@@ -5,7 +5,7 @@
 
 (defn babashka
   "Invoke babashka"
-  [_args target-kw {:keys [mj project] :as _config} options]
+  [args target-kw {:keys [mj project] :as _config} options]
   (let [target-config    (get-in mj [:targets target-kw])
         aliases          (-> []
                              (into (:aliases project))
@@ -18,8 +18,10 @@
                            form                  (into ["-e" (str form)])
                            (:main target-config) (into ["-m" (:main target-config)])
                            true                  (into (:main-args target-config))
+                           true                  (conj "--")
                            forward-options?      (into ["-o" (dissoc options :dir)])
-                           (:args target-config) (into (:args target-config)))
+                           (:args target-config) (into (:args target-config))
+                           args                  (into args))
         options          (merge options
                                 (select-keys [:with-project-deps?] target-config))]
     (try

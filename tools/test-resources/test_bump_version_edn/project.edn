@@ -1,0 +1,5 @@
+{:name            "bump-version-edn"
+ :version-map     #include "version.edn"
+ :version         #version-string [:version-map]
+ :versioned-files ["README.md"
+                   {:path "deps.edn" :search #regex "/related\\s+\\{.*\\}"}]}

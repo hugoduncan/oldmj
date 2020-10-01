@@ -1,0 +1,2 @@
+{:deps {related/related     {:mvn/version "1.2.3"}
+        unrelated/unrelated {:mvn/version "1.2.3"}}}

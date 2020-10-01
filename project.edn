@@ -1,4 +1,9 @@
-{:version-map #include "version.edn"
- :version     #version-string #ref [:version-map]
- :name        "makejack"
- :group-id    "org.hugoduncan"}
+{:version-map     #include "version.edn"
+ :version         #version-string #ref [:version-map]
+ :name            "makejack"
+ :group-id        "org.hugoduncan"
+ :versioned-files ["README.md"
+                   {:path   "cli/deps.edn"
+                    :search #regex "makejack\\s+\\{.*\\}"}
+                   {:path   "tools/deps.edn"
+                    :search #regex "makejack\\s+\\{.*\\}"}]}
