@@ -7,7 +7,7 @@
        {:doc     "Generate tool documentation from sources."
         :invoker :clojure
         :aliases [:api-docs]
-        :deps    {codox {:mvn/version "0.10.6"}}
+        :deps    {codox/codox {:mvn/version "0.10.6"}}
         :options {:forward-options false
                   :dir             "tools"}
         :expr    (do (require '[codox.main :as codox]
