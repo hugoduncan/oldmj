@@ -54,30 +54,30 @@ jobs:
 
     - name: Build mj executable
       run: |
-        bin/bootstrap-script --verbose
-        ./target/mj-script build
+        bin/bootstrap-script --verbose --debug
+        ./cli/target/mj-script build
         pwd
         ls -l
-        ls target
-        echo "::set-env name=MAKEJACK_VERSION::$(target/mj --version | jet --query ':version symbol')"
+        ls cli/target
+        echo "::set-env name=MAKEJACK_VERSION::$(cli/target/mj --version | jet --query ':version symbol')"
         mkdir -p artifacts
         cd artifacts
-        zip --junk-paths makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip ../target/mj
+        zip --junk-paths makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip ../cli/target/mj
 
 
     # - name: Build mj executable
     #   run: bin/bootstrap
 
     - name: Set version
-      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --version | jet --query ':version symbol')"
+      run: echo "::set-env name=MAKEJACK_VERSION::$(cli/target/mj --version | jet --query ':version symbol')"
 
     - name: Create linux artifacts
       run: |
         pwd
-        ls target
+        ls cli/target
         mkdir -p artifacts
         cd artifacts
-        zip --junk-paths makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip ../target/mj
+        zip --junk-paths makejack-${{ env.MAKEJACK_VERSION }}-linux-amd64.zip ../cli/target/mj
     - name: Upload linux artifact
       uses: actions/upload-artifact@v2
       with:
@@ -148,22 +148,22 @@ jobs:
 
     - name: Build mj executable
       run: |
-        bin/bootstrap-script --verbose
-        ./target/mj-script build
+        bin/bootstrap-script --verbose --debug
+        ./cli/target/mj-script build
 
     # - name: Build mj jar
-    #   run: target/mj jar
+    #   run: cli/target/mj jar
 
     - name: Set version
-      run: echo "::set-env name=MAKEJACK_VERSION::$(target/mj --version | jet --query ':version symbol')"
+      run: echo "::set-env name=MAKEJACK_VERSION::$(cli/target/mj --version | jet --query ':version symbol')"
 
     - name: Create mac artifacts
       run: |
         ls -l
-        ls -l target
+        ls -l cli/target
         mkdir -p artifacts
         cd artifacts
-        zip --junk-paths makejack-${{ env.MAKEJACK_VERSION }}-macos-amd64.zip ../target/mj
+        zip --junk-paths makejack-${{ env.MAKEJACK_VERSION }}-macos-amd64.zip ../cli/target/mj
     - name: Upload macos artifact
       uses: actions/upload-artifact@v2
       with:
@@ -174,7 +174,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: makejack-${{ env.MAKEJACK_VERSION }}.jar
-        path: target/makejack-${{ env.MAKEJACK_VERSION }}.jar
+        path: api/target/makejack-${{ env.MAKEJACK_VERSION }}.jar
         if-no-files-found: error
     - name: Upload tools jar artifact
       uses: actions/upload-artifact@v2
@@ -186,7 +186,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: mj
-        path: target/mj
+        path: cli/target/mj
         if-no-files-found: error
 
   release:
