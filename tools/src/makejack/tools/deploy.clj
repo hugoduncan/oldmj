@@ -149,7 +149,6 @@
 
 (defn check-response [response]
   (let [status (:status response)]
-    (prn response)
     (when (>= status 400)
       (throw (ex-info "Upload failed" {:response response}))))
   response)
