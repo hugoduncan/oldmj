@@ -5,6 +5,8 @@ Notable changes will be documented in this file. The format is based on
 
 ## [Unreleased]
 
+## 0.0.1-alpha2
+
 ### Added
 - bump version tool
 - :jar-exclusions in project.edn
@@ -28,4 +30,4 @@ Notable changes will be documented in this file. The format is based on
 
 
 
-[Unreleased]: https://github.com/hugoduncan/makejack/compare/v0.0.1-alpha1...HEAD
+[Unreleased]: https://github.com/hugoduncan/makejack/compare/v0.0.1-alpha2...HEAD
