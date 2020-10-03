@@ -31,7 +31,7 @@
         (is (= "target" (-> @config :mj :target-path))))
       (testing "loads the project.edn file in config"
         (tool/dispatch-main "" "" tool-fn [] [])
-        (is (= "makejack" (-> @config :project :name))))
+        (is (= "makejack.api" (-> @config :project :name))))
       (testing "binds *verbose* and *debug* according to --verbose and --debug options"
         (tool/dispatch-main "" "" tool-fn [] [])
         (is (= {:verbose nil :debug nil} @bindings))

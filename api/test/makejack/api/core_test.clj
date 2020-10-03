@@ -28,7 +28,7 @@
 (deftest load-project*-test
   (let [project (makejack/load-project*)]
     (is (map? project))
-    (is (= "makejack" (:name project))))
+    (is (= "makejack.api" (:name project))))
   (let [project (makejack/load-project* {:dir "test-resources/project/sub"})]
     (is (map? project))
     (is (= "sub" (:name project)))))
