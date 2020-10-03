@@ -173,8 +173,8 @@ jobs:
     - name: Upload API jar artifact
       uses: actions/upload-artifact@v2
       with:
-        name: makejack-${{ env.MAKEJACK_VERSION }}.jar
-        path: api/target/makejack-${{ env.MAKEJACK_VERSION }}.jar
+        name: makejack.api-${{ env.MAKEJACK_VERSION }}.jar
+        path: api/target/makejack.api-${{ env.MAKEJACK_VERSION }}.jar
         if-no-files-found: error
     - name: Upload tools jar artifact
       uses: actions/upload-artifact@v2
@@ -234,7 +234,7 @@ jobs:
     - name: Download API jar artifact
       uses: actions/download-artifact@v2
       with:
-        name: makejack-${{ env.MAKEJACK_VERSION }}.jar
+        name: makejack.api-${{ env.MAKEJACK_VERSION }}.jar
 
     - name: Download tools jar artifact
       uses: actions/download-artifact@v2
@@ -262,8 +262,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: makejack-${{ env.MAKEJACK_VERSION }}.jar
-        asset_name: makejack-${{ env.MAKEJACK_VERSION }}.jar
+        asset_path: makejack.api-${{ env.MAKEJACK_VERSION }}.jar
+        asset_name: makejack.api-${{ env.MAKEJACK_VERSION }}.jar
         asset_content_type: application/java-archive
     - name: Upload tools Jar
       id: upload-release-asset-tools-jar
