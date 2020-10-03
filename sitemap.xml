@@ -43,6 +43,21 @@
     <loc>http://makejack.hugoduncan.org/docs/0.0/api-docs/makejack.api.util/</loc>
   </url>
   <url>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/invoker-docs/makejack.invoke.babashka/</loc>
+  </url>
+  <url>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/invoker-docs/makejack.invoke.chain/</loc>
+  </url>
+  <url>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/invoker-docs/makejack.invoke.clojure/</loc>
+  </url>
+  <url>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/invoker-docs/makejack.invoke.modules/</loc>
+  </url>
+  <url>
+    <loc>http://makejack.hugoduncan.org/docs/0.0/invoker-docs/makejack.invoke.shell/</loc>
+  </url>
+  <url>
     <loc>http://makejack.hugoduncan.org/docs/0.0/tool-docs/makejack.tools.bump/</loc>
   </url>
   <url>
