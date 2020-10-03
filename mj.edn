@@ -45,4 +45,9 @@
                     :invoker :modules
                     :modules ["api" "cli" "tools"]
                     :args    ["clean"]
+                    :self    false}
+       :deploy     {:doc     "Deploy to clojars"
+                    :invoker :modules
+                    :modules ["api" "tools"]
+                    :args    ["deploy"]
                     :self    false}}]}
