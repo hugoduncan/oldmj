@@ -5,7 +5,7 @@
   ;; clojure always gets put into the deps, so we include it anyway
   org.clojure/clojure         {:mvn/version "1.10.2-alpha1"}
   org.clojure/tools.cli       {:mvn/version "1.0.194"}
-  org.hugoduncan/makejack.api {:mvn/version "0.0.1-alpah2"}}
+  org.hugoduncan/makejack.api {:mvn/version "0.0.1-alpha2"}}
  :aliases {:api-docs   {:extra-paths ["src-dev"]
                         :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
            :compile    {:extra-paths         ["target/classes"]

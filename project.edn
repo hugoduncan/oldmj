@@ -6,4 +6,6 @@
                    {:path   "cli/deps.edn"
                     :search #regex "makejack.api\\s+\\{.*\\}"}
                    {:path   "tools/deps.edn"
-                    :search #regex "makejack.api\\s+\\{.*\\}"}]}
+                    :search #regex "makejack.api\\s+\\{.*\\}"}
+                   {:path   "config.yml"
+                    :search #regex "current_version:\\s+\".*\""}]}
