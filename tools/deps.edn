@@ -1,13 +1,15 @@
-{:deps      {org.hugoduncan/makejack                    {:mvn/version "0.0.1-alpha2-SNAPSHOT"}
-             org.apache.maven/maven-model               {:mvn/version "3.6.3"}
-             org.apache.maven/maven-repository-metadata {:mvn/version "3.6.3"}
-             http-kit/http-kit                          {:mvn/version "2.4.0"}
-             javax.xml.bind/jaxb-api                    {:mvn/version "2.3.1"}}
- :paths     ["src"]
- :aliases   {:dev      {:override-deps {org.hugoduncan/makejack {:local/root "../api"}}}
-             :api-docs {:extra-paths ["src-dev"]
-                        :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
-             :test     {:extra-paths ["test-resources"]
-                        :extra-deps
-                        {lambdaisland/kaocha           {:mvn/version "1.0.672"}
-                         lambdaisland/kaocha-cloverage {:mvn/version "1.0.63"}}}}}
+{:deps
+ {org.hugoduncan/makejack.api                {:mvn/version "0.0.1-alpha2-SNAPSHOT"}
+  org.apache.maven/maven-model               {:mvn/version "3.6.3"}
+  org.apache.maven/maven-repository-metadata {:mvn/version "3.6.3"}
+  http-kit/http-kit                          {:mvn/version "2.4.0"}
+  javax.xml.bind/jaxb-api                    {:mvn/version "2.3.1"}}
+ :paths   ["src"]
+ :aliases {:dev      {:override-deps
+                      {org.hugoduncan/makejack.api {:local/root "../api"}}}
+           :api-docs {:extra-paths ["src-dev"]
+                      :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
+           :test     {:extra-paths ["test-resources"]
+                      :extra-deps
+                      {lambdaisland/kaocha           {:mvn/version "1.0.672"}
+                       lambdaisland/kaocha-cloverage {:mvn/version "1.0.63"}}}}}

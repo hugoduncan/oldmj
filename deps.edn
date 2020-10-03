@@ -1,13 +1,13 @@
 {:paths   []
- :aliases {:api-docs {:extra-paths ["src-dev"]
-                      :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
-           :dev      {:extra-deps  {codox/codox                 {:mvn/version "0.10.6"}
-                                    org.hugoduncan/makejack.cli {:local/root "cli"}}
-                      :extra-paths ["api/test-resources"
-                                    "tools/test-resources"]
-                      :override-deps
-                      {org.hugoduncan/makejack       {:local/root "api"}
-                       org.hugoduncan/makejack.tools {:local/root "tools"}}}
-           :test     {:extra-deps
-                      {lambdaisland/kaocha           {:mvn/version "1.0.672"}
-                       lambdaisland/kaocha-cloverage {:mvn/version "1.0.63"}}}}}
+ :aliases {:dev  {:extra-deps  {codox/codox                   {:mvn/version "0.10.6"}
+                                org.hugoduncan/makejack.api   {:local/root "api"}
+                                org.hugoduncan/makejack.tools {:local/root "tools"}}
+                  :extra-paths ["cli/src"
+                                "api/test-resources"
+                                "tools/test-resources"]
+                  :override-deps
+                  {org.hugoduncan/makejack.api   {:local/root "api"}
+                   org.hugoduncan/makejack.tools {:local/root "tools"}}}
+           :test {:extra-deps
+                  {lambdaisland/kaocha           {:mvn/version "1.0.672"}
+                   lambdaisland/kaocha-cloverage {:mvn/version "1.0.63"}}}}}
