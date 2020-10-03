@@ -1,4 +1,4 @@
-{:name        "makejack"
+{:name        "makejack.api"
  :group-id    "org.hugoduncan"
  :version-map #include "../version.edn"
  :version     #version-string #ref [:version-map]}

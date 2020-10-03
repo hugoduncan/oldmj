@@ -24,7 +24,7 @@
   <project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\" >
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.hugoduncan</groupId>
-  <artifactId>makejack</artifactId>
+  <artifactId>makejack.api</artifactId>
   <version>%s</version>
   <name>makejack</name>
   <dependencies>
@@ -128,7 +128,7 @@
                    (into (main-switches ":jar"))
                    (into ["hf.depstar.jar"])
                    (into verbose-args)
-                   (conj (str "target/makejack-" version ".jar"))
+                   (conj (str "target/makejack.api-" version ".jar"))
                    (into [:dir "api"])))]
     (when debug
       (println (:out res))
@@ -142,9 +142,9 @@
   (println "Install API jar")
   (let [res (sh ["mvn"
                  "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
-                 (str "-Dfile=target/makejack-" version ".jar")
+                 (str "-Dfile=target/makejack.api-" version ".jar")
                  "-DgroupId=org.hugoduncan"
-                 "-DartifactId=makejack"
+                 "-DartifactId=makejack.api"
                  (str "-Dversion=" version)
                  "-Dpackaging=jar"
                  :dir "api"])]
