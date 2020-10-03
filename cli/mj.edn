@@ -18,4 +18,20 @@
        :version-ns {:doc     "Write the version info namespace"
                     :invoker :clojure
                     :main    makejack.impl.build-version
-                    :options {:forward-options false}}}]}
+                    :options {:forward-options false}}
+       :doc-gen
+       {:doc     "Generate invoker documentation from sources."
+        :invoker :clojure
+        :aliases [:api-docs]
+        :deps    {codox/codox {:mvn/version "0.10.6"}}
+        :options {:forward-options false}
+        :expr    (do (require '[codox.main :as codox]
+                              'makejack.doc.invoker-writer)
+                     (codox/generate-docs
+                      {:metadata    {:doc/format :markdown}
+                       :output-path "../site"
+                       :source-uri  "https://github.com/hugoduncan/makejack/blob/v{version}/{filepath}#L{line}"
+                       :version     #ref [:project :version]
+                       :namespaces  [#regex "^makejack\\.invoke\\.[a-z_]+$"]
+                       :writer      'makejack.doc.invoker-writer/write-docs
+                       }))}}]}
