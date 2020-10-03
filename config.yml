@@ -29,10 +29,10 @@ params:
   description:          "A clojure build tool invoker."
   authors:              "Hugo Duncan contributors"
 
-  current_version:      "0.0.1-alpha1"
+  current_version:      "0.0.1-alpha2"
   docs_version:         "0.0"
   github_org:           "https://github.com/hugoduncan"
   repo:                 "https://github.com/hugoduncan/makejack"
 
   download:
-    source:             "https://github.com/hugoduncan/makejack/archive/v0.0.1-alpha1.zip"
+    source:             "https://github.com/hugoduncan/makejack/archive/v0.0.1-alpha2.zip"
