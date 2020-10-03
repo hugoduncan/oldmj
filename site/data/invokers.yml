@@ -1,1 +1,15 @@
-[]
+- name: makejack.invoke.babashka
+  publics:
+  - {name: babashka}
+- name: makejack.invoke.chain
+  publics:
+  - {name: chain}
+- name: makejack.invoke.clojure
+  publics:
+  - {name: clojure}
+- name: makejack.invoke.modules
+  publics:
+  - {name: modules}
+- name: makejack.invoke.shell
+  publics:
+  - {name: shell}

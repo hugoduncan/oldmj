@@ -23,7 +23,7 @@
                     :self    false}
        :doc-gen    {:doc     "Generate namespace docs"
                     :invoker :modules
-                    :modules ["api" "tools"]
+                    :modules ["api" "cli" "tools"]
                     :args    ["doc-gen"]
                     :self    false}
        :lint       {:doc     "Lint source"

@@ -6,7 +6,9 @@
   org.clojure/clojure       {:mvn/version "1.10.2-alpha1"}
   org.clojure/tools.cli     {:mvn/version "1.0.194"}
   org.hugoduncan/makejack   {:mvn/version "0.0.1-alpha2-SNAPSHOT"}}
- :aliases {:compile    {:extra-paths         ["target/classes"]
+ :aliases {:api-docs   {:extra-paths ["src-dev"]
+                        :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
+           :compile    {:extra-paths         ["target/classes"]
                         :jvm-opts            ["-Dclojure.compiler.direct-linking=true"
                                               "-Dclojure.spec.skip-macros=true"
                                               "-Dclojure.spec.compile-asserts=false"]
