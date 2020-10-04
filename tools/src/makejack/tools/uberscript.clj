@@ -17,6 +17,7 @@
         path        (path/path (:target-path mj) script-name)]
 
     (babashka/process
+     mj
      aliases
      {}
      ["--uberscript" (str path) "-m" (str main)]

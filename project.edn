@@ -3,6 +3,8 @@
  :name            "makejack"
  :group-id        "org.hugoduncan"
  :versioned-files ["README.md"
+                   {:path   "api/src/makejack/api/default_config.clj"
+                    :search #regex "makejack.tools\\s+\\{.*\\}"}
                    {:path   "cli/deps.edn"
                     :search #regex "makejack.api\\s+\\{.*\\}"}
                    {:path   "tools/deps.edn"

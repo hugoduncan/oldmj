@@ -55,11 +55,12 @@
 
 (defn args
   "Return a cli arguments vector given a map of cli options."
-  [{:keys [cp deps force repro threads verbose]}]
+  [{:keys [cp deps force path repro threads verbose]}]
   (cond-> []
     cp      (into ["-Scp" cp])
     deps    (into ["-Sdeps" (str deps)])
     force   (conj "-Sforce")
+    path    (conj "-Spath")
     repro   (conj "-Srepro")
     threads (into ["-Sthreads" (str threads)])
     verbose (conj "-Sverbose")))

@@ -26,6 +26,7 @@
                                 (select-keys [:with-project-deps?] target-config))]
     (try
       (babashka/process
+       mj
        aliases
        deps
        args

@@ -1,7 +1,8 @@
 (ns makejack.api.babashka
   (:require [clojure.string :as str]
             [makejack.api.clojure-cli :as clojure-cli]
-            [makejack.api.core :as makejack]))
+            [makejack.api.core :as makejack]
+            [makejack.api.glam :as glam]))
 
 (defn process
   "Execute babashka process.
@@ -10,13 +11,19 @@
 
   options is a map of options, as specifed in babashka.process/process.
   Defaults to {:err :inherit}."
-  [aliases deps args options]
-  (let [cp   (cond-> ""
+  [{:keys [tool-versions use-system-tools]} aliases deps args options]
+  (let [bb   (if use-system-tools
+               "bb"
+               (glam/resolve-tool
+                "org.babashka/babashka"
+                (some-> tool-versions :babashka :version)
+                "bb"))
+        cp   (cond-> ""
                (or (:with-project-deps? options)
                    deps
                    aliases)
                (str ":" (clojure-cli/classpath aliases deps options)))
-        args (cond-> ["bb"]
+        args (cond-> [bb]
                (not (str/blank? cp)) (into ["-cp" cp])
                args                  (into args))]
     (makejack/process args options)))

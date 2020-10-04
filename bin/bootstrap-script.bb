@@ -142,7 +142,7 @@
   (println "Install API jar")
   (let [res (sh ["mvn"
                  "org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file"
-                 (str "-Dfile=target/makejack.api-" version ".jar")
+                (str "-Dfile=target/makejack.api-" version ".jar")
                  "-DgroupId=org.hugoduncan"
                  "-DartifactId=makejack.api"
                  (str "-Dversion=" version)

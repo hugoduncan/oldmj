@@ -5,9 +5,12 @@
             :aliases [:dev :test]
             :options {:out             :inherit
                       :forward-options false}}
-     :lint {:doc     "Lint source with clj-kondo"
-            :invoker :shell
-            :args    ["clj-kondo" "--lint" "src" "test"]}
+     :lint {:doc             "Lint source with clj-kondo"
+            :invoker         :glam
+            :package-name    "clj-kondo/clj-kondo"
+            :package-version nil
+            :tool-name       "clj-kondo"
+            :args            ["clj-kondo" "--lint" "src" "test"]}
      :fmt  {:doc       "Check source formatting with cljfmt"
             :invoker   :clojure
             :deps      {cljfmt/cljfmt {:mvn/version "0.6.4"}}
