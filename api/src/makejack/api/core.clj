@@ -136,12 +136,16 @@
   [args options]
   (when *debug*
     (apply println (into args (when-let [dir (:dir options)] ["in" dir]))))
-  (process/process
-   (map str args)
-   (merge
-    {:err :inherit}
-    (when *debug* {:out :inherit})
-    (select-keys options process-option-keys))))
+  (->
+   (process/process
+    (map str args)
+    (merge
+     {:err      :inherit
+      :out      :string
+      :shutdown process/destroy}
+     (when *debug* {:out :inherit})
+     (select-keys options process-option-keys)))
+   process/check))
 
 (defn default-jar-name
   "Helper to return the default jar file name.

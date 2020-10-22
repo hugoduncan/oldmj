@@ -73,9 +73,10 @@
   []
   (-> ["git" "rev-parse" "--verify" "HEAD"]
       (process/process
-       {:err   :inherit
-        :wait  true
-        :throw true})
+       {:err  :inherit
+        :out  :string
+        :wait true})
+      process/check
       :out
       str/trim))
 

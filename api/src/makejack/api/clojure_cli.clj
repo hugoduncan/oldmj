@@ -8,12 +8,13 @@
 (defn version
   "Return the clojure cli version string"
   []
-  (let [res (process/process ["clojure" "--help"] {:out :string})]
-    (-> (:out res)
-        str/split-lines
-        first
-        (str/split #"\s+")
-        second)))
+  (-> (process/process ["clojure" "--help"] {:out :string})
+      process/check
+      :out
+      str/split-lines
+      first
+      (str/split #"\s+")
+      second))
 
 (defn ^:no-doc version-less [v1 v2]
   (let [pairs (mapv vector v1 v2)]

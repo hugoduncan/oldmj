@@ -1,6 +1,6 @@
 {:deps
  {aero/aero                 {:mvn/version "1.1.6"}
-  babashka/babashka.process {:sha     "0aefe6d533cd39ff591ed48a34b955ff2551ab8f"
+  babashka/babashka.process {:sha     "98056d87e34a9bf56fcc11ca23ae19c69783455f"
                              :git/url "https://github.com/babashka/babashka.process"}
   ;; clojure always gets put into the deps, so we include it anyway
   org.clojure/clojure       {:mvn/version "1.10.2-alpha1"}
