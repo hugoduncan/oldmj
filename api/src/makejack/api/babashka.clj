@@ -13,11 +13,10 @@
   Defaults to {:err :inherit}."
   [{:keys [tool-versions use-system-tools]} aliases deps args options]
   (let [bb   (if use-system-tools
-               "bb"
-               (glam/resolve-tool
-                "org.babashka/babashka"
-                (some-> tool-versions :babashka :version)
-                "bb"))
+             "bb"
+             (glam/resolve-tool
+              "org.babashka/babashka"
+              "bb"))
         cp   (cond-> ""
                (or (:with-project-deps? options)
                    deps

@@ -7,14 +7,13 @@
 (defn glam
   "Invoke shell command using glam."
   [args target-kw config options]
-  (let [target-config   (get-in config [:mj :targets target-kw])
-        package-name    (:package-name target-config)
-        package-version (:package-version target-config)
-        tool-name       (:tool-name target-config)
-        tool-path       (glam/resolve-tool package-name package-version tool-name)
-        args            (-> [tool-path]
-                            (into (:args target-config))
-                            (into args))]
+  (let [target-config (get-in config [:mj :targets target-kw])
+        package-name  (:package-name target-config)
+        tool-name     (:tool-name target-config)
+        tool-path     (glam/resolve-tool package-name tool-name)
+        args          (-> [tool-path]
+                          (into (:args target-config))
+                          (into args))]
     (try
       (makejack/process args (merge options (:options target-config)))
       nil

@@ -1,0 +1,4 @@
+{:glam/deps
+ {org.babashka/babashka {:dep/version "0.2.2"}
+  clj-kondo/clj-kondo   {:dep/version "2020.09.09"}}
+ }

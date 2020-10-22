@@ -4,6 +4,7 @@ target
 /tools/target
 *.jar
 .envrc
+.glam
 pom.xml
 _gen
 /public

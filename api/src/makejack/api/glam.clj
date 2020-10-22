@@ -7,7 +7,7 @@
 (def deps {:deps
            {'borkdude/glam
             {:git/url "https://github.com/borkdude/glam"
-             :sha     "6abf4c0c17848df1c41108978c31566ac8f9b42b"}}})
+             :sha     "13a9d3675167f0b1f1e7328aba63df4e383f7633"}}})
 
 (defonce glam-cp (volatile! nil))
 
@@ -55,12 +55,6 @@
     (catch Exception e
       (throw (ex-info "Failed to install glam" {} e)))))
 
-(defn name-and-version
-  [package-name package-version]
-  (if package-version
-    (str package-name "@" package-version)
-    package-name))
-
 (defonce package-path-cache
   (volatile! {}))
 
@@ -83,12 +77,16 @@
                (into ["install" package-name]))
            {:err :string
             :out :string})
-          _            (println out)
+          _            (println "install" package-name out)
           package-path (str/trim out)]
       (cache-set! package-name package-path)
       package-path)
     (catch Exception e
-      (throw (ex-info "Failed to install babashka" {} e)))))
+      (prn :error package-name e)
+      (throw (ex-info "Failed to install package"
+                      {:package-name package-name
+                       :exception    (str e)}
+                      e)))))
 
 (defn install
   "Install and setuo glam to run with babashka"
@@ -106,31 +104,30 @@
       (install-package-using-clojure "org.babashka/babashka"))))
 
 (defn install-package
-  [package-name package-version]
-  (let [package-name-version (name-and-version package-name package-version)
-        package-path         (or (cache-get "org.babashka/babashka")
-                                 (install-babashka))
-        _                    (assert package-path)
+  [package-name]
+  (let [package-path (or (cache-get "org.babashka/babashka")
+                         (install-babashka))
+        _            (assert package-path)
         path
         (-> (makejack/process
              [(str (path/path package-path "bb"))
               "-cp" (glam-classpath :babashka) "-m" "glam.main"
-              "install" package-name-version]
+              "install" package-name]
              {:out :string
               :err :string})
             :out
             str/trim)]
-    (cache-set! package-name-version path)
+    (println "install" package-name path)
+    (cache-set! package-name path)
     path))
 
 (defn package-path
-  [package-name package-version]
-  (let [package-name-version (name-and-version package-name package-version)]
-    (or (cache-get package-name-version)
-        (install-package package-name package-version))))
+  [package-name]
+  (or (cache-get package-name)
+      (install-package package-name)))
 
 (defn resolve-tool
   "Resolve a tool path from the given package"
-  [package-name package-version tool-name]
-  (let [p (package-path package-name package-version)]
+  [package-name tool-name]
+  (let [p (package-path package-name)]
     (str (path/path p tool-name))))

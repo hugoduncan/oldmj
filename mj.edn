@@ -1,10 +1,6 @@
-#mj {:project       #project {:profile :jar} ; helper for install target
-     :doc           "Use `mj uberscript` to build an babashka uberscript.
+#mj {:project #project {:profile :jar} ; helper for install target
+     :doc     "Use `mj uberscript` to build an babashka uberscript.
                TODO - make this appear in `mj --help` output"
-     :tool-versions {:babashka  {:name    "org.babashka/babashka"
-                                 :version "0.2.2"}
-                     :clj-kondo {:name    "clj-kondo/clj-kondo"
-                                 :version "2020.09.09"}}
      :targets
      #merge
      [#default-targets [:bump]
