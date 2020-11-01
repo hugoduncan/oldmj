@@ -1,13 +1,15 @@
 (ns makejack.api.core
   "Main API namespace for tools designed to work with project.edn and mj.edn"
   (:require [aero.core :as aero]
+            #?@(:bb [] :clj [[clojure.pprint]])
             [babashka.process :as process]
             makejack.api.aero           ; for defmethod
             [makejack.api.default-config :as default-config]
             [makejack.api.filesystem :as filesystem]
             [makejack.api.path :as path]))
 
-(set! *warn-on-reflection* true)
+#?(:bb nil :clj
+   (set! *warn-on-reflection* true))
 
 (def ^:dynamic *verbose*
   "Bound to true when `--verbose` is specified."
@@ -125,6 +127,12 @@
 (def ^:no-doc process-option-keys
   [:dir :err :in :throw :out :wait])
 
+#?(:bb nil
+   :clj
+   (defmethod clojure.pprint/simple-dispatch babashka.process.Process
+     [proc]
+     (clojure.pprint/write-out (into {} proc))))
+
 (defn process
   "Execute a process.
 
@@ -136,16 +144,17 @@
   [args options]
   (when *debug*
     (apply println (into args (when-let [dir (:dir options)] ["in" dir]))))
-  (->
-   (process/process
-    (map str args)
-    (merge
-     {:err      :inherit
-      :out      :string
-      :shutdown process/destroy}
-     (when *debug* {:out :inherit})
-     (select-keys options process-option-keys)))
-   process/check))
+  (try
+    (->
+     (process/process
+      (map str args)
+      (merge
+       {:err      :inherit
+        :out      :string
+        :shutdown process/destroy}
+       (when *debug* {:out :inherit})
+       (select-keys options process-option-keys)))
+     process/check)))
 
 (defn default-jar-name
   "Helper to return the default jar file name.
