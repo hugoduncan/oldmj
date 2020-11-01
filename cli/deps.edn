@@ -1,6 +1,6 @@
 {:deps
  {org.clojure/clojure         {:mvn/version "1.10.2-alpha1"}
-  org.hugoduncan/makejack.api {:mvn/version "0.0.1-alpha2"}}
+  org.hugoduncan/makejack.api {:mvn/version "0.0.1-alpha3-SNAPSHOT"}}
  :aliases {:api-docs   {:extra-paths ["src-dev"]
                         :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
            :compile    {:extra-paths         ["target/classes"]
