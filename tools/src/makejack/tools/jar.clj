@@ -12,7 +12,9 @@
   (let [aliases         (-> []
                             (into (:aliases project))
                             (into (:aliases options)))
-        deps            '{:deps {seancorfield/depstar {:mvn/version "1.1.104"}}}
+        deps            '{:deps
+                          {seancorfield/depstar
+                           {:mvn/version "2.0.193"}}}
         main            (:main project)
         target-path     (:target-path mj)
         jar-name        (or (:jar-name project)
