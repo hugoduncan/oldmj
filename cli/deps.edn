@@ -3,11 +3,10 @@
   org.hugoduncan/makejack.api {:mvn/version "0.0.1-alpha3-SNAPSHOT"}}
  :aliases {:api-docs   {:extra-paths ["src-dev"]
                         :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
-           :compile    {:extra-paths         ["target/classes"]
-                        :jvm-opts            ["-Dclojure.compiler.direct-linking=true"
-                                              "-Dclojure.spec.skip-macros=true"
-                                              "-Dclojure.spec.compile-asserts=false"]
-                        :classpath-overrides {org.clojure/core.specs.alpha nil}}
+           :compile    {:extra-paths ["target/classes"]
+                        :jvm-opts    ["-Dclojure.compiler.direct-linking=true"
+                                      "-Dclojure.spec.skip-macros=true"
+                                      "-Dclojure.spec.compile-asserts=false"]}
            :uberjar    {:extra-paths ["resources"]}
            :dev        {:extra-deps  {codox/codox {:mvn/version "0.10.6"}}
                         :extra-paths ["test-resources"]}

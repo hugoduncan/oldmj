@@ -108,7 +108,7 @@
 ;;; Get the project version
 (println "Get version")
 (let [version-map (aero/read-config "version.edn")
-      version (format-version-map version-map)]
+      version     (format-version-map version-map)]
   (when verbose
     (println "Bootstrapping makejack version" version))
 
@@ -127,14 +127,14 @@
 
   (println "building API jar")
   (let [res (sh (-> ["clojure"]
-                   (into ["-Sdeps"
-                          "{:deps {seancorfield/depstar {:mvn/version \"1.1.104\"}}}"
-                          ])
-                   (into (main-switches ":jar"))
-                   (into ["hf.depstar.jar"])
-                   (into verbose-args)
-                   (conj (str "target/makejack.api-" version ".jar"))
-                   (into [:dir "api"])))]
+                    (into ["-Sdeps"
+                           "{:deps {seancorfield/depstar {:mvn/version \"1.1.104\"}}}"
+                           ])
+                    (into (main-switches ":jar"))
+                    (into ["hf.depstar.jar"])
+                    (into verbose-args)
+                    (conj (str "target/makejack.api-" version ".jar"))
+                    (into [:dir "api"])))]
     (when debug
       (println (:out res))
       (println (:err res)))
@@ -165,10 +165,10 @@
 
   (println "building version source namespace")
   (let [res (sh (-> ["clojure"]
-                   (into (main-switches))
-                   (into ["makejack.impl.build-version"])
-                   (into verbose-args)
-                   (into [:dir "cli"])))]
+                    (into (main-switches))
+                    (into ["makejack.impl.build-version"])
+                    (into verbose-args)
+                    (into [:dir "cli"])))]
     (when debug
       (println (:out res))
       (println (:err res)))
@@ -180,7 +180,7 @@
 
 
   (println "Get main classpath")
-  (let [res     (sh ["clojure" "-Srepro" "-Spath" :dir "cli"])
+  (let [res     (sh ["clojure" "-Srepro" "-Sforce" "-Spath" :dir "cli"])
         main-cp (str/trim (:out res))]
     (when (pos? (:exit res))
       (binding [*out* *err*]
@@ -207,9 +207,9 @@
 
     (println "build tools pom")
     (let [res (sh (-> ["clojure"]
-                     (into (main-switches))
-                     (into ["makejack.tools.pom"])
-                     (into [ :dir "tools"])))]
+                      (into (main-switches :jar))
+                      (into ["makejack.tools.pom"])
+                      (into [ :dir "tools"])))]
       (when debug
         (println (:out res)))
       (when (pos? (:exit res))
@@ -220,11 +220,11 @@
 
     (println "build tools jar")
     (let [res (sh (-> ["clojure"]
-                     (into (main-switches))
-                     (into ["makejack.tools.jar"])
-                     (into verbose-args)
-                     (into [(str "target/makejack.tools-" version ".jar")
-                            :dir "tools"])))]
+                      (into (main-switches))
+                      (into ["makejack.tools.jar"])
+                      (into verbose-args)
+                      (into [(str "target/makejack.tools-" version ".jar")
+                             :dir "tools"])))]
       (when debug
         (println (:out res)))
       (when (pos? (:exit res))
@@ -252,10 +252,10 @@
 
     (println "rebuild script for shebang")
     (let [res (sh (concat
-                    ["bb" "target/mj-script"]
-                    verbose-args
-                    ["uberscript"
-                     :dir "cli"]))]
+                   ["bb" "target/mj-script"]
+                   verbose-args
+                   ["uberscript"
+                    :dir "cli"]))]
       (when debug
         (println (:out res))
         (println (:err res)))
