@@ -31,12 +31,17 @@
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
-      <version>1.10.2-alpha1</version>
+      <version>1.10.3</version>
     </dependency>
     <dependency>
       <groupId>aero</groupId>
       <artifactId>aero</artifactId>
       <version>1.1.6</version>
+    </dependency>
+    <dependency>
+      <groupId>babashka</groupId>
+      <artifactId>process</artifactId>
+      <version>0.0.1</version>
     </dependency>
     <dependency>
       <groupId>fipp</groupId>

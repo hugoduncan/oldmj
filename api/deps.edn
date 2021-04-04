@@ -1,13 +1,12 @@
 {:deps
- {aero/aero                 {:mvn/version "1.1.6"}
-  babashka/babashka.process {:sha     "98056d87e34a9bf56fcc11ca23ae19c69783455f"
-                             :git/url "https://github.com/babashka/babashka.process"}
+ {aero/aero             {:mvn/version "1.1.6"}
+  babashka/process      {:mvn/version "0.0.1"}
   ;; clojure always gets put into the deps, so we include it anyway
-  org.clojure/clojure       {:mvn/version "1.10.2-alpha1"}
-  org.clojure/tools.cli     {:mvn/version "1.0.194"}}
+  org.clojure/clojure   {:mvn/version "1.10.2-alpha1"}
+  org.clojure/tools.cli {:mvn/version "1.0.194"}}
  :aliases {:api-docs   {:extra-paths ["src-dev"]
                         :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
-           :dev        {:extra-deps  {codox/codox {:mvn/version "0.10.6"}}}
+           :dev        {:extra-deps {codox/codox {:mvn/version "0.10.6"}}}
            :test       {:extra-deps
                         {lambdaisland/kaocha           {:mvn/version "1.0.672"}
                          lambdaisland/kaocha-cloverage {:mvn/version "1.0.63"}}

@@ -9,7 +9,7 @@
       {:uberjar    {:doc       "Build an uberjar, "
                     :invoker   :clojure
                     :deps      {org.hugoduncan/makejack.tools
-                                {:mvn/version "0.0.1-alpha2-SNAPSHOT"}}
+                                {:mvn/version "0.0.1-alpha3-SNAPSHOT"}}
                     :main      makejack.tools.jar
                     :main-args ["--profile" ":uberjar"]}
        :build      {:doc     "pom, compile, uberjar and binary"
