@@ -32,11 +32,16 @@
                        true                (assoc :jar jar-path)
                        (:verbose options)  (assoc :verbose true)
                        exclusions          (assoc :exclude exclusions)
-                       (seq aliases)       (assoc :aliases aliases))]
+                       (seq aliases)       (assoc :aliases aliases))
+        report       (:report options)]
     (clojure-cli/process
      (concat
-      (clojure-cli/args {:repro true
-                         :deps  deps})
+      (clojure-cli/args
+       (cond-> {:repro true
+                :deps  deps}
+         report (assoc
+                 :java-opts
+                 [(str "-Dclojure.main.report=" report)])))
       (clojure-cli/exec-args
        {:aliases   [:mj-depstar]
         :exec-fn   depstar-fn

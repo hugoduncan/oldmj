@@ -40,7 +40,7 @@
                                 :repro repro?}
                              report (assoc
                                      :java-opts
-                                     ["-Dclojure.main.report=stderr"])))
+                                     [(str "-Dclojure.main.report=" report)])))
                           (clojure-cli/main-args
                            (cond->
                                {:aliases   aliases
