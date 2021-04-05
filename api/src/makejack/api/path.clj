@@ -34,8 +34,8 @@
 (defn path
   "Return a java.nio.file.Path, passing each argument to as-path.
 
-  Multiple-arg versions treat the first argument as parent and subsequent args as
-  children relative to the parent."
+  Multiple-arg versions treat the first argument as parent and
+  subsequent args as children relative to the parent."
   (^Path [path-like]
    (as-path path-like))
   (^Path [parent child]
@@ -78,7 +78,7 @@
       (path filename))))
 
 (defn relative-to
-  "Return a function that will return its argument path relative to the given root."
+  "Return a function that returns its argument path relative to the given root."
   [root]
   (let [root (path root)]
     (fn ^Path [p] (.relativize ^Path root (path p)))))

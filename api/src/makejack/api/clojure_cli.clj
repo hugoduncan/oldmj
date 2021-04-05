@@ -8,12 +8,13 @@
 (defn version
   "Return the clojure cli version string"
   []
-  (let [res (process/process ["clojure" "--help"] {:out :string})]
-    (-> (:out res)
-        str/split-lines
-        first
-        (str/split #"\s+")
-        second)))
+  (-> (process/process ["clojure" "--help"] {:out :string})
+      process/check
+      :out
+      str/split-lines
+      first
+      (str/split #"\s+")
+      second))
 
 (defn ^:no-doc version-less [v1 v2]
   (let [pairs (mapv vector v1 v2)]
@@ -55,14 +56,15 @@
 
 (defn args
   "Return a cli arguments vector given a map of cli options."
-  [{:keys [cp deps force repro threads verbose]}]
+  [{:keys [cp deps force java-opts repro threads verbose]}]
   (cond-> []
-    cp      (into ["-Scp" cp])
-    deps    (into ["-Sdeps" (str deps)])
-    force   (conj "-Sforce")
-    repro   (conj "-Srepro")
-    threads (into ["-Sthreads" (str threads)])
-    verbose (conj "-Sverbose")))
+    java-opts (into (map #(str "-J" %) java-opts))
+    cp        (into ["-Scp" cp])
+    deps      (into ["-Sdeps" (str deps)])
+    force     (conj "-Sforce")
+    repro     (conj "-Srepro")
+    threads   (into ["-Sthreads" (str threads)])
+    verbose   (conj "-Sverbose")))
 
 (defn aliases-arg
   [option aliases {:keys [elide-when-no-aliases] :or {elide-when-no-aliases false}}]
@@ -77,11 +79,16 @@
           subkey (keypaths-in v)]
       (cons k subkey))))
 
+(defn ^:no-doc keypath-value [p]
+  (if (> (count p) 1)
+    p
+    (first p)))
+
 (defn ^:no-doc keypath-values [m]
   (let [keypaths (mapv vec (keypaths-in m))]
     (vec (mapcat
           vector
-          keypaths
+          (map keypath-value keypaths)
           (map (partial get-in m) keypaths)))))
 
 (defn exec-args

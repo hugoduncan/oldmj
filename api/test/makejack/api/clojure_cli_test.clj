@@ -31,7 +31,7 @@
          (clojure-cli/exec-args {:aliases [:a :b]} #{:exec-fn})))
   (is (= ["-X" "a/b"]
          (clojure-cli/exec-args {:exec-fn 'a/b} #{:exec-fn})))
-  (is (= ["-X" "a/b" "[:a]" "1"]
+  (is (= ["-X" "a/b" ":a" "1"]
          (clojure-cli/exec-args {:exec-fn 'a/b :exec-args {:a 1}} #{:exec-fn})))
   (is (= ["-X" "[:a :b]" "c" "[:a :d]" "1"]
          (clojure-cli/exec-args {:exec-args {:a {:b "c" :d 1}}} #{:exec-fn}))))

@@ -141,5 +141,5 @@
   (tool/with-shutdown-agents
     (tool/dispatch-main
      "bump"
-     "[options] [:major|:minor|:incremental] [qualifier]"
+     "[options] major|minor|incremental|qualifier value"
      bump extra-options args)))

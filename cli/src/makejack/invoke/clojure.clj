@@ -31,22 +31,26 @@
         options          (merge options (:options target-config))
         forward-options? (:forward-options options true)
         repro?           (:repro options true)
-        report           (:report options "stderr")
+        report           (:report options)
         args             (concat
                           (clojure-cli/args
-                           {:deps  (merge deps-edn
-                                          (:Sdeps tool-options))
-                            :repro repro?})
+                           (cond->
+                               {:deps  (merge deps-edn
+                                              (:Sdeps tool-options))
+                                :repro repro?}
+                             report (assoc
+                                     :java-opts
+                                     [(str "-Dclojure.main.report=" report)])))
                           (clojure-cli/main-args
-                           {:report    report
-                            :aliases   aliases
-                            :expr      (:expr target-config)
-                            :main      (:main target-config)
-                            :main-args (cond-> []
-                                         forward-options?
-                                         (into ["-o" (dissoc options :dir)])
-                                         true (into
-                                               (:main-args target-config)))})
+                           (cond->
+                               {:aliases   aliases
+                                :expr      (:expr target-config)
+                                :main      (:main target-config)
+                                :main-args (cond-> []
+                                             forward-options?
+                                             (into ["-o" (dissoc options :dir)])
+                                             true (into
+                                                   (:main-args target-config)))}))
                           args)]
     (try
       (clojure-cli/process args options)

@@ -10,11 +10,11 @@ Install [babashka][babashka].
 bin/bootstrap-script
 ```
 
-This will create a `target/mj-script`, which is a babashka uberscript,
-and is fully functional.
+This will create a `cli/target/mj-script`, which is a babashka
+uberscript, and is fully functional.
 
 If you have GraalVM install, you can use this to build the binary using
-the `target/mj build` command.
+the `cli/target/mj-script build` command, which creates `cli/target/mj`.
 
 
 # Optional

@@ -1,18 +1,12 @@
 {:deps
- {aero/aero                   {:mvn/version "1.1.6"}
-  babashka/babashka.process   {:sha     "0aefe6d533cd39ff591ed48a34b955ff2551ab8f"
-                               :git/url "https://github.com/babashka/babashka.process"}
-  ;; clojure always gets put into the deps, so we include it anyway
-  org.clojure/clojure         {:mvn/version "1.10.2-alpha1"}
-  org.clojure/tools.cli       {:mvn/version "1.0.194"}
-  org.hugoduncan/makejack.api {:mvn/version "0.0.1-alpha2"}}
+ {org.clojure/clojure         {:mvn/version "1.10.2-alpha1"}
+  org.hugoduncan/makejack.api {:mvn/version "0.0.1-alpha3-SNAPSHOT"}}
  :aliases {:api-docs   {:extra-paths ["src-dev"]
                         :extra-deps  {clj-commons/clj-yaml {:mvn/version "0.7.0"}}}
-           :compile    {:extra-paths         ["target/classes"]
-                        :jvm-opts            ["-Dclojure.compiler.direct-linking=true"
-                                              "-Dclojure.spec.skip-macros=true"
-                                              "-Dclojure.spec.compile-asserts=false"]
-                        :classpath-overrides {org.clojure/core.specs.alpha nil}}
+           :compile    {:extra-paths ["target/classes"]
+                        :jvm-opts    ["-Dclojure.compiler.direct-linking=true"
+                                      "-Dclojure.spec.skip-macros=true"
+                                      "-Dclojure.spec.compile-asserts=false"]}
            :uberjar    {:extra-paths ["resources"]}
            :dev        {:extra-deps  {codox/codox {:mvn/version "0.10.6"}}
                         :extra-paths ["test-resources"]}
